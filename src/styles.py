@@ -12,7 +12,7 @@ class Styles:
         # remove comments
         if file:
             style = util.read_file(style, {"strip": True})
-        if style != "":
+        if style != "" and style != None:
             style = style.strip()
             style = cls.remove_comments(style)
 

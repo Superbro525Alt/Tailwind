@@ -9,6 +9,6 @@ from window import Window
 from widgets import *
 
 if __name__ == "__main__":
-    window = Window("styles/style.css", "window", {"file": True})
-    window.add_widget(Button(style={}, properties={"text": "Test Button"}, binds={}, master=window()), {"place": {"relx": 0.5, "rely": 0.5, "anchor": util.NorthWestAnchor().get_anchor()}})
+    window = Window(None, "window")
+    window.add_widget(Button(style={}, properties={}, binds={}, master=window()), {"place": {"relx": 0.5, "rely": 0.5, "anchor": util.NorthWestAnchor().get_anchor()}})
     window.main_loop()
