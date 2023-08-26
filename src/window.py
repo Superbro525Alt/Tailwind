@@ -13,6 +13,10 @@ class Window:
         else:
             self.style = styles.Styles.parse(style)
 
+        if self.style == None:
+            self.style = {"classes": {}, "ids": {}, "tags": {}}
+
+
         self.name = name
 
         self._window = customtkinter.CTk()
