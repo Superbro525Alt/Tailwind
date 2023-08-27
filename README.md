@@ -1,5 +1,5 @@
 # Tailwind
-A python UI module
+A python UI module for easily creating UIs.
 
 ## Usage
 
@@ -135,6 +135,48 @@ Can be called using `tailwind.util.Types.is_class_same`. It takes in two objects
 <ins>`@classmethod`</ins>
 
 Can be called using `tailwind.util.Types.is_type`. Takes in two arguments `this` and `other`and returns weather they are the same object type.
+
+### File Utilities
+`tailwind.util`
+
+`def read_file(file, options={}):`
+
+Reads a file and returns contents. `options` allow for the user to input `{"strip": True}` to strip the lines before returning and `{"lines": True}`to return the value of readlines.
+
+The only other argument is `file` which is the path to the file that you are trying to read.
+
+### Anchor Points
+`tailwind.util`
+
+#### General
+
+To access the anchor for use with placing widgets use `anchor_class.get_anchor()`. `get_anchor()` is a class method allowing it to be called without it's respective object needing to be instantiated.
+
+#### Current Types
+The current anchors are as follows:
+
+- `EmptyAnchor`
+- `CenterAnchor`
+- `NorthAnchor`
+- `NorthEastAnchor`
+- `EastAnchor`
+- `SouthEastAnchor`
+- `SouthAnchor`
+- `WestAnchor`
+- `NorthWestAnchor`
+
+### Image Scale
+
+Takes in a width and a height and returns it when called (`image_scale()`)
+
+### Other
+
+#### Execute List
+
+Takes in a list of functions and a final function to be called (_not required_)
+
+It executes each function in the list before finishing with the final function.
+
 
 ## Widgets
 `tailwind.widgets`
