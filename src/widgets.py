@@ -1,7 +1,14 @@
 import tkinter
 
+from PIL import ImageTk
+
 import widget
+
 import customtkinter
+
+import PIL
+
+import util
 
 class Button(customtkinter.CTkButton):
     def __init__(self, master, style={}, properties={}, binds={}, **kwargs):
@@ -13,17 +20,17 @@ class Button(customtkinter.CTkButton):
             self._ctk = None
             self._widget = None
 
-class Label(customtkinter.CTkLabel, widget.Widget):
+class Label(customtkinter.CTkLabel):
     def __init__(self, master, style={}, properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkLabel(master, **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
-        except tkinter.TclError:
-            print("Failed to create label. Make sure you have a display.")
+        except tkinter.TclError as e:
+            print(f"Failed to create label. Make sure you have a display. {e}")
             self._ctk = None
             self._widget = None
 
-class Entry(customtkinter.CTkEntry, widget.Widget):
+class Entry(customtkinter.CTkEntry):
     def __init__(self, master, style={}, properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkEntry(master=master, **kwargs)
@@ -33,7 +40,7 @@ class Entry(customtkinter.CTkEntry, widget.Widget):
             self._ctk = None
             self._widget = None
 
-class Frame(customtkinter.CTkFrame, widget.Widget):
+class Frame(customtkinter.CTkFrame):
     def __init__(self, master, style={}, properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkFrame(master=master, **kwargs)
@@ -43,7 +50,7 @@ class Frame(customtkinter.CTkFrame, widget.Widget):
             self._ctk = None
             self._widget = None
 
-class Canvas(customtkinter.CTkCanvas, widget.Widget):
+class Canvas(customtkinter.CTkCanvas):
     def __init__(self, master, style={}, properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkCanvas(master=master, **kwargs)
@@ -53,7 +60,7 @@ class Canvas(customtkinter.CTkCanvas, widget.Widget):
             self._ctk = None
             self._widget = None
 
-class Scrollbar(customtkinter.CTkScrollbar, widget.Widget):
+class Scrollbar(customtkinter.CTkScrollbar):
     def __init__(self, master, style={}, properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkScrollbar(master=master, **kwargs)
@@ -63,7 +70,7 @@ class Scrollbar(customtkinter.CTkScrollbar, widget.Widget):
             self._ctk = None
             self._widget = None
 
-class ScrollView(customtkinter.CTkScrollableFrame, widget.Widget):
+class ScrollView(customtkinter.CTkScrollableFrame):
     def __init__(self, master, style={}, properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkScrollableFrame(master, **kwargs)
@@ -73,13 +80,39 @@ class ScrollView(customtkinter.CTkScrollableFrame, widget.Widget):
             self._ctk = None
             self._widget = None
 
-class Image(Frame, widget.Widget):
-    def __init__(self, master, image, style={}, properties={}, binds={}, **kwargs):
+class Image():
+    def __init__(self, master, image, style={}, properties={}, binds={}, options={}, **kwargs):
         try:
-            self._ctk = Label(master=master, image=image, **kwargs)
-            self._widget = widget.Widget(style, properties, binds, self._ctk)
+            if "file" in options:
+                if options["file"]:
+                    img = PIL.Image.open(image)
+                else:
+                    # use image bytes
+                    img = None
+            else:
+                # use image bytes
+                img = None
 
-        except tkinter.TclError:
-            print("Failed to create image. Make sure you have a display.")
+            if img is not None:
+                # scale the image
+                if "scale" in options:
+                    if util.is_type(options["scale"], util.ImageScale):
+                        img = img.resize(options["scale"]())
+                    else:
+                        raise ValueError("Incorrect argument, scale option must be of type ImageScale")
+
+                img = ImageTk.PhotoImage(img)
+                self._holder = Label(master=master, image=img, properties={"image": img}, **kwargs)
+                self._ctk = self._holder._ctk
+                self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            else:
+                self._holder = None
+                self._ctk = None
+                self._widget = None
+                print("Failed to read image")
+
+        except Exception as e:
+            print(f"Failed to create image: {e}")
             self._ctk = None
             self._widget = None

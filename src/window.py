@@ -51,11 +51,11 @@ class Window:
 
     def add_widget(self, widget: any, options={}):
         if not self.error:
-            widget = widget._ctk
+            widget_ctk = widget._ctk
             if "place" in options:
-                widget.place(relx=options["place"]["relx"], rely=options["place"]["rely"], anchor=options["place"]["anchor"])
+                widget_ctk.place(relx=options["place"]["relx"], rely=options["place"]["rely"], anchor=options["place"]["anchor"])
             else:
-                widget.pack()
+                widget_ctk.pack()
 
             self._items.append(widget)
 

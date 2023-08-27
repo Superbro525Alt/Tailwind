@@ -3,10 +3,11 @@ import matplotlib
 import matplotlib.pyplot as plt
 import util, tkinter, customtkinter
 import widgets
-from PIL import Image, ImageTk
+
+GRAPH_TYPES = ["line"]
 
 class GraphOptions:
-    def __init__(self, xLabel, yLabel, xData, yData, title, size):
+    def __init__(self, xLabel, yLabel, xData, yData, title, size: util.ImageScale, type: str):
         self.xLabel = xLabel
         self.yLabel = yLabel
         self.xData = xData
@@ -14,11 +15,18 @@ class GraphOptions:
         self.title = title
         self.size = size
 
+        if not type.lower() in GRAPH_TYPES:
+            self.type = None
+            raise ValueError(f"Invalid type: {type.lower()}. Must be {', '.join(GRAPH_TYPES)}")
+        else:
+            self.type = type
+
 class Graph:
     def __init__(self, data: GraphOptions, master):
         self.master = master
+        self.data = data
         try:
-            self.graph = plt.figure(data.size)
+            self.graph = plt.figure(data.size.width)
             self.graph.suptitle(data.title)
             self.graph.add_subplot().set_xlabel(data.xLabel)
             self.graph.add_subplot().set_ylabel(data.yLabel)
@@ -28,8 +36,7 @@ class Graph:
 
     def display(self):
         self.graph.savefig("graph.png")
-        img = customtkinter.CTkImage(PIL.Image.open("graph.png"))
-        return widgets.Image(master=self.master, image=img)
+        return widgets.Image(master=self.master, image="graph.png", options={"file": True, "scale": self.data.size})
 
 
 

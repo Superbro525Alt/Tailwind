@@ -1,6 +1,6 @@
 import customtkinter, tkinter
 
-def _is(this, other):
+def is_type(this, other):
     return isinstance(this, other)
 
 def read_file(file, options={}):
@@ -54,3 +54,11 @@ class NorthWestAnchor:
     @staticmethod
     def get_anchor():
         return tkinter.NW
+
+class ImageScale:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def __call__(self, *args, **kwargs):
+        return self.width, self.height
