@@ -73,3 +73,160 @@ Remove garbage collect path <ins>NOT RECOMMENDED</ins>
 
 ### Graphing
 `tailwind.graphing`
+
+#### Constants
+```python
+GRAPH_TYPES = ["line"]
+```
+These are the acceptable types of graphs to be put in the ```GraphOptions.type``` parameter.
+#### Graph Options
+```python
+class GraphOptions:
+    def __init__(self, xLabel, yLabel, xData, yData, title, size: util.ImageScale, type: str):
+```
+Graph options take in:
+- `xLabel` (a label for the x axis)
+- `yLabel` (a label for the y axis)
+- `xData` a list of the data for the x axis
+- `yData` a list of data for the y axis
+- `title` a title for the graph
+- `size` a `util.ImageScale` object
+- `type` a string containing the type of graph. Must be in `GRAPH_TYPES`
+
+It is used for the options of the `Graph` class.
+#### Graph
+```python
+class Graph:
+    def __init__(self, data: GraphOptions, window):
+    def display(self):
+```
+
+#### `def __init__(self, data: GraphOptions, window)`
+The init function takes in `data` in the form of `GraphOptions` and a window. The window is `tailwind.window.Window`. The function returns a `Graph` object that can be used with other functions.
+
+#### `def display(self)`
+The display function creates a graph and returns an `widgets.Image` object that can be directly added to a `tailwind.window.Window` using `window.add_widget(widget)`
+
+## Util
+`tailwind.util`
+
+### Constants
+```python
+NULL = None
+null = NULL
+```
+These are used to create a more diverse usage of null types.
+
+### Type Utilities
+`tailwind.util.Types`
+
+
+#### `def are_list_items_same(cls, this: list, other: list):`
+<ins>`@classmethod`</ins>
+
+Can be called using `tailwind.util.Types.are_list_items_same(this, other)` depending on how you import it. You pass in two lists and the function will return a list telling you if the item in the same index in each list are the same type.
+
+#### `def is_class_same(cls, this: object, other: object):`
+<ins>`@classmethod`</ins>
+
+Can be called using `tailwind.util.Types.is_class_same`. It takes in two objects and outputs wheather each attribute in each object is the same and if it is not in the other object it outputs `None`. The return value is a dictionary containing all the attribute names from each object as keys and if the are the same between objects as the value. 
+
+#### `def is_type(cls, this, other):`
+<ins>`@classmethod`</ins>
+
+Can be called using `tailwind.util.Types.is_type`. Takes in two arguments `this` and `other`and returns weather they are the same object type.
+
+## Widgets
+`tailwind.widgets`
+
+### Button
+`tailwind.widgets.Button`
+
+`def __init__(self, window, style={}, properties={}, binds={}, **kwargs)`
+
+Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. If text is a property it will be set as the text in the button.
+
+Returns a button that can be rendered onto the screen using `window.add_widget(widget)`
+
+### Label
+`tailwind.widgets.Label`
+
+`def __init__(self, window, style={}, properties={}, binds={}, **kwargs):`
+
+Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. If text is a property it will be set as the text in the label.
+
+Returns a label that can be rendered onto the screen using `window.add_widget(widget)`
+
+### Entry
+`tailwind.widgets.Entry`
+
+`def __init__(self, window, style={}, properties={}, binds={}, **kwargs):`
+
+Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. If text is a property it will be set as the text in the entry.
+
+Returns an entry that can be rendered onto the screen using `window.add_widget(widget)`
+
+### Frame
+`tailwind.widgets.Frame`
+
+`def __init__(self, window, style={}, properties={}, binds={}, **kwargs):`
+
+Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. 
+
+Returns a frame that can be rendered onto the screen using `window.add_widget(widget)`
+
+### Canvas
+`tailwind.widgets.Canvas`
+
+`def __init__(self, window, style={}, properties={}, binds={}, **kwargs):`
+
+Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. 
+
+Returns a canvas that can be rendered onto the screen using `window.add_widget(widget)`
+
+### Scrollbar
+`tailwind.widgets.Scrollbar`
+
+`def __init__(self, window, style={}, properties={}, binds={}, **kwargs):`
+
+Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value.
+
+Returns a scrollbar that can be rendered onto the screen using `window.add_widget(widget)`
+
+### Scrollview
+`tailwind.widgets.Scrollview`
+
+`def __init__(self, window, style={}, properties={}, binds={}, **kwargs):`
+
+Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. 
+
+Returns a scrollview that can be rendered onto the screen using `window.add_widget(widget)`
+'
+### Image
+`tailwind.widgets.Image`
+
+`def __init__(self, window, image, style={}, properties={}, binds={}, **kwargs):`
+
+Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. `Image` is the path to the image to be rendered.
+
+Returns an image that can be rendered onto the screen using `window.add_widget(widget)`
+
+# Developer
+
+## Widget
+`tailwind.widget.Widget`
+
+`def __init__(self, style, properties, binds, _ctk):`
+
+Takes in `style`, `properties`, `binds` and a `_ctk`(an object that can actually be rendered onto the screen with styles).
+It has no public methods other then `reload_styles()`, `reload_properties()` and `reload_binds()`. These are all called on creation so they should generally have no reason to be called again.
+
+## Styles
+`tailwind.styles.Styles`
+
+`def parse(cls, style: str, file=False)`
+
+<ins>`@classmethod`</ins>
+
+Parses a css (style) string or file into an object containing classnames, ids and tags each containing the respective properties.
+
