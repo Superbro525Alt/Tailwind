@@ -166,12 +166,13 @@ The current anchors are as follows:
 - `NorthWestAnchor`
 
 ### Image Scale
-
+`tailwind.util.ImageScale(width, height)`
 Takes in a width and a height and returns it when called (`image_scale()`)
 
 ### Other
 
 #### Execute List
+`tailwind.util.exec_list(functions, final=None):`
 
 Takes in a list of functions and a final function to be called (_not required_)
 
