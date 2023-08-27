@@ -18,3 +18,4 @@ if __name__ == "__main__":
     graph2 = graphing.Graph(graphing.GraphOptions("x", "r", [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], "graph1", util.ImageScale(500, 500), "line"), window)
     window.add_widget(graph2.display(), {"place": {"relx": 0, "rely": 0.5, "anchor": util.CenterAnchor().get_anchor()}})
     window.main_loop()
+
