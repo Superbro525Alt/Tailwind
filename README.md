@@ -47,7 +47,7 @@ Use the function to add a widget to the window, a base options file will be as f
   "place": {
     "relx": 0,
     "rely": 0,
-    "anchor": `util.CenterAnchor().get_anchor()`
+    "anchor": util.CenterAnchor().get_anchor()
   }
 }
 ```
