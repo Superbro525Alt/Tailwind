@@ -98,3 +98,8 @@ class ImageScale:
 
     def __call__(self, *args, **kwargs):
         return self.width, self.height
+
+
+def exec_list(functions):
+    for func in functions:
+        func()

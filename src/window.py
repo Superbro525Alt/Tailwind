@@ -25,6 +25,11 @@ class Window:
 
         self.error = False
 
+        self._remove_on_exit = []
+
+        self._on_exit_functions = [self.quit]
+
+
 
 
         try:
@@ -34,6 +39,8 @@ class Window:
             self.error = True
 
         if not self.error:
+            self().protocol("WM_DELETE_WINDOW", util.exec_list(self._on_exit_functions))
+
             self._window.title(self.name)
             self._window.geometry("500x500" if "size" not in options else options["size"])
             self._window.resizable(False if "x-resizable" not in options else options["x-resizable"], False if "y-resizeable" not in options else options["y-resizable"])
@@ -66,3 +73,17 @@ class Window:
         else:
             return None
 
+    def quit(self):
+        [os.remove(path) for path in self._remove_on_exit]
+
+    def add_on_exit_function(self, func):
+        self._on_exit_functions.append(func)
+
+    def remove_on_exit_function(self, func):
+        self._on_exit_functions.remove(func)
+
+    def add_garbage_collect_path(self, path):
+        self._remove_on_exit.append(path)
+
+    def remove_garbage_collect_path(self, path):
+        self._remove_on_exit.remove(path)
