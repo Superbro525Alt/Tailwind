@@ -105,7 +105,7 @@ class Image():
                         raise ValueError("Incorrect argument, scale option must be of type ImageScale")
 
                 img = ImageTk.PhotoImage(img)
-                self._holder = Label(window=window, image=img, properties={"image": img}, **kwargs)
+                self._holder = Label(window=window, image=img, properties={"image": img}, text="", **kwargs)
                 self._ctk = self._holder._ctk
                 self._widget = widget.Widget(style, properties, binds, self._ctk)
 
