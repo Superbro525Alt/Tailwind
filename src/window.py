@@ -39,7 +39,7 @@ class Window:
             self.error = True
 
         if not self.error:
-            self().protocol("WM_DELETE_WINDOW", util.exec_list(self._on_exit_functions))
+            self().protocol("WM_DELETE_WINDOW", lambda: util.exec_list(self._on_exit_functions, self().destroy))
 
             self._window.title(self.name)
             self._window.geometry("500x500" if "size" not in options else options["size"])

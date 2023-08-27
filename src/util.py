@@ -100,6 +100,9 @@ class ImageScale:
         return self.width, self.height
 
 
-def exec_list(functions):
+def exec_list(functions, final=None):
     for func in functions:
         func()
+
+    if final is not None:
+        final()
