@@ -167,6 +167,7 @@ The current anchors are as follows:
 
 ### Image Scale
 `tailwind.util.ImageScale(width, height)`
+
 Takes in a width and a height and returns it when called (`image_scale()`)
 
 ### Other
