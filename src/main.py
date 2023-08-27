@@ -19,3 +19,4 @@ if __name__ == "__main__":
     #window.add_widget(graph2.display(), {"place": {"relx": 0, "rely": 0.5, "anchor": util.CenterAnchor().get_anchor()}})
     #window.main_loop()
 
+
