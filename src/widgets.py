@@ -96,7 +96,7 @@ class Image():
             if img is not None:
                 # scale the image
                 if "scale" in options:
-                    if util.is_type(options["scale"], util.ImageScale):
+                    if util.Types.is_type(options["scale"], util.ImageScale):
                         img = img.resize(options["scale"]())
                     else:
                         raise ValueError("Incorrect argument, scale option must be of type ImageScale")
