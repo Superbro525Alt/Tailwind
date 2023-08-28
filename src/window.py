@@ -25,6 +25,13 @@ class Window:
 
         self.error = False
 
+        self._remove_on_exit = []
+
+        self._on_exit_functions = [self.quit]
+
+        self.options = options
+
+
 
 
         try:
@@ -34,20 +41,25 @@ class Window:
             self.error = True
 
         if not self.error:
+            self().protocol("WM_DELETE_WINDOW", lambda: util.exec_list(self._on_exit_functions, self().destroy))
+
             self._window.title(self.name)
             self._window.geometry("500x500" if "size" not in options else options["size"])
             self._window.resizable(False if "x-resizable" not in options else options["x-resizable"], False if "y-resizeable" not in options else options["y-resizable"])
 
-            customtkinter.set_appearance_mode(self.style["appearance_mode"] if "appearance_mode" in self.style else "system")
-            if "default_color_theme" in self.style: customtkinter.set_default_color_theme(self.style["default_color_theme"])
-            customtkinter.set_widget_scaling(self.style["widget_scaling"] if "widget_scaling" in self.style else 1)
-            customtkinter.set_window_scaling(self.style["window_scaling"] if "window_scaling" in self.style else 1)
+            customtkinter.set_appearance_mode(self.options["appearance_mode"] if "appearance_mode" in self.options else "system")
+            if "default_color_theme" in self.options: customtkinter.set_default_color_theme(self.options["default_color_theme"])
+            customtkinter.set_widget_scaling(self.options["widget_scaling"] if "widget_scaling" in self.options else 1)
+            customtkinter.set_window_scaling(self.options["window_scaling"] if "window_scaling" in self.options else 1)
 
             self._items = []
 
     def main_loop(self):
-        if not self.error:
-            self._window.mainloop()
+        try:
+            if not self.error:
+                self._window.mainloop()
+        except KeyboardInterrupt:
+            self.quit()
 
     def add_widget(self, widget: any, options={}):
         if not self.error:
@@ -66,3 +78,17 @@ class Window:
         else:
             return None
 
+    def quit(self):
+        [os.remove(path) for path in self._remove_on_exit]
+
+    def add_on_exit_function(self, func):
+        self._on_exit_functions.append(func)
+
+    def remove_on_exit_function(self, func):
+        self._on_exit_functions.remove(func)
+
+    def add_garbage_collect_path(self, path):
+        self._remove_on_exit.append(path)
+
+    def remove_garbage_collect_path(self, path):
+        self._remove_on_exit.remove(path)

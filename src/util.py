@@ -1,7 +1,43 @@
+from typing import overload
+
 import customtkinter, tkinter
 
-def is_type(this, other):
-    return isinstance(this, other)
+NULL = None
+null = NULL
+
+class Types:
+    @classmethod
+    def are_list_items_same(cls, this: list, other: list):
+        ret = []
+        if len(this) != len(other):
+            raise ValueError(f"Lists are not the same length: This -> {len(this)} & Other -> {len(other)}")
+        for i in range(len(this)):
+            if cls.is_type(this[i], other[i]):
+                ret.append(True)
+            else:
+                ret.append(False)
+
+        return ret
+
+    @classmethod
+    def is_class_same(cls, this: object, other: object):
+        ret = {}
+        for key in list(this.__dict__.keys()):
+            if hasattr(other, key):
+                if other.__dict__[key] == this.__dict__[key]:
+                    ret[key] = True
+                else:
+                    ret[key] = False
+            else:
+                ret[key] = null
+
+        return ret
+
+
+    @classmethod
+    def is_type(cls, this, other):
+        return isinstance(this, other)
+
 
 def read_file(file, options={}):
     # read a file and return its contents
@@ -62,3 +98,11 @@ class ImageScale:
 
     def __call__(self, *args, **kwargs):
         return self.width, self.height
+
+
+def exec_list(functions, final=None):
+    for func in functions:
+        func()
+
+    if final is not None:
+        final()

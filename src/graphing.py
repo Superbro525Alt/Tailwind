@@ -1,7 +1,9 @@
+import os
+
 import PIL.Image
 import matplotlib
 import matplotlib.pyplot as plt
-import util, tkinter, customtkinter
+import util, datetime
 import widgets
 
 GRAPH_TYPES = ["line"]
@@ -19,24 +21,30 @@ class GraphOptions:
             self.type = None
             raise ValueError(f"Invalid type: {type.lower()}. Must be {', '.join(GRAPH_TYPES)}")
         else:
-            self.type = type
+            self.type = type.lower()
 
 class Graph:
-    def __init__(self, data: GraphOptions, master):
-        self.master = master
+    def __init__(self, data: GraphOptions, window):
+        self.master = window
         self.data = data
+        self.createdAt = datetime.datetime.now().__str__().strip().replace(":", "").replace("-", "").replace(".", "").replace(" ", "")
+
         try:
             self.graph = plt.figure(data.size.width)
-            self.graph.suptitle(data.title)
-            self.graph.add_subplot().set_xlabel(data.xLabel)
-            self.graph.add_subplot().set_ylabel(data.yLabel)
-            self.graph.add_subplot().plot(data.xData, data.yData)
+            if self.data.type == "line":
+                self.graph.suptitle(data.title)
+                self.graph.add_subplot().set_xlabel(data.xLabel)
+                self.graph.add_subplot().set_ylabel(data.yLabel)
+                self.graph.add_subplot().plot(data.xData, data.yData)
+
         except Exception as e:
             print(f"Failed to create graph: {e}")
 
     def display(self):
-        self.graph.savefig("graph.png")
-        return widgets.Image(master=self.master, image="graph.png", options={"file": True, "scale": self.data.size})
+        self.graph.savefig(f"{self.createdAt}.png")
+        return widgets.Image(window=self.master, image=f"{self.createdAt}.png", options={"file": True, "scale": self.data.size})
+
+
 
 
 
