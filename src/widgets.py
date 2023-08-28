@@ -119,6 +119,6 @@ class Image():
 
         except Exception as e:
             print(f"Failed to create image: {e}")
-            raise e
+            print("Make sure you have a display")
             self._ctk = None
             self._widget = None
