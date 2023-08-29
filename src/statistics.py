@@ -1,4 +1,5 @@
 import math
+import util
 
 def mean(data):
     return sum(data) / len(data)
@@ -50,3 +51,11 @@ def least_squares_regression(data1, data2):
 
 def least_squares_regression_line(data1, data2):
     return lambda x: least_squares_regression(data1, data2) * x + mean(data2) - least_squares_regression(data1, data2) * mean(data1)
+
+tests = [lambda: mean([1, 2, 3, 4, 5]), lambda: median([1, 2, 3, 4, 5]), lambda: mode([1, 2, 3, 4, 5]), lambda: variance([1, 2, 3, 4, 5]), lambda: standard_deviation([1, 2, 3, 4, 5]),
+         lambda: z_score([1, 2, 3, 4, 5], 3), lambda: z_scores([1, 2, 3, 4, 5]), lambda: percentile([1, 2, 3, 4, 5], 0.5), lambda: quartiles([1, 2, 3, 4, 5]), lambda: interquartile_range([1, 2, 3, 4, 5]),
+         lambda: outliers([1, 2, 3, 4, 5]), lambda: remove_outliers([1, 2, 3, 4, 5]), lambda: covariance([1, 2, 3, 4, 5], [1, 2, 3, 4, 5]), lambda: correlation([1, 2, 3, 4, 5], [1, 2, 3, 4, 5]),
+         lambda: least_squares_regression([1, 2, 3, 4, 5], [1, 2, 3, 4, 5]), lambda: least_squares_regression_line([1, 2, 3, 4, 5], [1, 2, 3, 4, 5])]
+
+if util.is_main_thread(__name__):
+    util.run_tests(tests)

@@ -166,3 +166,30 @@ class PlaceData:
         self.relx = relx
         self.rely = rely
         self.anchor = anchor
+
+def is_main_thread(name):
+    return name == "__main__"
+
+def run_tests(tests):
+    print("Testing...")
+    passed = 0
+    for i in range(len(tests)):
+        try:
+            print(f"Tests: {i+1}. Passed: {passed}. Running Test {i + 1}...")
+            tests[i]()
+            passed += 1
+        except Exception as e:
+            print(f"Test {i + 1} failed: {e}")
+
+    print("===============================")
+    print(f"Tests: {i+1}. Passed: {passed}.")
+    print("===============================")
+
+
+    if i + 1 == passed:
+        print("All tests passed!")
+    else:
+        if i + 1 - passed == 1:
+            print(f"{i + 1 - passed} test failed.")
+        else:
+            print(f"{i + 1 - passed} tests failed.")
