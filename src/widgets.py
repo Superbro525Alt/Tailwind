@@ -12,8 +12,8 @@ import PIL
 import util
 
 
-class Button(customtkinter.CTkButton):
-    def __init__(self, window, style={}, properties={}, binds={}, **kwargs):
+class Button():
+    def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkButton(master=window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
@@ -22,8 +22,8 @@ class Button(customtkinter.CTkButton):
             self._ctk = None
             self._widget = None
 
-class Label(customtkinter.CTkLabel):
-    def __init__(self, window, style={}, properties={}, binds={}, **kwargs):
+class Label():
+    def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkLabel(window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
@@ -32,8 +32,8 @@ class Label(customtkinter.CTkLabel):
             self._ctk = None
             self._widget = None
 
-class Entry(customtkinter.CTkEntry):
-    def __init__(self, window, style={}, properties={}, binds={}, **kwargs):
+class Entry():
+    def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkEntry(master=window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
@@ -42,8 +42,8 @@ class Entry(customtkinter.CTkEntry):
             self._ctk = None
             self._widget = None
 
-class Frame(customtkinter.CTkFrame):
-    def __init__(self, window, style={}, properties={}, binds={}, **kwargs):
+class Frame():
+    def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkFrame(master=window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
@@ -52,8 +52,8 @@ class Frame(customtkinter.CTkFrame):
             self._ctk = None
             self._widget = None
 
-class Canvas(customtkinter.CTkCanvas):
-    def __init__(self, window, style={}, properties={}, binds={}, **kwargs):
+class Canvas():
+    def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkCanvas(master=window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
@@ -62,8 +62,8 @@ class Canvas(customtkinter.CTkCanvas):
             self._ctk = None
             self._widget = None
 
-class Scrollbar(customtkinter.CTkScrollbar):
-    def __init__(self, window, style={}, properties={}, binds={}, **kwargs):
+class Scrollbar():
+    def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkScrollbar(master=window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
@@ -72,8 +72,8 @@ class Scrollbar(customtkinter.CTkScrollbar):
             self._ctk = None
             self._widget = None
 
-class ScrollView(customtkinter.CTkScrollableFrame):
-    def __init__(self, window, style={}, properties={}, binds={}, **kwargs):
+class ScrollView():
+    def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkScrollableFrame(window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
@@ -83,7 +83,7 @@ class ScrollView(customtkinter.CTkScrollableFrame):
             self._widget = None
 
 class Image():
-    def __init__(self, window, image, style={}, properties={}, binds={}, options={}, **kwargs):
+    def __init__(self, window, image, style: util.Style = util.Style.empty(), properties={}, binds={}, options={}, **kwargs):
         try:
             if "file" in options:
                 if options["file"]:
@@ -99,7 +99,7 @@ class Image():
             if img is not None:
                 # scale the image
                 if "scale" in options:
-                    if util.Types.is_type(options["scale"], util.ImageScale):
+                    if util.Types.is_instance(options["scale"], util.ImageScale):
                         img = img.resize(options["scale"]())
                     else:
                         raise ValueError("Incorrect argument, scale option must be of type ImageScale")
