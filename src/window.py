@@ -11,14 +11,14 @@ import util
 import os
 
 class Window:
-    def __init__(self, style, name, options={}):
-        if "file" in options:
+    def __init__(self, style, name, options: util.WindowProperties= util.WindowProperties.empty()):
+        if options.css_file:
             self.style = styles.Styles.parse(style, True)
         else:
             self.style = styles.Styles.parse(style)
 
         if self.style == None:
-            self.style = {"classes": {}, "ids": {}, "tags": {}}
+            self.style = util.Style.empty()
 
 
         self.name = name
@@ -44,15 +44,18 @@ class Window:
             self().protocol("WM_DELETE_WINDOW", lambda: util.exec_list(self._on_exit_functions, self().destroy))
 
             self._window.title(self.name)
-            self._window.geometry("500x500" if "size" not in options else options["size"])
-            self._window.resizable(False if "x-resizable" not in options else options["x-resizable"], False if "y-resizeable" not in options else options["y-resizable"])
+            self._window.geometry("500x500" if options.size is None else options.size)
+            self._window.resizable(False if options.resizable.x is None else options.resizable.x, False if options.resizable.y is None else options.resizable.y)
 
-            customtkinter.set_appearance_mode(self.options["appearance_mode"] if "appearance_mode" in self.options else "system")
-            if "default_color_theme" in self.options: customtkinter.set_default_color_theme(self.options["default_color_theme"])
-            customtkinter.set_widget_scaling(self.options["widget_scaling"] if "widget_scaling" in self.options else 1)
-            customtkinter.set_window_scaling(self.options["window_scaling"] if "window_scaling" in self.options else 1)
+            customtkinter.set_appearance_mode(self.options.appearance_mode if self.options.appearance_mode is not None else "system")
+            if self.options.default_color_theme is not None: customtkinter.set_default_color_theme(self.options.default_color_theme)
+            customtkinter.set_widget_scaling(self.options.widget_scaling if self.options.widget_scaling is not None else 1)
+            customtkinter.set_window_scaling(self.options.window_scaling if self.options.window_scaling is not None else 1)
 
             self._items = []
+
+    def get_style(self):
+        return self.style
 
     def main_loop(self):
         try:
@@ -63,6 +66,9 @@ class Window:
 
     def add_widget(self, widget: any, options={}):
         if not self.error:
+            if widget._widget._style == util.Style.empty():
+                widget._widget._style = self.style
+                widget._widget.reload_styles()
             widget_ctk = widget._ctk
             if "place" in options:
                 widget_ctk.place(relx=options["place"]["relx"], rely=options["place"]["rely"], anchor=options["place"]["anchor"])

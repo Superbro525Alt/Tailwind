@@ -36,7 +36,29 @@ class Types:
 
     @classmethod
     def is_type(cls, this, other):
+        return type(this) == type(other)
+
+    @classmethod
+    def is_instance(cls, this, other):
         return isinstance(this, other)
+
+    @classmethod
+    def widget_type(cls, this):
+        if this == customtkinter.CTkButton:
+            return "button"
+        elif this == customtkinter.CTkLabel:
+            return "label"
+        elif this == customtkinter.CTkEntry:
+            return "entry"
+        elif this == customtkinter.CTkFrame:
+            return "frame"
+        elif this == customtkinter.CTkCanvas:
+            return "canvas"
+        elif this == customtkinter.CTk:
+            return "window"
+        else:
+            return "unknown"
+
 
 
 def read_file(file, options={}):
@@ -106,3 +128,35 @@ def exec_list(functions, final=None):
 
     if final is not None:
         final()
+
+class Style:
+    def __init__(self, classes, tags, ids):
+        self.classes = classes
+        self.tags = tags
+        self.ids = ids
+
+    @classmethod
+    def empty(cls):
+        return cls({}, {}, {})
+
+class Resizable:
+    def __init__(self, x=None, y=None):
+        self.x = x
+        self.y = y
+
+    @classmethod
+    def empty(cls):
+        return cls()
+class WindowProperties:
+    def __init__(self, size=None, resizable=Resizable.empty(), appearance_mode=None, default_color_theme=None, widget_scaling=None, window_scaling=None, css_file=None):
+        self.size = size
+        self.resizable = resizable
+        self.appearance_mode = appearance_mode
+        self.default_color_theme = default_color_theme
+        self.widget_scaling = widget_scaling
+        self.window_scaling = window_scaling
+        self.css_file = css_file
+
+    @classmethod
+    def empty(cls):
+        return cls()

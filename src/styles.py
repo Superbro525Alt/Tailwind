@@ -35,7 +35,7 @@ class Styles:
                     # if the line is a tag, add it to the tags dictionary
                     _style = cls.add_tag(line, style, _style)
 
-            return _style
+            return util.Style(_style["classes"], _style["tags"], _style["ids"])
 
     @classmethod
     def remove_comments(cls, style):
