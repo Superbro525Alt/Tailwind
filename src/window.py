@@ -64,14 +64,19 @@ class Window:
         except KeyboardInterrupt:
             self.quit()
 
-    def add_widget(self, widget: any, options={}):
+    def add_widget(self, widget: any, placeData: util.PlaceData = None):
         if not self.error:
             if widget._widget._style == util.Style.empty():
                 widget._widget._style = self.style
                 widget._widget.reload_styles()
             widget_ctk = widget._ctk
-            if "place" in options:
-                widget_ctk.place(relx=options["place"]["relx"], rely=options["place"]["rely"], anchor=options["place"]["anchor"])
+
+
+            if placeData is not None:
+                if util.Types.is_instance(placeData, util.PlaceData):
+                    widget_ctk.place(relx=placeData.relx, rely=placeData.rely, anchor=placeData.anchor)
+                else:
+                    raise ValueError("Incorrect argument, placeData must be of type util.PlaceData")
             else:
                 widget_ctk.pack()
 
