@@ -160,3 +160,9 @@ class WindowProperties:
     @classmethod
     def empty(cls):
         return cls()
+
+class PlaceData:
+    def __init__(self, relx: float, rely: float, anchor: EmptyAnchor):
+        self.relx = relx
+        self.rely = rely
+        self.anchor = anchor
