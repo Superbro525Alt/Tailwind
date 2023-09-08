@@ -2,6 +2,7 @@ import math
 import util
 
 
+
 def mean(data):
     return sum(data) / len(data)
 
@@ -15,6 +16,11 @@ def median(data):
 
 def mode(data):
     return max(data, key=data.count)
+
+
+def range(data):
+    # calculate range of a list
+    return max(data) - min(data)
 
 
 def variance(data):
@@ -72,15 +78,20 @@ def least_squares_regression_line(data1, data2):
         data1)
 
 
-tests = [lambda: mean([1, 2, 3, 4, 5]), lambda: median([1, 2, 3, 4, 5]), lambda: mode([1, 2, 3, 4, 5]),
-         lambda: variance([1, 2, 3, 4, 5]), lambda: standard_deviation([1, 2, 3, 4, 5]),
-         lambda: z_score([1, 2, 3, 4, 5], 3), lambda: z_scores([1, 2, 3, 4, 5]),
-         lambda: percentile([1, 2, 3, 4, 5], 0.5), lambda: quartiles([1, 2, 3, 4, 5]),
-         lambda: interquartile_range([1, 2, 3, 4, 5]),
-         lambda: outliers([1, 2, 3, 4, 5]), lambda: remove_outliers([1, 2, 3, 4, 5]),
-         lambda: covariance([1, 2, 3, 4, 5], [1, 2, 3, 4, 5]), lambda: correlation([1, 2, 3, 4, 5], [1, 2, 3, 4, 5]),
-         lambda: least_squares_regression([1, 2, 3, 4, 5], [1, 2, 3, 4, 5]),
-         lambda: least_squares_regression_line([1, 2, 3, 4, 5], [1, 2, 3, 4, 5])]
+#test_dict = {41: 2, 42: 8, 43: 8, 44: 8, 45: 12, 46: 4}
+#test_data = util.parse_freq_to_list(test_dict)
+
+test_data = [11.4,11.1,12.1,10.5,11.7,10.7,12.3,10.6,11.2,11.6]
+tests = [lambda: mean(test_data), lambda: median(test_data), lambda: mode(test_data),
+         lambda: variance(test_data), lambda: standard_deviation(test_data),
+         lambda: range(test_data), lambda: z_score(test_data, test_data[0]),
+         lambda: z_scores(test_data),
+         lambda: percentile(test_data, test_data[1]), lambda: quartiles(test_data),
+         lambda: interquartile_range(test_data),
+         lambda: outliers(test_data), lambda: remove_outliers(test_data),
+         lambda: covariance(test_data, test_data), lambda: correlation(test_data, test_data),
+         lambda: least_squares_regression(test_data, test_data),
+         lambda: least_squares_regression_line(test_data, test_data)]
 
 if util.is_main_thread(__name__):
     util.run_tests(tests)

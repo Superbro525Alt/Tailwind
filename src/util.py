@@ -1,6 +1,15 @@
 from typing import overload
 
 import customtkinter, tkinter
+from inspect import getsource
+
+string = str
+
+def get_lambda_name(l):
+    try:
+        return getsource(l).split('=')[0].strip()
+    except:
+        return "Error Getting Name"
 
 NULL = None
 null = NULL
@@ -173,10 +182,14 @@ def is_main_thread(name):
 def run_tests(tests):
     print("Testing...")
     passed = 0
-    for i in range(len(tests)):
+
+
+    for i in range(0, len(tests)):
+
         try:
-            print(f"Tests: {i+1}. Passed: {passed}. Running Test {i + 1}...")
-            tests[i]()
+            print(f"Tests: {i}. Passed: {passed}. Running Test {i + 1}...")
+            result = tests[i]()
+            print(f"Result: {result}")
             passed += 1
         except Exception as e:
             print(f"Test {i + 1} failed: {e}")
@@ -193,3 +206,28 @@ def run_tests(tests):
             print(f"{i + 1 - passed} test failed.")
         else:
             print(f"{i + 1 - passed} tests failed.")
+
+def parse_freq_to_list(freq):
+    ret = []
+    for key in list(freq.keys()):
+        for i in range(freq[key]):
+            ret.append(key)
+
+    return ret
+
+class VenDiagramData:
+    def __init__(self, a, b, total):
+        # a - 10
+        # b - 10
+        # total - 25
+
+        self.a = a
+        self.b = b
+        self.total = total
+
+        self.both = self.total - (self.b + self.a)
+
+class resolution:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
