@@ -6,45 +6,152 @@ import matplotlib.pyplot as plt
 import util, datetime
 import widgets
 
-GRAPH_TYPES = ["line"]
+GRAPH_TYPES = ["line", "bar", "scatter"]
 
 class GraphOptions:
-    def __init__(self, xLabel, yLabel, xData, yData, title, size: util.ImageScale, type: str):
+    def __init__(self, xLabel, yLabel, title, size: util.ImageScale):
         self.xLabel = xLabel
         self.yLabel = yLabel
-        self.xData = xData
-        self.yData = yData
         self.title = title
         self.size = size
 
-        if not type.lower() in GRAPH_TYPES:
-            self.type = None
-            raise ValueError(f"Invalid type: {type.lower()}. Must be {', '.join(GRAPH_TYPES)}")
-        else:
-            self.type = type.lower()
-
 class Graph:
-    def __init__(self, data: GraphOptions, window):
+    def display(self):
+        self.graph.savefig(f"{self.createdAt}.png")
+        return widgets.Image(window=self.master, image=f"{self.createdAt}.png", options={"file": True, "scale": self.options.size})
+
+class LineGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
         self.master = window
-        self.data = data
+        self.options = options
+        self.xData = xData
+        self.yData = yData
         self.createdAt = datetime.datetime.now().__str__().strip().replace(":", "").replace("-", "").replace(".", "").replace(" ", "")
 
         try:
-            self.graph = plt.figure(data.size.width)
-            if self.data.type == "line":
-                self.graph.suptitle(data.title)
-                self.graph.add_subplot().set_xlabel(data.xLabel)
-                self.graph.add_subplot().set_ylabel(data.yLabel)
-                self.graph.add_subplot().plot(data.xData, data.yData)
+            self.graph = plt.figure(options.size.width)
+            # make a line graph
+            plt.plot(self.xData, self.yData)
+            plt.xlabel(self.options.xLabel)
+            plt.ylabel(self.options.yLabel)
+            plt.title(self.options.title)
+
+
 
         except Exception as e:
             print(f"Failed to create graph: {e}")
 
-    def display(self):
-        self.graph.savefig(f"{self.createdAt}.png")
-        return widgets.Image(window=self.master, image=f"{self.createdAt}.png", options={"file": True, "scale": self.data.size})
 
+class BarGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
+        self.master = window
+        self.options = options
+        self.xData = xData
+        self.yData = yData
+        self.createdAt = datetime.datetime.now().__str__().strip().replace(":", "").replace("-", "").replace(".", "").replace(" ", "")
 
+        try:
+            self.graph = plt.figure(options.size.width)
+            # make a line graph
+            plt.bar(self.xData, self.yData)
+            plt.xlabel(self.options.xLabel)
+            plt.ylabel(self.options.yLabel)
+            plt.title(self.options.title)
 
+        except Exception as e:
+            print(f"Failed to create graph: {e}")
 
+class ScatterGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
+        self.master = window
+        self.options = options
+        self.xData = xData
+        self.yData = yData
+        self.createdAt = datetime.datetime.now().__str__().strip().replace(":", "").replace("-", "").replace(".", "").replace(" ", "")
 
+        try:
+            self.graph = plt.figure(options.size.width)
+            # make a line graph
+            plt.scatter(self.xData, self.yData)
+            plt.xlabel(self.options.xLabel)
+            plt.ylabel(self.options.yLabel)
+            plt.title(self.options.title)
+
+        except Exception as e:
+            print(f"Failed to create graph: {e}")
+
+class PieGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
+        self.master = window
+        self.options = options
+        self.xData = xData
+        self.yData = yData
+        self.createdAt = datetime.datetime.now().__str__().strip().replace(":", "").replace("-", "").replace(".", "").replace(" ", "")
+
+        try:
+            self.graph = plt.figure(options.size.width)
+            # make a line graph
+            plt.pie(self.xData, labels=self.yData)
+            plt.xlabel(self.options.xLabel)
+            plt.ylabel(self.options.yLabel)
+            plt.title(self.options.title)
+
+        except Exception as e:
+            print(f"Failed to create graph: {e}")
+
+class HistogramGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
+        self.master = window
+        self.options = options
+        self.xData = xData
+        self.yData = yData
+        self.createdAt = datetime.datetime.now().__str__().strip().replace(":", "").replace("-", "").replace(".", "").replace(" ", "")
+
+        try:
+            self.graph = plt.figure(options.size.width)
+            # make a line graph
+            plt.hist(self.xData, yData)
+            plt.xlabel(self.options.xLabel)
+            plt.ylabel(self.options.yLabel)
+            plt.title(self.options.title)
+
+        except Exception as e:
+            print(f"Failed to create graph: {e}")
+
+class BoxPlotGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
+        self.master = window
+        self.options = options
+        self.xData = xData
+        self.yData = yData
+        self.createdAt = datetime.datetime.now().__str__().strip().replace(":", "").replace("-", "").replace(".", "").replace(" ", "")
+
+        try:
+            self.graph = plt.figure(options.size.width)
+            # make a line graph
+            plt.boxplot(self.xData, yData)
+            plt.xlabel(self.options.xLabel)
+            plt.ylabel(self.options.yLabel)
+            plt.title(self.options.title)
+
+        except Exception as e:
+            print(f"Failed to create graph: {e}")
+
+class AreaGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
+        self.master = window
+        self.options = options
+        self.xData = xData
+        self.yData = yData
+        self.createdAt = datetime.datetime.now().__str__().strip().replace(":", "").replace("-", "").replace(".", "").replace(" ", "")
+
+        try:
+            self.graph = plt.figure(options.size.width)
+            # make a line graph
+            plt.stackplot(self.xData, yData)
+            plt.xlabel(self.options.xLabel)
+            plt.ylabel(self.options.yLabel)
+            plt.title(self.options.title)
+
+        except Exception as e:
+            print(f"Failed to create graph: {e}")

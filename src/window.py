@@ -10,8 +10,10 @@ import util
 
 import os
 
+import graphics_lib.graphics as graphics
+
 class Window:
-    def __init__(self, style, name, options: util.WindowProperties= util.WindowProperties.empty()):
+    def __init__(self, style, name, options: util.WindowProperties= util.WindowProperties.empty(), embed: bool = False):
         if options.css_file:
             self.style = styles.Styles.parse(style, True)
         else:
@@ -31,11 +33,19 @@ class Window:
 
         self.options = options
 
+        self.destroyed = False
 
 
 
         try:
             self._window = customtkinter.CTk()
+
+            if embed:
+                self._embeded = graphics.PygameEmbeded(self,
+                                                 self.options.size if self.options.size is not None else util.resolution(
+                                                     500, 500), "white")
+            else:
+                self._embeded = None
         except tkinter.TclError:
             print("Failed to create window. Make sure you have a display.")
             self.error = True
@@ -60,7 +70,10 @@ class Window:
     def main_loop(self):
         try:
             if not self.error:
-                self._window.mainloop()
+                if self._embeded is not None:
+                    self._embeded.run()
+                else:
+                    self._window.mainloop()
         except KeyboardInterrupt:
             self.quit()
 
@@ -91,6 +104,8 @@ class Window:
 
     def quit(self):
         [os.remove(path) for path in self._remove_on_exit]
+
+        self.destroyed = True
 
     def add_on_exit_function(self, func):
         self._on_exit_functions.append(func)
