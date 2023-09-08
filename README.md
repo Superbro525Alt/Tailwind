@@ -169,7 +169,93 @@ class AreaGraph(Graph):
 
 Used to create area graphs. `display()` returns a widget to render on the screen
 
+## Statistics
+`tailwind.statistics_lib.statistics`
 
+### Mean
+`tailwind.statistics_lib.statistics.mean(data)`
+
+Returns the mean of the data
+
+### Median
+`tailwind.statistics_lib.statistics.median(data)`
+
+Returns the median of the data
+
+### Mode
+`tailwind.statistics_lib.statistics.mode(data)`
+
+Returns the mode of the data
+
+### Range
+`tailwind.statistics_lib.statistics.range(data)`
+
+Returns the range of the data
+
+### Standard Deviation
+`tailwind.statistics_lib.statistics.standard_deviation(data)`
+
+Returns the standard deviation of the data
+
+### Variance
+`tailwind.statistics_lib.statistics.variance(data)`
+
+Returns the variance of the data
+
+### Quartiles
+`tailwind.statistics_lib.statistics.quartiles(data)`
+
+Returns the quartiles of the data
+
+### Interquartile Range
+`tailwind.statistics_lib.statistics.interquartile_range(data)`
+
+Returns the interquartile range of the data
+
+### Z-Score
+`tailwind.statistics_lib.statistics.z_score(data)`
+
+Returns the z-score of the data
+
+### Z-Scores
+`tailwind.statistics_lib.statistics.z_scores(data)`
+
+Returns the z-scores of the data
+
+### Percentile
+`tailwind.statistics_lib.statistics.percentile(data, percentile)`
+
+Returns the percentile of the data
+
+### Outliers
+`tailwind.statistics_lib.statistics.outliers(data)`
+
+Returns the outliers of the data
+
+### Remove Outliers
+`tailwind.statistics_lib.statistics.remove_outliers(data)`
+
+Returns the data with the outliers removed
+
+### Covariance
+`tailwind.statistics_lib.statistics.covariance(data1, data2)`
+
+Returns the covariance of the data
+
+### Correlation
+`tailwind.statistics_lib.statistics.correlation(data1, data2)`
+
+Returns the correlation of the data
+
+### Least Squares Regression
+`tailwind.statistics_lib.statistics.least_squares_regression(data1, data2)`
+
+Returns the least squares regression of the data
+
+### Least Squares Regression Line
+`tailwind.statistics_lib.statistics.least_squares_regression_line(data1, data2)`
+
+Returns the least squares regression line of the data
 
 ## Util
 `tailwind.util`
