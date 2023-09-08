@@ -76,38 +76,100 @@ Remove garbage collect path <ins>NOT RECOMMENDED</ins>
 ### Graphing
 `tailwind.graphing`
 
-#### Constants
-```python
-GRAPH_TYPES = ["line"]
-```
 These are the acceptable types of graphs to be put in the ```GraphOptions.type``` parameter.
 #### Graph Options
 ```python
 class GraphOptions:
-    def __init__(self, xLabel, yLabel, xData, yData, title, size: util.ImageScale, type: str):
+    def __init__(self, xLabel, yLabel, title, size: util.ImageScale, type: str):
 ```
 Graph options take in:
 - `xLabel` (a label for the x axis)
 - `yLabel` (a label for the y axis)
-- `xData` a list of the data for the x axis
-- `yData` a list of data for the y axis
 - `title` a title for the graph
 - `size` a `util.ImageScale` object
 - `type` a string containing the type of graph. Must be in `GRAPH_TYPES`
 
-It is used for the options of the `Graph` class.
-#### Graph
+##### `def display(self)`
+The display function creates a graph and returns an `widgets.Image` object that can be directly added to a `tailwind.window.Window` using `window.add_widget(widget)`
+
+#### Line Graph
+`tailwind.graphing.LineGraph`
+
 ```python
-class Graph:
-    def __init__(self, data: GraphOptions, window):
+class LineGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
     def display(self):
 ```
 
-#### `def __init__(self, data: GraphOptions, window)`
-The init function takes in `data` in the form of `GraphOptions` and a window. The window is `tailwind.window.Window`. The function returns a `Graph` object that can be used with other functions.
+Used to create line graphs. `display()` returns a widget to render on the screen
 
-#### `def display(self)`
-The display function creates a graph and returns an `widgets.Image` object that can be directly added to a `tailwind.window.Window` using `window.add_widget(widget)`
+#### Bar Graph
+`tailwind.graphing.BarGraph`
+
+```python
+class BarGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
+    def display(self):
+```
+
+Used to create bar graphs. `display()` returns a widget to render on the screen
+
+#### Pie Graph
+`tailwind.graphing.PieGraph`
+
+```python
+class PieGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
+    def display(self):
+```
+
+Used to create pie graphs. `display()` returns a widget to render on the screen
+
+#### Scatter Graph
+`tailwind.graphing.ScatterGraph`
+
+```python
+class ScatterGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
+    def display(self):
+```
+
+Used to create scatter graphs. `display()` returns a widget to render on the screen
+
+#### Histogram Graph
+`tailwind.graphing.HistogramGraph`
+
+```python
+class HistogramGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
+    def display(self):
+```
+
+Used to create histogram graphs. `display()` returns a widget to render on the screen
+
+#### Box Plot Graph
+`tailwind.graphing.BoxPlotGraph`
+
+```python
+class BoxPlotGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
+    def display(self):
+```
+
+Used to create box plot graphs. `display()` returns a widget to render on the screen
+
+#### Area Graph
+`tailwind.graphing.AreaGraph`
+
+```python
+class AreaGraph(Graph):
+    def __init__(self, xData, yData, options: GraphOptions, window):
+    def display(self):
+```
+
+Used to create area graphs. `display()` returns a widget to render on the screen
+
+
 
 ## Util
 `tailwind.util`
@@ -276,3 +338,13 @@ It has no public methods other then `reload_styles()`, `reload_properties()` and
 
 Parses a css (style) string or file into an object containing classnames, ids and tags each containing the respective properties.
 
+## Graphing
+
+### Graph Class
+```python
+class Graph:
+    def __init__(self):
+    def display(self):
+```
+
+Create a figure under the property of `self.graph` and inherit from this class for creating new graphs
