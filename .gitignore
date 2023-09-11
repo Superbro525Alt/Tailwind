@@ -1,6 +1,6 @@
 /.idea
-/src/__pycache__
-/src/.pytest_cache
+/tailwind/__pycache__
+/tailwind/.pytest_cache
 
 *.png
 *.jpg
