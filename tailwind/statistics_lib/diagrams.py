@@ -1,5 +1,5 @@
-import statistics
-import bases
+import tailwind.statistics_lib.statistics as statistics
+import tailwind.bases as bases
 
 class VenDiagram(bases.Diagram):
     def __init__(self, data):

@@ -48,7 +48,7 @@ class Window:
             self._window = customtkinter.CTk()
 
             if embed:
-                import graphics_lib.graphics as graphics
+                import tailwind.graphics_lib.graphics as graphics
 
                 self._embeded = graphics.PygameEmbeded(self,
                                                  self.options.size if self.options.size is not None else util.resolution(

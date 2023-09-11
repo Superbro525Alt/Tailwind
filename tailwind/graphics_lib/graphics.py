@@ -1,6 +1,6 @@
 import platform
 
-import util
+import tailwind.util as util
 import pygame
 
 import sys
