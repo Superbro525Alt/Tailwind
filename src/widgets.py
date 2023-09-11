@@ -13,74 +13,181 @@ import util
 
 
 class Button():
-    def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
+    def __init__(self, window, command, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
-            self._ctk = customtkinter.CTkButton(master=window(), **kwargs)
+            self._ctk = customtkinter.CTkButton(master=window(), command=command, **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            self.window = window
         except tkinter.TclError:
             print("Failed to create button. Make sure you have a display.")
             self._ctk = None
             self._widget = None
+
+    def hide(self):
+        if self._ctk is not None:
+            self._ctk.place_forget()
+
+    def show(self):
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
+
+class Dropdown:
+    def __init__(self, window, options, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
+        try:
+
+            self._ctk = customtkinter.CTkComboBox(window(), values=options, **kwargs)
+            self._ctk.configure(state="readonly")
+            self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            self.window = window
+
+        except tkinter.TclError as e:
+            print(f"Failed to create dropdown. Make sure you have a display. {e}")
+            self._ctk = None
+            self._widget = None
+
+    def get_value(self):
+        return self._ctk.get()
+
+    def hide(self):
+        if self._ctk is not None:
+            self._ctk.place_forget()
+
+    def show(self):
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 class Label():
     def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkLabel(window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            self.window = window
+
         except tkinter.TclError as e:
             print(f"Failed to create label. Make sure you have a display. {e}")
             self._ctk = None
             self._widget = None
 
+    def hide(self):
+        if self._ctk is not None:
+            self._ctk.place_forget()
+
+    def show(self):
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
+
 class Entry():
-    def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
+    def __init__(self, window, text=None, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkEntry(master=window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            if text is not None:
+                self._ctk.configure(placeholder_text=text)
+
+            self.window = window
+
+
         except tkinter.TclError:
             print("Failed to create entry. Make sure you have a display.")
             self._ctk = None
             self._widget = None
+
+    def hide(self):
+        if self._ctk is not None:
+            self._ctk.place_forget()
+
+    def show(self):
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 class Frame():
     def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkFrame(master=window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            self.window = window
+
         except tkinter.TclError:
             print("Failed to create frame. Make sure you have a display.")
             self._ctk = None
             self._widget = None
+
+    def hide(self):
+        if self._ctk is not None:
+            self._ctk.place_forget()
+
+    def show(self):
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
+
 
 class Canvas():
     def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkCanvas(master=window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            self.window = window
+
         except tkinter.TclError:
             print("Failed to create canvas. Make sure you have a display.")
             self._ctk = None
             self._widget = None
+
+    def hide(self):
+        if self._ctk is not None:
+            self._ctk.place_forget()
+
+    def show(self):
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 class Scrollbar():
     def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkScrollbar(master=window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            self.window = window
+
         except tkinter.TclError:
             print("Failed to create scrollbar. Make sure you have a display.")
             self._ctk = None
             self._widget = None
+
+    def hide(self):
+        if self._ctk is not None:
+            self._ctk.place_forget()
+
+    def show(self):
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 class ScrollView():
     def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkScrollableFrame(window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            self.window = window
+
         except tkinter.TclError:
             print("Failed to create scrollview. Make sure you have a display.")
             self._ctk = None
             self._widget = None
+
+    def hide(self):
+        if self._ctk is not None:
+            self._ctk.place_forget()
+
+    def show(self):
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 class Image():
     def __init__(self, window, image, style: util.Style = util.Style.empty(), properties={}, binds={}, options={}, **kwargs):
@@ -111,6 +218,8 @@ class Image():
 
                 window.add_garbage_collect_path(image)
 
+                self.window = window
+
             else:
                 self._holder = None
                 self._ctk = None
@@ -122,3 +231,35 @@ class Image():
             print("Make sure you have a display")
             self._ctk = None
             self._widget = None
+
+    def hide(self):
+        if self._ctk is not None:
+            self._ctk.place_forget()
+
+    def show(self):
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
+
+class Checkbox():
+    def __init__(self, window, text, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
+        try:
+            self._ctk = customtkinter.CTkCheckBox(window(), text=text, **kwargs)
+            self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            self.window = window
+
+        except tkinter.TclError:
+            print("Failed to create checkbox. Make sure you have a display.")
+            self._ctk = None
+            self._widget = None
+
+    def get_value(self):
+        return self._ctk.get()
+
+    def hide(self):
+        if self._ctk is not None:
+            self._ctk.place_forget()
+
+    def show(self):
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
