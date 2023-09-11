@@ -1,4 +1,6 @@
+import threading
 import tkinter
+from time import sleep
 
 import styles
 import widget
@@ -37,6 +39,8 @@ class Window:
         self._onTick = onTick
 
         self._debug = debug
+
+        self._widgets = {}
 
 
 
@@ -87,14 +91,20 @@ class Window:
         return self.style
 
     def onTick(self):
-        self._onTick(self)
-        self._window.after(0, self.onTick)
+        if self._onTick is not None:
+            self._onTick(self)
+            sleep(0.05)
+            self.onTick()
+        else:
+            return None
 
     def main_loop(self):
         try:
             if not self.error:
                 if self.onTick is not None:
-                    self._window.after(0, self.onTick)
+                    thread = threading.Thread(target=self.onTick, daemon=True)
+                    thread.start()
+
                 if self._embeded is not None:
                     self._embeded.run()
                 else:
@@ -109,6 +119,8 @@ class Window:
                     widget._widget._style = self.style
                     widget._widget.reload_styles()
                 widget_ctk = widget._ctk
+
+                self._widgets[widget] = (widget_ctk, placeData)
 
 
                 if placeData is not None:
@@ -147,3 +159,21 @@ class Window:
 
     def remove_garbage_collect_path(self, path):
         self._remove_on_exit.remove(path)
+
+    def reinstate_widget(self, widget_to_place):
+        if self._widgets.get(widget_to_place) is not None:
+            widget_ctk, placeData = self._widgets[widget_to_place]
+
+            if placeData is not None:
+                if util.Types.is_instance(placeData, util.PlaceData):
+                    widget_ctk.place(relx=placeData.relx, rely=placeData.rely, anchor=placeData.anchor)
+                else:
+                    raise ValueError("Incorrect argument, placeData must be of type util.PlaceData")
+            else:
+                widget_ctk.pack()
+
+            self._items.append(widget)
+
+            return True
+        else:
+            return False
