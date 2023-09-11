@@ -10,10 +10,9 @@ import util
 
 import os
 
-import graphics_lib.graphics as graphics
 
 class Window:
-    def __init__(self, style, name, options: util.WindowProperties= util.WindowProperties.empty(), embed: bool = False):
+    def __init__(self, style, name, options: util.WindowProperties = util.WindowProperties.empty(), embed: bool = False, onTick=None, debug=False):
         if options.css_file:
             self.style = styles.Styles.parse(style, True)
         else:
@@ -35,17 +34,26 @@ class Window:
 
         self.destroyed = False
 
+        self._onTick = onTick
+
+        self._debug = debug
+
 
 
         try:
             self._window = customtkinter.CTk()
 
             if embed:
+                import graphics_lib.graphics as graphics
+
                 self._embeded = graphics.PygameEmbeded(self,
                                                  self.options.size if self.options.size is not None else util.resolution(
                                                      500, 500), "white")
+                self.debug("Embeded window")
             else:
                 self._embeded = None
+                self.debug("Not embeded window")
+
         except tkinter.TclError:
             print("Failed to create window. Make sure you have a display.")
             self.error = True
@@ -59,17 +67,34 @@ class Window:
 
             customtkinter.set_appearance_mode(self.options.appearance_mode if self.options.appearance_mode is not None else "system")
             if self.options.default_color_theme is not None: customtkinter.set_default_color_theme(self.options.default_color_theme)
-            customtkinter.set_widget_scaling(self.options.widget_scaling if self.options.widget_scaling is not None else 1)
-            customtkinter.set_window_scaling(self.options.window_scaling if self.options.window_scaling is not None else 1)
+            #customtkinter.set_widget_scaling(self.options.widget_scaling if self.options.widget_scaling is not None else 1)
+            #customtkinter.set_window_scaling(self.options.window_scaling if self.options.window_scaling is not None else 1)
+
+            if options.dynamic_scaling:
+                customtkinter.set_widget_scaling(self.options.current_resolution.width / self.options.dev_resolution.width)
+                customtkinter.set_window_scaling(self.options.current_resolution.width / self.options.dev_resolution.width)
+            else:
+                customtkinter.set_widget_scaling(1)
+                customtkinter.set_window_scaling(1)
 
             self._items = []
+
+    def debug(self, text):
+        if self._debug:
+            print(text)
 
     def get_style(self):
         return self.style
 
+    def onTick(self):
+        self._onTick(self)
+        self._window.after(0, self.onTick)
+
     def main_loop(self):
         try:
             if not self.error:
+                if self.onTick is not None:
+                    self._window.after(0, self.onTick)
                 if self._embeded is not None:
                     self._embeded.run()
                 else:
@@ -79,19 +104,23 @@ class Window:
 
     def add_widget(self, widget: any, placeData: util.PlaceData = None):
         if not self.error:
-            if widget._widget._style == util.Style.empty():
-                widget._widget._style = self.style
-                widget._widget.reload_styles()
-            widget_ctk = widget._ctk
+            if widget._ctk is not None:
+                if widget._widget._style == util.Style.empty():
+                    widget._widget._style = self.style
+                    widget._widget.reload_styles()
+                widget_ctk = widget._ctk
 
 
-            if placeData is not None:
-                if util.Types.is_instance(placeData, util.PlaceData):
-                    widget_ctk.place(relx=placeData.relx, rely=placeData.rely, anchor=placeData.anchor)
+                if placeData is not None:
+                    if util.Types.is_instance(placeData, util.PlaceData):
+                        widget_ctk.place(relx=placeData.relx, rely=placeData.rely, anchor=placeData.anchor)
+                    else:
+                        raise ValueError("Incorrect argument, placeData must be of type util.PlaceData")
                 else:
-                    raise ValueError("Incorrect argument, placeData must be of type util.PlaceData")
+                    widget_ctk.pack()
+
             else:
-                widget_ctk.pack()
+                print("Failed to add widget, widget was created with an error")
 
             self._items.append(widget)
 

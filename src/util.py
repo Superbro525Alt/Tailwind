@@ -3,6 +3,10 @@ from typing import overload
 import customtkinter, tkinter
 from inspect import getsource
 
+import sys, os
+
+import screeninfo
+
 string = str
 
 def get_lambda_name(l):
@@ -157,7 +161,7 @@ class Resizable:
     def empty(cls):
         return cls()
 class WindowProperties:
-    def __init__(self, size=None, resizable=Resizable.empty(), appearance_mode=None, default_color_theme=None, widget_scaling=None, window_scaling=None, css_file=None):
+    def __init__(self, dynamic_scaling=None, dev_resolution=None,  size=None, resizable=Resizable.empty(), appearance_mode=None, default_color_theme=None, widget_scaling=None, window_scaling=None, css_file=None):
         self.size = size
         self.resizable = resizable
         self.appearance_mode = appearance_mode
@@ -165,6 +169,19 @@ class WindowProperties:
         self.widget_scaling = widget_scaling
         self.window_scaling = window_scaling
         self.css_file = css_file
+
+        self.dev_resolution = dev_resolution
+        self.dynamic_scaling = dynamic_scaling
+
+        screens = screeninfo.get_monitors()
+        done = False
+        for screen in screens:
+            if screen.is_primary:
+                self.current_resolution = resolution(screen.width, screen.height)
+                done = True
+                break
+        if not done:
+            self.current_resolution = resolution(0, 0)
 
     @classmethod
     def empty(cls):
@@ -231,3 +248,12 @@ class resolution:
     def __init__(self, width, height):
         self.width = width
         self.height = height
+
+def path():
+    # get path to the executing file even if an exe
+    if getattr(sys, 'frozen', False):
+        # we are running in a bundle
+        return os.path.dirname(sys.executable)
+    else:
+        # we are running in a normal Python environment
+        return os.path.dirname(os.path.realpath(__file__))

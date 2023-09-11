@@ -13,14 +13,29 @@ import util
 
 
 class Button():
-    def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
+    def __init__(self, window, command, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
-            self._ctk = customtkinter.CTkButton(master=window(), **kwargs)
+            self._ctk = customtkinter.CTkButton(master=window(), command=command, **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
         except tkinter.TclError:
             print("Failed to create button. Make sure you have a display.")
             self._ctk = None
             self._widget = None
+
+class Dropdown:
+    def __init__(self, window, options, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
+        try:
+
+            self._ctk = customtkinter.CTkComboBox(window(), values=options, **kwargs)
+            self._ctk.configure(state="readonly")
+            self._widget = widget.Widget(style, properties, binds, self._ctk)
+        except tkinter.TclError as e:
+            print(f"Failed to create dropdown. Make sure you have a display. {e}")
+            self._ctk = None
+            self._widget = None
+
+    def get_value(self):
+        return self._ctk.get()
 
 class Label():
     def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
@@ -33,10 +48,14 @@ class Label():
             self._widget = None
 
 class Entry():
-    def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
+    def __init__(self, window, text=None, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
             self._ctk = customtkinter.CTkEntry(master=window(), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            if text is not None:
+                self._ctk.configure(placeholder_text=text)
+
         except tkinter.TclError:
             print("Failed to create entry. Make sure you have a display.")
             self._ctk = None

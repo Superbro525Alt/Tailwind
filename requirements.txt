@@ -2,3 +2,4 @@ customtkinter
 matplotlib
 Pillow
 pygame
+screeninfo
