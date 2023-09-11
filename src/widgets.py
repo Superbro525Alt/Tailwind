@@ -25,10 +25,12 @@ class Button():
             self._widget = None
 
     def hide(self):
-        self._ctk.place_forget()
+        if self._ctk is not None:
+            self._ctk.place_forget()
 
     def show(self):
-        self.window.reinstate_widget(self)
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 class Dropdown:
     def __init__(self, window, options, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
@@ -49,10 +51,13 @@ class Dropdown:
         return self._ctk.get()
 
     def hide(self):
-        self._ctk.place_forget()
+        if self._ctk is not None:
+            self._ctk.place_forget()
 
     def show(self):
-        self.window.reinstate_widget(self)
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
+
 class Label():
     def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
@@ -67,10 +72,12 @@ class Label():
             self._widget = None
 
     def hide(self):
-        self._ctk.place_forget()
+        if self._ctk is not None:
+            self._ctk.place_forget()
 
     def show(self):
-        self.window.reinstate_widget(self)
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 class Entry():
     def __init__(self, window, text=None, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
@@ -90,10 +97,12 @@ class Entry():
             self._widget = None
 
     def hide(self):
-        self._ctk.place_forget()
+        if self._ctk is not None:
+            self._ctk.place_forget()
 
     def show(self):
-        self.window.reinstate_widget(self)
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 class Frame():
     def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
@@ -109,10 +118,12 @@ class Frame():
             self._widget = None
 
     def hide(self):
-        self._ctk.place_forget()
+        if self._ctk is not None:
+            self._ctk.place_forget()
 
     def show(self):
-        self.window.reinstate_widget(self)
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 
 class Canvas():
@@ -129,10 +140,12 @@ class Canvas():
             self._widget = None
 
     def hide(self):
-        self._ctk.place_forget()
+        if self._ctk is not None:
+            self._ctk.place_forget()
 
     def show(self):
-        self.window.reinstate_widget(self)
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 class Scrollbar():
     def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
@@ -148,10 +161,12 @@ class Scrollbar():
             self._widget = None
 
     def hide(self):
-        self._ctk.place_forget()
+        if self._ctk is not None:
+            self._ctk.place_forget()
 
     def show(self):
-        self.window.reinstate_widget(self)
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 class ScrollView():
     def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
@@ -167,10 +182,12 @@ class ScrollView():
             self._widget = None
 
     def hide(self):
-        self._ctk.place_forget()
+        if self._ctk is not None:
+            self._ctk.place_forget()
 
     def show(self):
-        self.window.reinstate_widget(self)
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 class Image():
     def __init__(self, window, image, style: util.Style = util.Style.empty(), properties={}, binds={}, options={}, **kwargs):
@@ -216,10 +233,12 @@ class Image():
             self._widget = None
 
     def hide(self):
-        self._ctk.place_forget()
+        if self._ctk is not None:
+            self._ctk.place_forget()
 
     def show(self):
-        self.window.reinstate_widget(self)
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
 
 class Checkbox():
     def __init__(self, window, text, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
@@ -238,7 +257,9 @@ class Checkbox():
         return self._ctk.get()
 
     def hide(self):
-        self._ctk.place_forget()
+        if self._ctk is not None:
+            self._ctk.place_forget()
 
     def show(self):
-        self.window.reinstate_widget(self)
+        if self._ctk is not None:
+            self.window.reinstate_widget(self)
