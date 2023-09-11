@@ -172,16 +172,19 @@ class WindowProperties:
 
         self.dev_resolution = dev_resolution
         self.dynamic_scaling = dynamic_scaling
-
-        screens = screeninfo.get_monitors()
-        done = False
-        for screen in screens:
-            if screen.is_primary:
-                self.current_resolution = resolution(screen.width, screen.height)
-                done = True
-                break
-        if not done:
+        try:
+            screens = screeninfo.get_monitors()
+            done = False
+            for screen in screens:
+                if screen.is_primary:
+                    self.current_resolution = resolution(screen.width, screen.height)
+                    done = True
+                    break
+            if not done:
+                self.current_resolution = resolution(0, 0)
+        except screeninfo.ScreenInfoError:
             self.current_resolution = resolution(0, 0)
+            print("Failed to get screen resolution. Make sure you have a display.")
 
     @classmethod
     def empty(cls):
