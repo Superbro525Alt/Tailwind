@@ -1,4 +1,4 @@
-import util
+import tailwind.util as util
 
 class Styles:
     @classmethod

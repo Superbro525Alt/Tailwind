@@ -5,8 +5,8 @@ from time import sleep
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir + "/lib")
 
-from window import Window
-from widgets import *
+from tailwind.window import Window
+from tailwind.widgets import *
 
 
 

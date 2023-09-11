@@ -3,8 +3,8 @@ import os
 import PIL.Image
 import matplotlib
 import matplotlib.pyplot as plt
-import util, datetime
-import widgets
+import tailwind.util as util, datetime
+import tailwind.widgets as widgets
 
 GRAPH_TYPES = ["line", "bar", "scatter"]
 

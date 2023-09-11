@@ -2,13 +2,13 @@ import threading
 import tkinter
 from time import sleep
 
-import styles
-import widget
-import widgets
+import tailwind.styles as styles
+import tailwind.widget as widget
+import tailwind.widgets as widgets
 
 import customtkinter
 
-import util
+import tailwind.util as util
 
 import os
 

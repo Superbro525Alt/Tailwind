@@ -3,13 +3,13 @@ import tkinter
 
 from PIL import ImageTk
 
-import widget
+import tailwind.widget as widget
 
 import customtkinter
 
 import PIL
 
-import util
+import tailwind.util as util
 
 
 class Button():
