@@ -163,23 +163,7 @@ def example1():
     window.main_loop()
 
 if util.is_main_thread(__name__):
-    s = server.Server("127.0.0.1", 65053)  # Listen on all available network interfaces
-
-    s.start()
-
-    c = client.Client("127.0.0.1", 65053)  # Replace SERVER_IP with the actual server's IP address
-
-    c.connect()
-
-    c.send("Hello from client!")
-
-    response = c.receive()
-
-    print("Server response:", response)
-
-    c.close()
-
-    s.close()
+    pass
 
 
 
