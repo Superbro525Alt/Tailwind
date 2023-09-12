@@ -18,7 +18,7 @@ import os
 
 
 class Window:
-    def __init__(self, style, name, options: util.WindowProperties = util.WindowProperties.empty(), embed: bool = False, onTick=None, debug=False):
+    def __init__(self, style, name, options: util.WindowProperties = util.WindowProperties.empty(), onTick=None, debug=False):
         if options.css_file:
             self.style = styles.Styles.parse(style, True)
         else:
@@ -51,15 +51,17 @@ class Window:
         try:
             self._window = customtkinter.CTk()
 
-            if embed:
+            if options.secondary_window:
                 import tailwindall.graphics_lib.graphics as graphics
-
-                self._embeded = graphics.PygameEmbeded(self, self.name,
-                                                 self.options.size if self.options.size is not None else util.resolution(
-                                                     500, 500), "white")
+                if options.secondary_window_framework == "pygame":
+                    self._second_window = graphics.PygameWindow(self, self.name,
+                                                                self.options.secondary_window_onTick if self.options.secondary_window_onTick is not None else lambda arg: self.debug("No onTick function for secondary window"),
+                                                                self.options.secondary_window_init if self.options.secondary_window_init is not None else lambda arg: self.debug("No init function for secondary window"),
+                                                     self.options.size if self.options.size is not None else util.resolution(
+                                                         500, 500), "white")
                 self.debug("Embeded window")
             else:
-                self._embeded = None
+                self._second_window = None
                 self.debug("Not embeded window")
 
         except tkinter.TclError:
@@ -109,8 +111,8 @@ class Window:
                     thread = threading.Thread(target=self.onTick, daemon=True)
                     thread.start()
 
-                if self._embeded is not None:
-                    self._embeded.run()
+                if self._second_window is not None:
+                    self._second_window.run()
                 else:
                     self._window.mainloop()
         except KeyboardInterrupt:

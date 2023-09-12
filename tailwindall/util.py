@@ -163,7 +163,7 @@ class Resizable:
     def empty(cls):
         return cls()
 class WindowProperties:
-    def __init__(self, dynamic_scaling=None, dev_resolution=None,  size=None, resizable=Resizable.empty(), appearance_mode=None, default_color_theme=None, css_file=None):
+    def __init__(self, dynamic_scaling=None, dev_resolution=None,  size=None, resizable=Resizable.empty(), appearance_mode=None, default_color_theme=None, css_file=None, secondary_window=False, secondary_window_framework=None, secondary_window_onTick=None, secondary_window_init=None):
         self.size = size
         self.resizable = resizable
         self.appearance_mode = appearance_mode
@@ -172,6 +172,13 @@ class WindowProperties:
 
         self.dev_resolution = dev_resolution
         self.dynamic_scaling = dynamic_scaling
+
+        self.secondary_window = secondary_window
+        self.secondary_window_framework = secondary_window_framework
+
+        self.secondary_window_onTick = secondary_window_onTick
+        self.secondary_window_init = secondary_window_init
+
         try:
             screens = screeninfo.get_monitors()
             done = False

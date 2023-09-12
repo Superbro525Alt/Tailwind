@@ -12,11 +12,8 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 
 
-
-
-class PygameEmbeded:
-    def __init__(self, window, name, resolution: util.resolution, background_color: util.string):
-
+class PygameWindow:
+    def __init__(self, window, name, onTick, init, resolution: util.resolution, background_color: util.string):
 
         self.window = window()
         self._window = window
@@ -34,7 +31,13 @@ class PygameEmbeded:
 
         self.timer = 0
 
-        self.embed()
+        self.onTick = onTick
+
+        self.init = init
+
+        self.init(self)
+
+        # self.embed()
 
     def embed(self):
         os.environ['SDL_WINDOWID'] = str(self.window.winfo_id())
@@ -49,14 +52,11 @@ class PygameEmbeded:
                 if event.type == pygame.QUIT:
                     running = False
 
-
             self.timer += self.clock.tick(60) / 1000
 
-            
             pygame.display.update()
 
-
-
+            self.onTick(self)
 
             if self._window.destroyed:
                 running = False
@@ -66,4 +66,3 @@ class PygameEmbeded:
         if not self._window.destroyed:
             util.exec_list(self._window._on_exit_functions, self.window.destroy())
         pygame.quit()
-
