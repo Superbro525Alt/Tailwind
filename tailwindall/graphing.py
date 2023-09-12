@@ -7,8 +7,8 @@ sys.path.append(parent_dir)
 import PIL.Image
 import matplotlib
 import matplotlib.pyplot as plt
-import tailwind.util as util, datetime
-import tailwind.widgets as widgets
+import tailwindall.util as util, datetime
+import tailwindall.widgets as widgets
 
 GRAPH_TYPES = ["line", "bar", "scatter"]
 

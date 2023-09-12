@@ -2,7 +2,7 @@ import os, sys
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 
-import tailwind.bases as bases
+import tailwindall.bases as bases
 
 class VenDiagram(bases.Diagram):
     def __init__(self, data):
