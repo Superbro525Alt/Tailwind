@@ -6,7 +6,7 @@ from tailwind.widgets import *
 import tailwind.util as util
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(parent_dir + "/lib")
+sys.path.append(parent_dir + "/tailwind")
 
 if util.is_main_thread(__name__):
     def create():
