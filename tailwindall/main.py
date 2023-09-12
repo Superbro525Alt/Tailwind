@@ -11,9 +11,7 @@ import tailwindall.util as util
 
 
 
-print(parent_dir)
-
-if util.is_main_thread(__name__):
+def example1():
     def create():
         root = project_root.get_value()
 
@@ -35,14 +33,14 @@ if util.is_main_thread(__name__):
                 with open(f"{root}/LICENSE.md", "w+") as f:
                     f.write("""# MIT License 
 
-Copyright (c) 2023
+    Copyright (c) 2023
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-""")
+    THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    """)
 
                     with open(f"{root}/requirements.txt", "w+") as f:
                         f.write("")
@@ -55,52 +53,50 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
                     os.system(f"cd {root} && mkdir .github && cd .github && mkdir workflows")
                     with open(f"{root}/.github/workflows/python-app.yml", "w+") as f:
                         f.write(f"""# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+    # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Run
+    name: Run
 
-on:
-  push:
-    branches: [ "master", "dev" ]
-  pull_request:
-    branches: [ "master" ]
+    on:
+      push:
+        branches: [ "master", "dev" ]
+      pull_request:
+        branches: [ "master" ]
 
-permissions:
-  contents: read
+    permissions:
+      contents: read
 
-jobs:
-  build-on-linux:
+    jobs:
+      build-on-linux:
 
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.11"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with python 3.11
-      run: |
-        python {repository_name.get_value()}/main.py
+        steps:
+        - uses: actions/checkout@v3
+        - name: Set up Python 3.11
+          uses: actions/setup-python@v3
+          with:
+            python-version: "3.11"
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install flake8 pytest
+            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        - name: Lint with flake8
+          run: |
+            # stop the build if there are Python syntax errors or undefined names
+            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+            # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+            flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        - name: Test with python 3.11
+          run: |
+            python {repository_name.get_value()}/main.py
 
-""")
-                        os.system(f"cd {root} && git add . && git commit -m \"Initial Commit\" && git push origin master")
+    """)
+                        os.system(
+                            f"cd {root} && git add . && git commit -m \"Initial Commit\" && git push origin master")
 
                         os.system(f"cd {root} && git branch dev && git checkout dev && git push origin dev")
-
-
-
 
     def onTick(_window: Window, *args, **kwargs):
         [i.hide() for i in PYTHON_INPUTS]
@@ -115,8 +111,8 @@ jobs:
 
                 main_file_name.show()
 
-
-    props = util.WindowProperties(dynamic_scaling=True, dev_resolution=util.resolution(1920, 1080))
+    props = util.WindowProperties(dynamic_scaling=True, dev_resolution=util.resolution(1920, 1080),
+                                  secondary_window=True, secondary_window_framework="pygame")
 
     window = Window(None, "Project Creator", props, False, debug=True, onTick=onTick)
 
@@ -158,5 +154,20 @@ jobs:
     PYTHON_INPUTS = [
 
     ]
+
+    window.main_loop()
+
+if util.is_main_thread(__name__):
+
+    def windowOnTick(_window: Window, *args, **kwargs):
+        pass
+
+    def pygameWindowOnTick(_window, *args, **kwargs):
+        pass
+
+    props = util.WindowProperties(dynamic_scaling=True, dev_resolution=util.resolution(1920, 1080), secondary_window=True, secondary_window_framework="pygame")
+
+    window = Window(None, "Pygame Test", props, debug=True, onTick=windowOnTick)
+
 
     window.main_loop()
