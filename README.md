@@ -1,5 +1,6 @@
 # Tailwind
 ![Status Badge](https://github.com/Superbro525Alt/Tailwind/actions/workflows/python-app.yml/badge.svg)
+![Status Badge](https://github.com/Superbro525Alt/Tailwind/actions/workflows/package-deploy.yml/badge.svg)
 
 A python UI module for easily creating UIs.
 
