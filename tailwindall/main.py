@@ -1,5 +1,6 @@
 import os
 import sys
+import threading
 from time import sleep
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -8,6 +9,10 @@ sys.path.append(parent_dir)
 from tailwindall.window import Window
 from tailwindall.widgets import *
 import tailwindall.util as util
+
+import tailwindall.network_lib.client as client
+import tailwindall.network_lib.server as server
+import tailwindall.network_lib.network as network
 
 
 
@@ -158,16 +163,23 @@ def example1():
     window.main_loop()
 
 if util.is_main_thread(__name__):
+    s = server.Server("127.0.0.1", 65053)  # Listen on all available network interfaces
 
-    def windowOnTick(_window: Window, *args, **kwargs):
-        pass
+    s.start()
 
-    def pygameWindowOnTick(_window, *args, **kwargs):
-        pass
+    c = client.Client("127.0.0.1", 65053)  # Replace SERVER_IP with the actual server's IP address
 
-    props = util.WindowProperties(dynamic_scaling=True, dev_resolution=util.resolution(1920, 1080), secondary_window=True, secondary_window_framework="pygame")
+    c.connect()
 
-    window = Window(None, "Pygame Test", props, debug=True, onTick=windowOnTick)
+    c.send("Hello from client!")
+
+    response = c.receive()
+
+    print("Server response:", response)
+
+    c.close()
+
+    s.close()
 
 
-    window.main_loop()
+
