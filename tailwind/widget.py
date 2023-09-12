@@ -1,5 +1,9 @@
 import customtkinter
-import util
+import os, sys
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
+
+import tailwind.util as util
 
 class Widget:
     def __init__(self, style, properties, binds, _ctk: customtkinter.CTkBaseClass, className=None, id=None):

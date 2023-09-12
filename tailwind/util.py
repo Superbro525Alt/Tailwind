@@ -7,6 +7,8 @@ import sys, os
 
 import screeninfo
 
+from tkinter import filedialog
+
 string = str
 
 def get_lambda_name(l):
@@ -161,13 +163,11 @@ class Resizable:
     def empty(cls):
         return cls()
 class WindowProperties:
-    def __init__(self, dynamic_scaling=None, dev_resolution=None,  size=None, resizable=Resizable.empty(), appearance_mode=None, default_color_theme=None, widget_scaling=None, window_scaling=None, css_file=None):
+    def __init__(self, dynamic_scaling=None, dev_resolution=None,  size=None, resizable=Resizable.empty(), appearance_mode=None, default_color_theme=None, css_file=None):
         self.size = size
         self.resizable = resizable
         self.appearance_mode = appearance_mode
         self.default_color_theme = default_color_theme
-        self.widget_scaling = widget_scaling
-        self.window_scaling = window_scaling
         self.css_file = css_file
 
         self.dev_resolution = dev_resolution
@@ -260,3 +260,12 @@ def path():
     else:
         # we are running in a normal Python environment
         return os.path.dirname(os.path.realpath(__file__))
+
+def selectFile(title, initial_dir, filetypes):
+    return filedialog.askopenfilename(title=title, initialdir=initial_dir, filetypes=filetypes)
+
+def selectFolder(title, initial_dir):
+    return filedialog.askdirectory(title=title, initialdir=initial_dir)
+
+def FileType(name, extention) -> tuple[str, str]:
+        return (name, extention)

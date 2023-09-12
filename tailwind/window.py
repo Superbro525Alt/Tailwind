@@ -2,13 +2,17 @@ import threading
 import tkinter
 from time import sleep
 
-import styles
-import widget
-import widgets
+import os, sys
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
+
+import tailwind.styles as styles
+import tailwind.widget as widget
+import tailwind.widgets as widgets
 
 import customtkinter
 
-import util
+import tailwind.util as util
 
 import os
 
@@ -48,9 +52,9 @@ class Window:
             self._window = customtkinter.CTk()
 
             if embed:
-                import graphics_lib.graphics as graphics
+                import tailwind.graphics_lib.graphics as graphics
 
-                self._embeded = graphics.PygameEmbeded(self,
+                self._embeded = graphics.PygameEmbeded(self, self.name,
                                                  self.options.size if self.options.size is not None else util.resolution(
                                                      500, 500), "white")
                 self.debug("Embeded window")
@@ -66,7 +70,7 @@ class Window:
             self().protocol("WM_DELETE_WINDOW", lambda: util.exec_list(self._on_exit_functions, self().destroy))
 
             self._window.title(self.name)
-            self._window.geometry("500x500" if options.size is None else options.size)
+            self._window.geometry("500x500" if options.size is None else str(options.size.width) + "x" + str(options.size.height))
             self._window.resizable(False if options.resizable.x is None else options.resizable.x, False if options.resizable.y is None else options.resizable.y)
 
             customtkinter.set_appearance_mode(self.options.appearance_mode if self.options.appearance_mode is not None else "system")
@@ -93,7 +97,7 @@ class Window:
     def onTick(self):
         if self._onTick is not None:
             self._onTick(self)
-            sleep(0.05)
+            sleep(0.075)
             self.onTick()
         else:
             return None

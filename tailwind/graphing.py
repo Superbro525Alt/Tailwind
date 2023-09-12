@@ -1,10 +1,14 @@
-import os
+
+
+import os, sys
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
 
 import PIL.Image
 import matplotlib
 import matplotlib.pyplot as plt
-import util, datetime
-import widgets
+import tailwind.util as util, datetime
+import tailwind.widgets as widgets
 
 GRAPH_TYPES = ["line", "bar", "scatter"]
 

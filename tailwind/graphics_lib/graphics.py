@@ -1,6 +1,6 @@
 import platform
 
-import util
+import tailwind.util as util
 import pygame
 
 import sys
@@ -15,15 +15,19 @@ sys.path.append(parent_dir)
 
 
 class PygameEmbeded:
-    def __init__(self, window, resolution: util.resolution, background_color: util.string):
+    def __init__(self, window, name, resolution: util.resolution, background_color: util.string):
 
 
         self.window = window()
         self._window = window
 
+        self._name = name
+
         pygame.init()
 
         self.screen = pygame.display.set_mode((resolution.width, resolution.height))
+
+        pygame.display.set_caption(name)
 
         self.screen.fill(pygame.Color(background_color))
         self.clock = pygame.time.Clock()

@@ -1,15 +1,19 @@
+import os, sys
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
+
 import os
 import tkinter
 
 from PIL import ImageTk
 
-import widget
+import tailwind.widget as widget
 
 import customtkinter
 
 import PIL
 
-import util
+import tailwind.util as util
 
 
 class Button():
@@ -59,9 +63,9 @@ class Dropdown:
             self.window.reinstate_widget(self)
 
 class Label():
-    def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
+    def __init__(self, window, text, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
-            self._ctk = customtkinter.CTkLabel(window(), **kwargs)
+            self._ctk = customtkinter.CTkLabel(window(), text=text, **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
 
             self.window = window
@@ -78,6 +82,9 @@ class Label():
     def show(self):
         if self._ctk is not None:
             self.window.reinstate_widget(self)
+
+    def set_text(self, text):
+        self._ctk.configure(text=text)
 
 class Entry():
     def __init__(self, window, text=None, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
@@ -103,6 +110,9 @@ class Entry():
     def show(self):
         if self._ctk is not None:
             self.window.reinstate_widget(self)
+
+    def get_value(self):
+        return self._ctk.get()
 
 class Frame():
     def __init__(self, window, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
@@ -263,3 +273,52 @@ class Checkbox():
     def show(self):
         if self._ctk is not None:
             self.window.reinstate_widget(self)
+
+class FileSelect:
+    def __init__(self, window, label, title, initial_dir, filetypes, text, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
+        try:
+            self._ctk = customtkinter.CTkButton(master=window(), text=text, command=lambda: self._getInput(title, initial_dir, filetypes), **kwargs)
+            self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            self.path = None
+
+            self.window = window
+
+            self.label = label
+
+        except tkinter.TclError:
+            print("Failed to create file select. Make sure you have a display.")
+            self._ctk = None
+            self._widget = None
+
+    def _getInput(self, title, initial_dir, filetypes):
+        self.path = util.selectFile(title, initial_dir, filetypes)
+        self.label._ctk.configure(text=self.path.split("/")[-1])
+
+    def get_value(self):
+        return self.path
+
+class FolderSelect:
+    def __init__(self, window, label, title, initial_dir, text, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
+        try:
+            self._ctk = customtkinter.CTkButton(master=window(), text=text, command=lambda: self._getInput(title, initial_dir), **kwargs)
+            self._widget = widget.Widget(style, properties, binds, self._ctk)
+
+            self.window = window
+
+            self.label = label
+
+            self.path = None
+
+        except tkinter.TclError:
+            print("Failed to create file select. Make sure you have a display.")
+            self._ctk = None
+            self._widget = None
+
+    def _getInput(self, title, initial_dir):
+        folder = util.selectFolder(title, initial_dir)
+        self.label._ctk.configure(text=folder.split("/")[-1])
+        self.path = folder
+
+    def get_value(self):
+        return self.path
