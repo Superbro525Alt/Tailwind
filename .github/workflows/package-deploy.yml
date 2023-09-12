@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  build-on-linux:
+  deploy-to-pypi:
 
     runs-on: ubuntu-latest
 
@@ -30,5 +30,4 @@ jobs:
         poetry build
     - name: Deploy with poetry
       run: |
-          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
           poetry publish -u __token__ -p ${{ secrets.PYPI_TOKEN }}
