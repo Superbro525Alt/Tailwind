@@ -6,7 +6,7 @@ A python UI module for easily creating UIs.
 ## Usage
 
 ### Window
-``tailwind.window``
+``tailwindall.window``
 
 ```python
 class Window:
@@ -53,10 +53,10 @@ Use the function to add a widget to the window, a base options file will be as f
   }
 }
 ```
-Keep in mind you will have to import `tailwind.util` and `tailwind.widgets`
+Keep in mind you will have to import `tailwindall.util` and `tailwindall.widgets`
 
 #### `def __call__(self, *args, **kwargs)`
-Returns the `window._ctk` private attribute. This is only for the backend but you may use it for creating your own widgets with `tailwind.widget.Widget()`
+Returns the `window._ctk` private attribute. This is only for the backend but you may use it for creating your own widgets with `tailwindall.widget.Widget()`
 
 #### `def quit(self)`
 Does garbage collection of files created when graphs are rendered. Add your own files to this list using `add_garbage_collect_path(self, path)`to add a path to the garbage collection
@@ -74,7 +74,7 @@ Add your own garbage collection path to be deleted on window close
 Remove garbage collect path <ins>NOT RECOMMENDED</ins>
 
 ### Graphing
-`tailwind.graphing`
+`tailwindall.graphing`
 
 These are the acceptable types of graphs to be put in the ```GraphOptions.type``` parameter.
 #### Graph Options
@@ -90,10 +90,10 @@ Graph options take in:
 - `type` a string containing the type of graph. Must be in `GRAPH_TYPES`
 
 ##### `def display(self)`
-The display function creates a graph and returns an `widgets.Image` object that can be directly added to a `tailwind.window.Window` using `window.add_widget(widget)`
+The display function creates a graph and returns an `widgets.Image` object that can be directly added to a `tailwindall.window.Window` using `window.add_widget(widget)`
 
 #### Line Graph
-`tailwind.graphing.LineGraph`
+`tailwindall.graphing.LineGraph`
 
 ```python
 class LineGraph(Graph):
@@ -104,7 +104,7 @@ class LineGraph(Graph):
 Used to create line graphs. `display()` returns a widget to render on the screen
 
 #### Bar Graph
-`tailwind.graphing.BarGraph`
+`tailwindall.graphing.BarGraph`
 
 ```python
 class BarGraph(Graph):
@@ -115,7 +115,7 @@ class BarGraph(Graph):
 Used to create bar graphs. `display()` returns a widget to render on the screen
 
 #### Pie Graph
-`tailwind.graphing.PieGraph`
+`tailwindall.graphing.PieGraph`
 
 ```python
 class PieGraph(Graph):
@@ -126,7 +126,7 @@ class PieGraph(Graph):
 Used to create pie graphs. `display()` returns a widget to render on the screen
 
 #### Scatter Graph
-`tailwind.graphing.ScatterGraph`
+`tailwindall.graphing.ScatterGraph`
 
 ```python
 class ScatterGraph(Graph):
@@ -137,7 +137,7 @@ class ScatterGraph(Graph):
 Used to create scatter graphs. `display()` returns a widget to render on the screen
 
 #### Histogram Graph
-`tailwind.graphing.HistogramGraph`
+`tailwindall.graphing.HistogramGraph`
 
 ```python
 class HistogramGraph(Graph):
@@ -148,7 +148,7 @@ class HistogramGraph(Graph):
 Used to create histogram graphs. `display()` returns a widget to render on the screen
 
 #### Box Plot Graph
-`tailwind.graphing.BoxPlotGraph`
+`tailwindall.graphing.BoxPlotGraph`
 
 ```python
 class BoxPlotGraph(Graph):
@@ -159,7 +159,7 @@ class BoxPlotGraph(Graph):
 Used to create box plot graphs. `display()` returns a widget to render on the screen
 
 #### Area Graph
-`tailwind.graphing.AreaGraph`
+`tailwindall.graphing.AreaGraph`
 
 ```python
 class AreaGraph(Graph):
@@ -170,95 +170,95 @@ class AreaGraph(Graph):
 Used to create area graphs. `display()` returns a widget to render on the screen
 
 ## Statistics
-`tailwind.statistics_lib.statistics`
+`tailwindall.statistics_lib.statistics`
 
 ### Mean
-`tailwind.statistics_lib.statistics.mean(data)`
+`tailwindall.statistics_lib.statistics.mean(data)`
 
 Returns the mean of the data
 
 ### Median
-`tailwind.statistics_lib.statistics.median(data)`
+`tailwindall.statistics_lib.statistics.median(data)`
 
 Returns the median of the data
 
 ### Mode
-`tailwind.statistics_lib.statistics.mode(data)`
+`tailwindall.statistics_lib.statistics.mode(data)`
 
 Returns the mode of the data
 
 ### Range
-`tailwind.statistics_lib.statistics.range(data)`
+`tailwindall.statistics_lib.statistics.range(data)`
 
 Returns the range of the data
 
 ### Standard Deviation
-`tailwind.statistics_lib.statistics.standard_deviation(data)`
+`tailwindall.statistics_lib.statistics.standard_deviation(data)`
 
 Returns the standard deviation of the data
 
 ### Variance
-`tailwind.statistics_lib.statistics.variance(data)`
+`tailwindall.statistics_lib.statistics.variance(data)`
 
 Returns the variance of the data
 
 ### Quartiles
-`tailwind.statistics_lib.statistics.quartiles(data)`
+`tailwindall.statistics_lib.statistics.quartiles(data)`
 
 Returns the quartiles of the data
 
 ### Interquartile Range
-`tailwind.statistics_lib.statistics.interquartile_range(data)`
+`tailwindall.statistics_lib.statistics.interquartile_range(data)`
 
 Returns the interquartile range of the data
 
 ### Z-Score
-`tailwind.statistics_lib.statistics.z_score(data)`
+`tailwindall.statistics_lib.statistics.z_score(data)`
 
 Returns the z-score of the data
 
 ### Z-Scores
-`tailwind.statistics_lib.statistics.z_scores(data)`
+`tailwindall.statistics_lib.statistics.z_scores(data)`
 
 Returns the z-scores of the data
 
 ### Percentile
-`tailwind.statistics_lib.statistics.percentile(data, percentile)`
+`tailwindall.statistics_lib.statistics.percentile(data, percentile)`
 
 Returns the percentile of the data
 
 ### Outliers
-`tailwind.statistics_lib.statistics.outliers(data)`
+`tailwindall.statistics_lib.statistics.outliers(data)`
 
 Returns the outliers of the data
 
 ### Remove Outliers
-`tailwind.statistics_lib.statistics.remove_outliers(data)`
+`tailwindall.statistics_lib.statistics.remove_outliers(data)`
 
 Returns the data with the outliers removed
 
 ### Covariance
-`tailwind.statistics_lib.statistics.covariance(data1, data2)`
+`tailwindall.statistics_lib.statistics.covariance(data1, data2)`
 
 Returns the covariance of the data
 
 ### Correlation
-`tailwind.statistics_lib.statistics.correlation(data1, data2)`
+`tailwindall.statistics_lib.statistics.correlation(data1, data2)`
 
 Returns the correlation of the data
 
 ### Least Squares Regression
-`tailwind.statistics_lib.statistics.least_squares_regression(data1, data2)`
+`tailwindall.statistics_lib.statistics.least_squares_regression(data1, data2)`
 
 Returns the least squares regression of the data
 
 ### Least Squares Regression Line
-`tailwind.statistics_lib.statistics.least_squares_regression_line(data1, data2)`
+`tailwindall.statistics_lib.statistics.least_squares_regression_line(data1, data2)`
 
 Returns the least squares regression line of the data
 
 ## Util
-`tailwind.util`
+`tailwindall.util`
 
 ### Constants
 ```python
@@ -268,26 +268,26 @@ null = NULL
 These are used to create a more diverse usage of null types.
 
 ### Type Utilities
-`tailwind.util.Types`
+`tailwindall.util.Types`
 
 
 #### `def are_list_items_same(cls, this: list, other: list):`
 <ins>`@classmethod`</ins>
 
-Can be called using `tailwind.util.Types.are_list_items_same(this, other)` depending on how you import it. You pass in two lists and the function will return a list telling you if the item in the same index in each list are the same type.
+Can be called using `tailwindall.util.Types.are_list_items_same(this, other)` depending on how you import it. You pass in two lists and the function will return a list telling you if the item in the same index in each list are the same type.
 
 #### `def is_class_same(cls, this: object, other: object):`
 <ins>`@classmethod`</ins>
 
-Can be called using `tailwind.util.Types.is_class_same`. It takes in two objects and outputs wheather each attribute in each object is the same and if it is not in the other object it outputs `None`. The return value is a dictionary containing all the attribute names from each object as keys and if the are the same between objects as the value. 
+Can be called using `tailwindall.util.Types.is_class_same`. It takes in two objects and outputs wheather each attribute in each object is the same and if it is not in the other object it outputs `None`. The return value is a dictionary containing all the attribute names from each object as keys and if the are the same between objects as the value. 
 
 #### `def is_type(cls, this, other):`
 <ins>`@classmethod`</ins>
 
-Can be called using `tailwind.util.Types.is_type`. Takes in two arguments `this` and `other`and returns weather they are the same object type.
+Can be called using `tailwindall.util.Types.is_type`. Takes in two arguments `this` and `other`and returns weather they are the same object type.
 
 ### File Utilities
-`tailwind.util`
+`tailwindall.util`
 
 `def read_file(file, options={}):`
 
@@ -296,7 +296,7 @@ Reads a file and returns contents. `options` allow for the user to input `{"stri
 The only other argument is `file` which is the path to the file that you are trying to read.
 
 ### Anchor Points
-`tailwind.util`
+`tailwindall.util`
 
 #### General
 
@@ -316,14 +316,14 @@ The current anchors are as follows:
 - `NorthWestAnchor`
 
 ### Image Scale
-`tailwind.util.ImageScale(width, height)`
+`tailwindall.util.ImageScale(width, height)`
 
 Takes in a width and a height and returns it when called (`image_scale()`)
 
 ### Other
 
 #### Execute List
-`tailwind.util.exec_list(functions, final=None):`
+`tailwindall.util.exec_list(functions, final=None):`
 
 Takes in a list of functions and a final function to be called (_not required_)
 
@@ -331,84 +331,84 @@ It executes each function in the list before finishing with the final function.
 
 
 ## Widgets
-`tailwind.widgets`
+`tailwindall.widgets`
 
 ### Button
-`tailwind.widgets.Button`
+`tailwindall.widgets.Button`
 
 `def __init__(self, window, style={}, properties={}, binds={}, **kwargs)`
 
-Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. If text is a property it will be set as the text in the button.
+Takes in the arguments `window` which is a `tailwindall.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. If text is a property it will be set as the text in the button.
 
 Returns a button that can be rendered onto the screen using `window.add_widget(widget)`
 
 ### Label
-`tailwind.widgets.Label`
+`tailwindall.widgets.Label`
 
 `def __init__(self, window, style={}, properties={}, binds={}, **kwargs):`
 
-Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. If text is a property it will be set as the text in the label.
+Takes in the arguments `window` which is a `tailwindall.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. If text is a property it will be set as the text in the label.
 
 Returns a label that can be rendered onto the screen using `window.add_widget(widget)`
 
 ### Entry
-`tailwind.widgets.Entry`
+`tailwindall.widgets.Entry`
 
 `def __init__(self, window, style={}, properties={}, binds={}, **kwargs):`
 
-Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. If text is a property it will be set as the text in the entry.
+Takes in the arguments `window` which is a `tailwindall.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. If text is a property it will be set as the text in the entry.
 
 Returns an entry that can be rendered onto the screen using `window.add_widget(widget)`
 
 ### Frame
-`tailwind.widgets.Frame`
+`tailwindall.widgets.Frame`
 
 `def __init__(self, window, style={}, properties={}, binds={}, **kwargs):`
 
-Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. 
+Takes in the arguments `window` which is a `tailwindall.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. 
 
 Returns a frame that can be rendered onto the screen using `window.add_widget(widget)`
 
 ### Canvas
-`tailwind.widgets.Canvas`
+`tailwindall.widgets.Canvas`
 
 `def __init__(self, window, style={}, properties={}, binds={}, **kwargs):`
 
-Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. 
+Takes in the arguments `window` which is a `tailwindall.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. 
 
 Returns a canvas that can be rendered onto the screen using `window.add_widget(widget)`
 
 ### Scrollbar
-`tailwind.widgets.Scrollbar`
+`tailwindall.widgets.Scrollbar`
 
 `def __init__(self, window, style={}, properties={}, binds={}, **kwargs):`
 
-Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value.
+Takes in the arguments `window` which is a `tailwindall.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value.
 
 Returns a scrollbar that can be rendered onto the screen using `window.add_widget(widget)`
 
 ### Scrollview
-`tailwind.widgets.Scrollview`
+`tailwindall.widgets.Scrollview`
 
 `def __init__(self, window, style={}, properties={}, binds={}, **kwargs):`
 
-Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. 
+Takes in the arguments `window` which is a `tailwindall.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. 
 
 Returns a scrollview that can be rendered onto the screen using `window.add_widget(widget)`
 '
 ### Image
-`tailwind.widgets.Image`
+`tailwindall.widgets.Image`
 
 `def __init__(self, window, image, style={}, properties={}, binds={}, **kwargs):`
 
-Takes in the arguments `window` which is a `tailwind.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. `Image` is the path to the image to be rendered.
+Takes in the arguments `window` which is a `tailwindall.window.Window`, an object that contains the styles that will be applied to the object. The keys are the property and the values are the new value. Properties work the same and binds take in the event as the key and the function that is called as the value. `Image` is the path to the image to be rendered.
 
 Returns an image that can be rendered onto the screen using `window.add_widget(widget)`
 
 # Developer
 
 ## Widget
-`tailwind.widget.Widget`
+`tailwindall.widget.Widget`
 
 `def __init__(self, style, properties, binds, _ctk):`
 
@@ -416,7 +416,7 @@ Takes in `style`, `properties`, `binds` and a `_ctk`(an object that can actually
 It has no public methods other then `reload_styles()`, `reload_properties()` and `reload_binds()`. These are all called on creation so they should generally have no reason to be called again.
 
 ## Styles
-`tailwind.styles.Styles`
+`tailwindall.styles.Styles`
 
 `def parse(cls, style: str, file=False)`
 

@@ -5,9 +5,9 @@ from time import sleep
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 
-from tailwind.window import Window
-from tailwind.widgets import *
-import tailwind.util as util
+from tailwindall.window import Window
+from tailwindall.widgets import *
+import tailwindall.util as util
 
 
 

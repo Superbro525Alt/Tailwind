@@ -1,9 +1,9 @@
 [tool.poetry]
-name = "tailwind"
+name = "tailwindall"
 version = "0.1.0"
 description = "A UI library for python"
 authors = ["Paul Hodges <paul.hodges@student.education.wa.edu.au>"]
-license = "LICENCE.md"
+license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -13,7 +13,7 @@ matplotlib = "^3.7.3"
 Pillow = "^10.0.0"
 pygame = "^2.5.1"
 screeninfo = "^0.8.1"
-
+twine = "^3.4.2"
 
 [build-system]
 requires = ["poetry-core"]

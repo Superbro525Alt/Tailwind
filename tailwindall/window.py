@@ -6,13 +6,13 @@ import os, sys
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 
-import tailwind.styles as styles
-import tailwind.widget as widget
-import tailwind.widgets as widgets
+import tailwindall.styles as styles
+import tailwindall.widget as widget
+import tailwindall.widgets as widgets
 
 import customtkinter
 
-import tailwind.util as util
+import tailwindall.util as util
 
 import os
 
@@ -52,7 +52,7 @@ class Window:
             self._window = customtkinter.CTk()
 
             if embed:
-                import tailwind.graphics_lib.graphics as graphics
+                import tailwindall.graphics_lib.graphics as graphics
 
                 self._embeded = graphics.PygameEmbeded(self, self.name,
                                                  self.options.size if self.options.size is not None else util.resolution(

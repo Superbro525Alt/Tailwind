@@ -7,13 +7,13 @@ import tkinter
 
 from PIL import ImageTk
 
-import tailwind.widget as widget
+import tailwindall.widget as widget
 
 import customtkinter
 
 import PIL
 
-import tailwind.util as util
+import tailwindall.util as util
 
 
 class Button():

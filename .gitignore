@@ -1,6 +1,7 @@
 /.idea
-/tailwind/__pycache__
-/tailwind/.pytest_cache
+/tailwindall/__pycache__
+/tailwindall/.pytest_cache
+/dist
 
 *.png
 *.jpg
