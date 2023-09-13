@@ -1,9 +1,12 @@
 import socket
 import threading
+from time import sleep
+
 
 class Server:
-    def __init__(self, host, port):
-        self.host = host
+    def __init__(self, port, respondFunc):
+        # get ip of current machine
+        self.host = socket.gethostbyname(socket.gethostname())
         self.port = port
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((self.host, self.port))
@@ -11,6 +14,10 @@ class Server:
         print(f"Server is listening on {self.host}:{self.port}")
 
         self.clients = []  # List to store connected client sockets
+
+        self.respondFunc = respondFunc
+
+        self.open = True
 
     def handle_client(self, client_socket):
         while True:
@@ -21,32 +28,61 @@ class Server:
                     self.clients.remove(client_socket)
                     client_socket.close()
                     break
-                print(f"Received from {client_socket.getpeername()}: {data}")
-                # You can add your data processing logic here
+                print(f"Server received data from {client_socket.getpeername()}: {data}\n")
 
-                resp = input("Enter response: ")
+                resp = self.respondFunc(data)
 
+                print(f"Server sending response to {client_socket.getpeername()}: {resp}")
                 client_socket.send(resp.encode())
             except Exception as e:
-                print(f"Error handling client {client_socket.getpeername()}: {e}")
-                break
+                try:
+                    print(f"Error handling client {client_socket.getpeername()}: {e}")
+                    break
+                except Exception as e:
+                    print(f"Client Disconnected")
+                    break
 
     def _start(self):
         while True:
-            print("Waiting for a connection...")
-            self.server.listen(5)
-            client_socket, client_address = self.server.accept()
-            print(f"Accepted connection from {client_address}")
-            self.clients.append(client_socket)
+            if not self.open:
+                print("Closing server...")
+                break
 
-            # Create a new thread to handle the client
-            client_thread = threading.Thread(target=self.handle_client, args=(client_socket,))
-            client_thread.start()
+            try:
+                print("Waiting for a connection...\n")
+                self.server.listen(5)
+                client_socket, client_address = self.server.accept()
+                print(f"Accepted connection from {client_address}")
+                self.clients.append(client_socket)
+
+                # Create a new thread to handle the client
+                client_thread = threading.Thread(target=self.handle_client, args=(client_socket,))
+                client_thread.start()
+            except Exception as e:
+                if self.open:
+                    print(f"Error accepting connection: {e}")
+                else:
+                    print("Server closed")
+                    break
+
+
     def start(self):
-        t = threading.Thread(target=self._start, daemon=True)
-        t.start()
 
-        t.join()
+        self.open = True
+
+        self.main_thread = threading.Thread(target=self._start)
+        self.main_thread.start()
+
+
+        # run thread until self.close is called
+
+
+    def close(self):
+        self.open = False
+
+        self.server.close()
+        for c in self.clients:
+            c.close()
 
 
 
