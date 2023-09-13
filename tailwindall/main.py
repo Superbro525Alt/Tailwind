@@ -168,7 +168,7 @@ if util.is_main_thread(__name__):
 
     d.start()
 
-    c = client.Client("10.150.39.121", 65053)
+    c = client.Client(d.host, 65053)
 
     c.connect()
 
