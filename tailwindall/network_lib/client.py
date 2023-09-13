@@ -15,6 +15,7 @@ class Client:
 
     def send(self, data):
         self.client.send(data.encode())
+        return self.receive()
 
     def receive(self):
         return self.client.recv(1024).decode()
