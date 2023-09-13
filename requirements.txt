@@ -3,3 +3,4 @@ matplotlib
 Pillow
 pygame
 screeninfo
+numpy
