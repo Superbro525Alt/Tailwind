@@ -3,7 +3,7 @@ import threading
 from time import sleep
 
 
-class Server:
+class LANServer:
     def __init__(self, port, respondFunc):
         # get ip of current machine
         self.host = socket.gethostbyname(socket.gethostname())
