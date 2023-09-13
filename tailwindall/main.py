@@ -164,17 +164,17 @@ def example1():
     window.main_loop()
 
 if util.is_main_thread(__name__):
-    d = database.Database(65053)
-
-    d.start()
-
-    c = client.Client(d.host, 65053)
-
-    c.connect()
-
-    c.send("set|path/to/data|test3")
-    print(c.send("get|path/to/data"))
-
-    d.close()
+    # d = database.Database(65053)
+    #
+    # d.start()
+    #
+    # c = client.Client(d.host, 65053)
+    #
+    # c.connect()
+    #
+    # c.send("set|path/to/data|test3")
+    # print(c.send("get|path/to/data"))
+    #
+    # d.close()
 
 
