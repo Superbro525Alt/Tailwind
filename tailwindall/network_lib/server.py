@@ -3,7 +3,7 @@ import threading
 from time import sleep
 
 
-class Server:
+class LANServer:
     def __init__(self, port, respondFunc):
         # get ip of current machine
         self.host = socket.gethostbyname(socket.gethostname())
@@ -87,5 +87,5 @@ class Server:
 
 
 if __name__ == "__main__":
-    server = Server("127.0.0.1", 65053)  # Listen on all available network interfaces
+    server = LANServer(65053, lambda e: "")  # Listen on all available network interfaces
     server.start()

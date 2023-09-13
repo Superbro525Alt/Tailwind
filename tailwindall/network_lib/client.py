@@ -1,6 +1,9 @@
 import socket
 
-class Client:
+from tailwindall.network_lib import network
+
+
+class LANClient:
     def __init__(self, host, port):
         self.host = host
         self.port = port
@@ -14,6 +17,8 @@ class Client:
         print(f"Connected to {self.host}:{self.port}")
 
     def send(self, data):
+        if isinstance(data, network.Request):
+            data = str(data)
         self.client.send(data.encode())
         return self.receive()
 
@@ -24,7 +29,7 @@ class Client:
         self.client.close()
 
 if __name__ == "__main__":
-    client = Client("127.0.0.1", 65053)  # Replace SERVER_IP with the actual server's IP address
+    client = LANClient(65053)  # Replace SERVER_IP with the actual server's IP address
     client.connect()
 
 
@@ -32,8 +37,8 @@ if __name__ == "__main__":
         msg = input("Enter message: ")
         if msg == "exit":
             break
-        client.send(msg)
-        response = client.receive()
+        response = client.send(msg)
+
         print("Server response:", response)
 
     client.close()

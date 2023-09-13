@@ -120,7 +120,7 @@ def example1():
     props = util.WindowProperties(dynamic_scaling=True, dev_resolution=util.resolution(1920, 1080),
                                   secondary_window=True, secondary_window_framework="pygame")
 
-    window = Window(None, "Project Creator", props, False, debug=True, onTick=onTick)
+    window = Window(None, "Project Creator", props, debug=True, onTick=onTick)
 
     project_type = Dropdown(window, ["Python", "Next.js", "React", "React Native", "Rust"], util.Style.empty(), {}, {})
 
@@ -163,18 +163,20 @@ def example1():
 
     window.main_loop()
 
-if util.is_main_thread(__name__):
-    # d = database.Database(65053)
-    #
-    # d.start()
-    #
-    # c = client.Client(d.host, 65053)
-    #
-    # c.connect()
-    #
-    # c.send("set|path/to/data|test3")
-    # print(c.send("get|path/to/data"))
-    #
-    # d.close()
-    pass
+def example2():
+    d = database.LANDatabase(65053)
 
+    d.start()
+
+    c = client.LANClient(d.host, 65053)
+
+    c.connect()
+
+    #c.send("set|path/to/data|test3")
+    c.send(network.Request("set", "path/to/data", "test3"))
+    print(c.send(network.Request("get", "path/to/data")))
+
+    d.close()
+
+if util.is_main_thread(__name__):
+   pass

@@ -9,7 +9,7 @@ import socket, tailwindall.network_lib.server as server
 
 
 
-class Database(server.Server):
+class LANDatabase(server.LANServer):
     def __init__(self, port, data_store_path=None):
         self.data_store_path = data_store_path
 
