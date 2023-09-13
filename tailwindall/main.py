@@ -9,15 +9,30 @@ sys.path.append(parent_dir)
 from tailwindall.window import Window
 from tailwindall.widgets import *
 import tailwindall.util as util
+import tailwindall.widget as widget
+import tailwindall.bases as bases
 
 import tailwindall.network_lib.client as client
 import tailwindall.network_lib.server as server
 import tailwindall.network_lib.network as network
 import tailwindall.network_lib.database as database
 
+import tailwindall.graphics_lib.graphics as graphics
+
+import tailwindall.maths_lib.shapes as shapes
+import tailwindall.maths_lib.angles as angles
+
+import tailwindall.styles as styles
+
+import tailwindall.statistics_lib.statistics as statistics
+import tailwindall.statistics_lib.diagrams as diagrams
+
+import tailwindall.graphing as graphing
 
 
-def example1():
+
+
+def window_test():
     def create():
         root = project_root.get_value()
 
@@ -163,7 +178,7 @@ def example1():
 
     window.main_loop()
 
-def example2():
+def database_client_test():
     d = database.LANDatabase(65053)
 
     d.start()
