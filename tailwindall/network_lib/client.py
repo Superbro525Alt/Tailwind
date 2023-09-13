@@ -1,5 +1,8 @@
 import socket
 
+from tailwindall.network_lib import network
+
+
 class LANClient:
     def __init__(self, host, port):
         self.host = host
@@ -14,6 +17,8 @@ class LANClient:
         print(f"Connected to {self.host}:{self.port}")
 
     def send(self, data):
+        if isinstance(data, network.Request):
+            data = str(data)
         self.client.send(data.encode())
         return self.receive()
 
