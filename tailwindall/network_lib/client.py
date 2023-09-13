@@ -24,7 +24,7 @@ class LANClient:
         self.client.close()
 
 if __name__ == "__main__":
-    client = Client("127.0.0.1", 65053)  # Replace SERVER_IP with the actual server's IP address
+    client = LANClient(65053)  # Replace SERVER_IP with the actual server's IP address
     client.connect()
 
 
@@ -32,8 +32,8 @@ if __name__ == "__main__":
         msg = input("Enter message: ")
         if msg == "exit":
             break
-        client.send(msg)
-        response = client.receive()
+        response = client.send(msg)
+
         print("Server response:", response)
 
     client.close()
