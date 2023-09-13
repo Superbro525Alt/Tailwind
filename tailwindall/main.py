@@ -164,20 +164,21 @@ def example1():
     window.main_loop()
 
 if util.is_main_thread(__name__):
-    def process(data):
-
-        return data.upper()
-
-    s = server.Server(65053, process)
-
-    s.start()
-
-    c = client.Client("10.150.39.121", 65053)
-
-    c.connect()
-
-    c.send("Hello World!")
-
-    print(c.receive())
-
-    s.close()
+    # def process(data):
+    #
+    #     return data.upper()
+    #
+    # s = server.Server(65053, process)
+    #
+    # s.start()
+    #
+    # c = client.Client("10.150.39.121", 65053)
+    #
+    # c.connect()
+    #
+    # c.send("Hello World!")
+    #
+    # print(c.receive())
+    #
+    # s.close()
+    pass
