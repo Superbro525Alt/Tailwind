@@ -9,15 +9,31 @@ sys.path.append(parent_dir)
 from tailwindall.window import Window
 from tailwindall.widgets import *
 import tailwindall.util as util
+import tailwindall.widget as widget
+import tailwindall.bases as bases
 
 import tailwindall.network_lib.client as client
 import tailwindall.network_lib.server as server
 import tailwindall.network_lib.network as network
 import tailwindall.network_lib.database as database
 
+import tailwindall.graphics_lib.graphics as graphics
 
+import tailwindall.maths_lib.shapes as shapes
+import tailwindall.maths_lib.angles as angles
 
-def example1():
+import tailwindall.styles as styles
+
+import tailwindall.statistics_lib.statistics as statistics
+import tailwindall.statistics_lib.diagrams as diagrams
+
+import tailwindall.graphing as graphing
+
+import tailwindall.web_lib.web as web
+import tailwindall.web_lib.js as js
+import tailwindall.web_lib.components as components
+
+def window_test():
     def create():
         root = project_root.get_value()
 
@@ -163,7 +179,7 @@ def example1():
 
     window.main_loop()
 
-def example2():
+def database_client_test():
     d = database.LANDatabase(65053)
 
     d.start()
@@ -179,4 +195,38 @@ def example2():
     d.close()
 
 if util.is_main_thread(__name__):
-   pass
+   w = web.Website("Test", 65053)
+
+   w.route("/", web.Page([
+                components.Button("Click Me", js.redirect("/test")),
+                components.Div([
+                    components.H1("Hello World"),
+                    components.Text("This is a test")
+                ]),
+                components.Div([
+                    components.H1("Hello World"),
+                    components.Text("This is a test")
+                ]),
+                components.Table([
+                    "Heading 1",
+                    "Heading 2"
+                ], [
+                    [
+                        "Row 1",
+                        "Row 1"
+                    ],
+                    [
+                        "Row 2",
+                        "Row 2"
+                    ]
+                ])
+            ]))
+
+   w.route("/test", web.Page([
+           components.Button("Click Me", js.redirect("/"))
+       ]))
+
+
+
+
+   w.run()

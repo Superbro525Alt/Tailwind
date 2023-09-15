@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tailwindall"
-version = "0.1.6"
+version = "0.1.8"
 description = "A UI library for python"
 authors = ["Paul Hodges <paul.hodges@student.education.wa.edu.au>"]
 license = "MIT"
