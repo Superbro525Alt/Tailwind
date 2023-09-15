@@ -198,7 +198,28 @@ if util.is_main_thread(__name__):
    w = web.Website("Test", 65053)
 
    w.route("/", web.Page([
-                components.Button("Click Me", js.redirect("/test"))
+                components.Button("Click Me", js.redirect("/test")),
+                components.Div([
+                    components.H1("Hello World"),
+                    components.Text("This is a test")
+                ]),
+                components.Div([
+                    components.H1("Hello World"),
+                    components.Text("This is a test")
+                ]),
+                components.Table([
+                    "Heading 1",
+                    "Heading 2"
+                ], [
+                    [
+                        "Row 1",
+                        "Row 1"
+                    ],
+                    [
+                        "Row 2",
+                        "Row 2"
+                    ]
+                ])
             ]))
 
    w.route("/test", web.Page([
