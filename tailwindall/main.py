@@ -29,8 +29,9 @@ import tailwindall.statistics_lib.diagrams as diagrams
 
 import tailwindall.graphing as graphing
 
-
-
+import tailwindall.web_lib.web as web
+import tailwindall.web_lib.js as js
+import tailwindall.web_lib.components as components
 
 def window_test():
     def create():
@@ -194,4 +195,17 @@ def database_client_test():
     d.close()
 
 if util.is_main_thread(__name__):
-   pass
+   w = web.Website("Test", 65053)
+
+   w.route("/", web.Page([
+                components.Button("Click Me", js.redirect("/test"))
+            ]))
+
+   w.route("/test", web.Page([
+           components.Button("Click Me", js.redirect("/"))
+       ]))
+
+
+
+
+   w.run()
