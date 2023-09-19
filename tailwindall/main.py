@@ -197,6 +197,11 @@ def database_client_test():
 if util.is_main_thread(__name__):
    w = web.Website("Test", 65053)
 
+
+   w.route("/test", web.Page([
+           components.Button("Click Me", js.redirect("/"))
+       ], w, "test"))
+
    w.route("/", web.Page([
                 components.Button("Click Me", js.redirect("/test")),
                 components.Div([
@@ -219,14 +224,11 @@ if util.is_main_thread(__name__):
                         "Row 2",
                         "Row 2"
                     ]
+                ]),
+                components.Div([
+                    components.H1("Hello World"),
+                    components.Input("text", "Hello World"),
+                    components.Link("Click Me", "/test")
                 ])
-            ]))
-
-   w.route("/test", web.Page([
-           components.Button("Click Me", js.redirect("/"))
-       ]))
-
-
-
-
-   w.run()
+            ], w, "Home", _tw="script.tw", stylesheet="style.tw"))
+   #w.run()
