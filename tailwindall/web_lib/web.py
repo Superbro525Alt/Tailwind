@@ -27,8 +27,11 @@ class Website:
 
         self.route_plain("/_tw/_style/_default.css", tw.DEFAULT_CSS, "text/css")
 
-    def run(self):
-        self.app.run(port=self.port)
+    def run(self, dev=True):
+        if dev:
+            self.app.run(port=self.port, debug=True)
+        else:
+            self.app.run(port=self.port)
 
     def route(self, path, page):
         self._routes.append((path, page))
