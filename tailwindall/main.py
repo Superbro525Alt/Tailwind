@@ -33,6 +33,7 @@ import tailwindall.web_lib.web as web
 import tailwindall.web_lib.js as js
 import tailwindall.web_lib.components as components
 
+
 def window_test():
     def create():
         root = project_root.get_value()
@@ -179,6 +180,7 @@ def window_test():
 
     window.main_loop()
 
+
 def database_client_test():
     d = database.LANDatabase(65053)
 
@@ -188,11 +190,12 @@ def database_client_test():
 
     c.connect()
 
-    #c.send("set|path/to/data|test3")
+    # c.send("set|path/to/data|test3")
     c.send(network.Request("set", "path/to/data", "test3"))
     print(c.send(network.Request("get", "path/to/data")))
 
     d.close()
+
 
 def website_test():
     w = web.Website("Test", 65053)
@@ -233,5 +236,6 @@ def website_test():
 
     w.run(dev=True)
 
+
 if util.is_main_thread(__name__):
-   pass
+    pass

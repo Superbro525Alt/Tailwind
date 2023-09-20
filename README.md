@@ -12,6 +12,7 @@ ter;background-color: transparent;">
 ```console
 pip install tailwindall
 ```
+
 > [!IMPORTANT]
 > A python all in one package for doing everything, including:
 > - Graphing
