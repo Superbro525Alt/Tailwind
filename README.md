@@ -13,7 +13,19 @@ ter;background-color: transparent;">
 pip install tailwindall
 ```
 
-> [!NOTE]
+> [!IMPORTANT]
+> A python all in one package for doing everything, including:
+> - Graphing
+> - UI
+> - Website development
+> - Statistics
+> - Maths
+>   - Shape identification
+>   - Angle calculation
+> - And more!
+
+
+> [!NOTE] 
 > ## Future Updates
 > - [ ] Add widgets
 >   - [ ] For web development
@@ -29,17 +41,6 @@ pip install tailwindall
 
 > [!WARNING]
 > Math/Web module is not finished yet
-
-
-A python all in one package for doing everything, including:
-- Graphing
-- UI
-- Website development
-- Statistics
-- Maths
-  - Shape identification
-  - Angle calculation
-- And more!
 
 ## Usage
 
