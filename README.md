@@ -1,17 +1,8 @@
-<style>
-.row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-</style>
-
 <div align="center">
 <img width="455" height="122" src="tailwind_logo.png" title="Tailwind" alt="Tailwind" style="color: white;font-size: 61px;line-height: 122px;text-align: cen
 ter;background-color: transparent;">
 </div>
-<div class="row">
+<div align="center">
 
 ![Status Badge](https://github.com/Superbro525Alt/Tailwind/actions/workflows/python-app.yml/badge.svg)
 ![Status Badge](https://github.com/Superbro525Alt/Tailwind/actions/workflows/package-deploy.yml/badge.svg)
