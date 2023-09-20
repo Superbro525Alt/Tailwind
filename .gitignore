@@ -2,8 +2,3 @@
 /tailwindall/__pycache__
 /tailwindall/.pytest_cache
 /dist
-
-*.png
-*.jpg
-*.jpeg
-*.gif
