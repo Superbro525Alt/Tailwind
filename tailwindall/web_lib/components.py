@@ -3,6 +3,24 @@ import os, sys
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 
+import tailwindall.classes_lib.classes as classes
+
+class WebManager(classes.BaseObject):
+    def __init__(self):
+        self._INDEX = 0
+
+    @property
+    def INDEX(self):
+        return self._INDEX
+
+    @INDEX.setter
+    def INDEX(self, value):
+        self._INDEX = value
+
+    def __str__(self):
+        return super().__str__()
+
+manager = WebManager()
 
 class Button:
     def __init__(self, text, onclick, classes=[]):
@@ -29,8 +47,15 @@ class Input:
 
         self.classes = classes
 
+        self.index = manager.INDEX
+        manager.INDEX += 1
+
+
     def __str__(self):
-        return f"""<input class='{' '.join(self.classes) if self.classes != [] else 'default-input'}' placeholder='{self.placeholder}'></input>"""
+        return f"""<input id="input-{self.index}" class='{' '.join(self.classes) if self.classes != [] else 'default-input'}' placeholder='{self.placeholder}'></input>"""
+
+    def get_input(self):
+        return f"""document.getElementById('input-{self.index}').value"""
 
 class Image:
     def __init__(self, src, classes=[]):

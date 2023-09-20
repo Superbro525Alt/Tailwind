@@ -1,0 +1,11 @@
+"web script"
+
+using test
+
+def t() {
+    return 1
+}
+print(t())
+
+test.test2("test")
+test.test()
