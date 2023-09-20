@@ -2,6 +2,13 @@
 ![Status Badge](https://github.com/Superbro525Alt/Tailwind/actions/workflows/python-app.yml/badge.svg)
 ![Status Badge](https://github.com/Superbro525Alt/Tailwind/actions/workflows/package-deploy.yml/badge.svg)
 
+```bash
+pip install tailwindall
+```
+
+> [!WARNING]
+> Math/Web module is not finished yet
+
 A python all in one package for doing everything, including:
 - Graphing
 - UI
