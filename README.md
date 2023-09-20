@@ -2,7 +2,15 @@
 ![Status Badge](https://github.com/Superbro525Alt/Tailwind/actions/workflows/python-app.yml/badge.svg)
 ![Status Badge](https://github.com/Superbro525Alt/Tailwind/actions/workflows/package-deploy.yml/badge.svg)
 
-A python UI module for easily creating UIs.
+A python all in one package for doing everything, including:
+- Graphing
+- UI
+- Website development
+- Statistics
+- Maths
+  - Shape identification
+  - Angle calculation
+- And more!
 
 ## Usage
 
