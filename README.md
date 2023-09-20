@@ -2,12 +2,27 @@
 ![Status Badge](https://github.com/Superbro525Alt/Tailwind/actions/workflows/python-app.yml/badge.svg)
 ![Status Badge](https://github.com/Superbro525Alt/Tailwind/actions/workflows/package-deploy.yml/badge.svg)
 
-```bash
+```console
 pip install tailwindall
 ```
 
+> [!NOTE]
+> ## Future Updates
+> - [ ] Add widgets
+>   - [ ] For web development
+>   - [ ] For UI development
+> - [ ] Add different types of graphs
+> - [ ] Add more statistics functions
+> - [ ] Add more math functions
+> - [ ] Add more util functions
+> - [ ] Improve syntax of tw script
+> - [ ] Improve networking library
+> - [ ] Add embedded pygame/turtle windows for graphics
+>   - [x] Add multiple windows rendering at once
+
 > [!WARNING]
 > Math/Web module is not finished yet
+
 
 A python all in one package for doing everything, including:
 - Graphing
