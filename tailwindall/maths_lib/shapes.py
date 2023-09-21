@@ -67,6 +67,7 @@ class ShapeSorter(classes.BaseObject):
                 _sides.append(math.sqrt((points[i][0] - points[i + 1][0]) ** 2 + (points[i][1] - points[i + 1][1]) ** 2))
             except IndexError:
                 _sides.append(math.sqrt((points[i][0] - points[0][0]) ** 2 + (points[i][1] - points[0][1]) ** 2))
+
         return points, _angles, _sides
 
 
@@ -121,6 +122,18 @@ if util.is_main_thread(__name__):
         font = pygame.font.Font(None, 20)
         text = font.render(str(shape.angles[i]), True, (0, 0, 0))
         screen.blit(text, (shape.points[i][0] * 100 + 10, shape.points[i][1] * 100 + 10))
+
+    # show sides
+    for i in range(len(shape.sides)):
+        # display each angle on the corresponding side in the center
+        font = pygame.font.Font(None, 20)
+        text = font.render(str(shape.sides[i]), True, (0, 0, 0))
+        try:
+            screen.blit(text, ((shape.points[i][0] * 100 + shape.points[i + 1][0] * 100) / 2,
+                               (shape.points[i][1] * 100 + shape.points[i + 1][1] * 100) / 2))
+        except IndexError:
+            screen.blit(text, ((shape.points[i][0] * 100 + shape.points[0][0] * 100) / 2,
+                               (shape.points[i][1] * 100 + shape.points[0][1] * 100) / 2))
 
     while True:
         for event in pygame.event.get():
