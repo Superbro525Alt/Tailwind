@@ -240,4 +240,4 @@ def website_test():
 if util.is_main_thread(__name__):
     # if not on a server
     if os.environ.get("SSH_CLIENT") is None:
-        database_client_test()
+        pass

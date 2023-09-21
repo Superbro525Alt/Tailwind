@@ -36,7 +36,11 @@ class ShapeName(classes.BaseObject):
         if len(points) == 4:
             # quadrilateral
             if shape.angles.count(90) == 4:
-                return util.null
+                if shape.sides.count(shape.sides[0]) == 4:
+                    return "Square"
+                else:
+                    if shape.sides.count(shape.sides[0]) == 2 and shape.sides.count(shape.sides[1]) == 2:
+                        return "Rectangle"
         print("No shape found")
         return util.null
 
