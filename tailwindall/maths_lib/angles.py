@@ -27,6 +27,5 @@ def get_angle_from_lines(line1: tuple[tuple[float, float], tuple[float, float]],
     :return:
     """
 
-    print(line1, line2)
     return abs(math.degrees(math.atan2(line2[1][1] - line2[0][1], line2[1][0] - line2[0][0]) - math.atan2(
         line1[1][1] - line1[0][1], line1[1][0] - line1[0][0])) % 360 - 360)
