@@ -1,6 +1,9 @@
 import platform
 import threading
-from typing import overload, Union
+from collections import namedtuple
+from typing import overload, Union, Final
+
+from _distutils_hack import override
 
 import tailwindall.util as util
 import pygame
@@ -138,6 +141,7 @@ class PygameWindowStandalone(classes.BaseObject):
             self._scenes[self._current_scene].render(self._screen)
 
             pygame.display.update()
+            pygame.display.flip()
 
     def get_scene(self):
         return self._scenes[self._current_scene]
@@ -146,13 +150,64 @@ class Size(classes.BaseObject):
     def __init__(self, width, height):
         self.width, self.height = width, height
 
+class CartesianPlane(PygameWindowStandalone):
+    def __init__(self, name, resolution: util.resolution, background_color: util.string, line_color: util.string, center_color: util.string, gap: int = 50):
+        super().__init__(name, [Scene([])], resolution, background_color)
+
+
+        for i in range(0, resolution.width, gap):
+            self.get_scene().add_object(objects.Line((i, 0), (i, resolution.height), line_color, 1))
+
+        for i in range(0, resolution.height, gap):
+            if not i == resolution.height / 2:
+                self.get_scene().add_object(objects.Line((0, i), (resolution.width, i), line_color, 1))
+            else:
+                self.get_scene().add_object(objects.Line((0, i), (resolution.width, i), center_color, 1))
+
+        self.get_scene().add_object(objects.Line((resolution.width / 2, 0), (resolution.width / 2, resolution.height), center_color, 1))
+
+        self.rect = self._screen.get_rect()
+
+        self.offset = list(self.rect.center)
+
+    def add_object(self, obj: Union[objects.GameObject, objects.Rectangle, objects.Line, objects.Polygon]):
+        if not type(obj) == objects.Polygon:
+            obj.position = (obj.position[0] + self._resolution.width / 2, obj.position[1] + self._resolution.height / 2)
+            obj.position = (obj.position[0] - obj.size[0] / 2, obj.position[1] - obj.size[1] / 2)
+        else:
+            points = namedtuple("points", ["zero", "one", "two", "three"])
+            old_points = points(obj.points[0], obj.points[1], obj.points[2], obj.points[3])
+            for i in range(len(obj.points)):
+                #obj.points[i] = (obj.points[i][0] + self._resolution.width / 2, obj.points[i][1] + self._resolution.height / 2)
+                # convert list of catesian points to pygame points
+                obj.points[i] = (round(obj.points[i][0] + self.offset[0]), round(self.offset[1] - obj.points[i][1]))
+
+                # the code above does not work
+
+
+            print([f"Old {old_points.index(i)}: {i}" for i in old_points])
+            print([f"New {obj.points.index(i)}: {i}" for i in obj.points])
+        #obj._calculate_sprite(self._screen)
+
+        self.get_scene().add_object(obj, priority=0)
 
 if __name__ == '__main__':
-    win = PygameWindowStandalone("Test", [CartesianPlane(50, Size(500, 500), [])],
-                                 util.resolution(500, 500), "black")
+    import tailwindall.maths_lib.shapes as shapes
 
-    win.get_scene().add_object(objects.Rectangle((255, 0, 0), (-1, 0), (50, 50)))
+    rules = classes.Rules({
+        (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11): "Square",
+        (1, 2, 3, 5, 6, 7, 8, 9, 10): "Rhombus",
+        (1, 2, 4, 7, 8, 9, 10, 11): "Rectangle",
+        (1, 2, 7, 8): "Parallelogram",
+        (5, 6, 7, 9): "Kite",
+        (1): "Trapezium"
+    })
+
+    win = CartesianPlane("Test", util.resolution(500, 500), "white", "black", "red")
+
+    win.add_object(objects.Polygon(shapes.get_shape_from_points(points=[(0, 0), (0, 100), (200, 100), (200, 0)], rules=rules, clockwise=False), "blue", (0, 0), show_points=True, points_color="red", points_radius=5, show_angles=True, show_side_lengths=True, gap=50))
+
+    win.add_object(objects.Polygon(shapes.get_shape_from_points(points=[(-100, 0), (-100, -100), (-200, -100), (-200, 0)], rules=rules, clockwise=False), "purple", (0, 0), show_points=True, points_color="red", points_radius=5, show_angles=True, show_side_lengths=True, gap=50))
 
     win.main_loop()
-
 

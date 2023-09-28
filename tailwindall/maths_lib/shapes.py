@@ -14,7 +14,7 @@ import tailwindall.maths_lib.angles as angles
 
 
 class Shape(classes.BaseObject):
-    def __init__(self, points: list, *args, **kwargs):
+    def __init__(self, points: list, rules: classes.Rules = None, *args, **kwargs):
         self.points = points
 
         self.kwargs = kwargs
@@ -23,7 +23,7 @@ class Shape(classes.BaseObject):
 
 
 
-        self.name = ShapeName.find(self)
+        self.name = ShapeName.find(self, rules)
 
     def calculate(self) -> None:
         s = ShapeSorter.sort(self, self.kwargs.get("clockwise", True))
@@ -40,104 +40,150 @@ class Shape(classes.BaseObject):
 
 class ShapeName(classes.BaseObject):
     @classmethod
-    def find(cls, shape: Shape) -> str:
+    def find(cls, shape: Shape, rules: classes.Rules = None) -> str:
         points = shape.points
-        print(len(points))
-        # if len(points) == 4:
-        #     # quadrilateral
-        #     if shape.angles.count(90) == 4:
-        #         if shape.sides.count(shape.sides[0]) == 4:
-        #             return "Square"
-        #         else:
-        #             if shape.sides.count(shape.sides[0]) == 2 and shape.sides.count(shape.sides[1]) == 2:
-        #                 return "Rectangle"
-        #
-        #     elif shape.angles.count(90) == 2:
-        #         if shape.sides.count(shape.sides[0]) == 2 and shape.sides.count(shape.sides[1]) == 2:
-        #             return "Parallelogram"
-        #         else:
-        #             return "Trapezium"
-        #
-        #     elif shape.angles.count(90) == 0:
-        #         return "Kite"
-        #
-        #     else:
-        #         return "Quadrilateral"
+        if rules is not None:
+            print(len(points))
+            # if len(points) == 4:
+            #     # quadrilateral
+            #     if shape.angles.count(90) == 4:
+            #         if shape.sides.count(shape.sides[0]) == 4:
+            #             return "Square"
+            #         else:
+            #             if shape.sides.count(shape.sides[0]) == 2 and shape.sides.count(shape.sides[1]) == 2:
+            #                 return "Rectangle"
+            #
+            #     elif shape.angles.count(90) == 2:
+            #         if shape.sides.count(shape.sides[0]) == 2 and shape.sides.count(shape.sides[1]) == 2:
+            #             return "Parallelogram"
+            #         else:
+            #             return "Trapezium"
+            #
+            #     elif shape.angles.count(90) == 0:
+            #         return "Kite"
+            #
+            #     else:
+            #         return "Quadrilateral"
 
-        PROOFS: list[int] = []
+            PROOFS: list[int] = []
 
-        # if parallel sides
-        if shape.points[0][0] == shape.points[1][0] and shape.points[2][0] == shape.points[3][0]:
-            PROOFS.append(1)
-        elif shape.points[0][1] == shape.points[1][1] and shape.points[2][1] == shape.points[3][1]:
-            PROOFS.append(1)
+            # if parallel sides
+            if shape.points[0][0] == shape.points[1][0] and shape.points[2][0] == shape.points[3][0]:
+                PROOFS.append(1)
+            elif shape.points[0][1] == shape.points[1][1] and shape.points[2][1] == shape.points[3][1]:
+                PROOFS.append(1)
 
-        # if 2 pairs of parallel sides
-        if shape.points[0][0] == shape.points[1][0] and shape.points[2][0] == shape.points[3][0]:
-            if shape.points[0][1] == shape.points[3][1] and shape.points[1][1] == shape.points[2][1]:
-                PROOFS.append(2)
-
-        # if all sides are equal
-        if shape.sides.count(shape.sides[0]) == 4:
-            PROOFS.append(3)
-
-        # if all angles 90
-        if shape.angles.count(90) == 4:
-            PROOFS.append(4)
-
-        # if 2 of adjacent equal sides
-        if shape.sides[0] == shape.sides[1] and shape.sides[2] == shape.sides[3]:
-            PROOFS.append(5)
-        elif shape.sides.count(shape.sides[0]) == 4:
-            PROOFS.append(5)
+            # if 2 pairs of parallel sides
+            if shape.points[0][0] == shape.points[1][0] and shape.points[2][0] == shape.points[3][0]:
+                if shape.points[0][1] == shape.points[3][1] and shape.points[1][1] == shape.points[2][1]:
+                    PROOFS.append(2)
+            elif shape.points[0][1] == shape.points[1][1] and shape.points[2][1] == shape.points[3][1]:
+                if shape.points[0][0] == shape.points[3][0] and shape.points[1][0] == shape.points[2][0]:
+                    PROOFS.append(2)
 
 
-        # if diagonals are perpendicular
-        if shape.angles[1] + shape.angles[3] == 90 and shape.angles[0] + shape.angles[2] == 90:
-            PROOFS.append(6)
 
-        # if one diagonal bicects the other
-        if shape.angles[0] == shape.angles[2] and shape.angles[1] == shape.angles[3]:
-            PROOFS.append(7)
+            # if all sides are equal
+            if shape.sides.count(shape.sides[0]) == 4:
+                PROOFS.append(3)
 
-        # if both diagonals bisect each other
-        if shape.angles[0] == shape.angles[2] and shape.angles[1] == shape.angles[3]:
-            if shape.angles[0] + shape.angles[1] == 180:
-                PROOFS.append(8)
+            # if all angles 90
+            if shape.angles.count(90) == 4:
+                PROOFS.append(4)
 
-        # find if one diagonal bisects the vertex angles through which it passes.
-        # to do this, we need to find the vertex angles
-        vertex_angles = []
-        for i in range(len(shape.angles)):
-            try:
-                vertex_angles.append(shape.angles[i] + shape.angles[i + 1])
-            except IndexError:
-                vertex_angles.append(shape.angles[i] + shape.angles[0])
+            # if 2 of adjacent equal sides
+            if shape.sides[0] == shape.sides[1] and shape.sides[2] == shape.sides[3]:
+                PROOFS.append(5)
+            elif shape.sides.count(shape.sides[0]) == 4:
+                PROOFS.append(5)
 
-        # if one diagonal bisects the vertex angles through which it passes
-        if shape.angles[0] == shape.angles[2] and shape.angles[1] == shape.angles[3]:
-            if shape.angles[0] == vertex_angles[0] and shape.angles[1] == vertex_angles[1]:
+
+            # if diagonals intersect on another at 90
+            # 1. get the 2 points of each diagonal
+            diagonal1 = [shape.points[0], shape.points[2]]
+            diagonal2 = [shape.points[1], shape.points[3]]
+
+            # 2. get the midpoint of each diagonal
+            midpoint1 = ((diagonal1[0][0] + diagonal1[1][0]) / 2, (diagonal1[0][1] + diagonal1[1][1]) / 2)
+            midpoint2 = ((diagonal2[0][0] + diagonal2[1][0]) / 2, (diagonal2[0][1] + diagonal2[1][1]) / 2)
+
+# 3. get the gradient of each diagonal
+            gradient1 = (diagonal1[1][1] - diagonal1[0][1]) / (diagonal1[1][0] - diagonal1[0][0])
+            gradient2 = (diagonal2[1][1] - diagonal2[0][1]) / (diagonal2[1][0] - diagonal2[0][0])
+
+            # 4. get the gradient of the line perpendicular to each diagonal
+            gradient1_perpendicular = -1 / gradient1
+            gradient2_perpendicular = -1 / gradient2
+
+            # 6. get the point of intersection of the 2 lines (no util function for this)
+            # 6.1. get the x value of the point of intersection
+            x = (midpoint2[1] - midpoint1[1] + gradient1_perpendicular * midpoint1[0] - gradient2_perpendicular * midpoint2[0]) / (gradient1_perpendicular - gradient2_perpendicular)
+
+            # 6.2. get the y value of the point of intersection
+            y = gradient1_perpendicular * (x - midpoint1[0]) + midpoint1[1]
+
+            # 6.3. get the point of intersection
+            point_of_intersection = (x, y)
+
+            # 7. get the distance between the point of intersection and the midpoint of each diagonal
+            distance1 = math.sqrt((midpoint1[0] - point_of_intersection[0]) ** 2 + (midpoint1[1] - point_of_intersection[1]) ** 2)
+            distance2 = math.sqrt((midpoint2[0] - point_of_intersection[0]) ** 2 + (midpoint2[1] - point_of_intersection[1]) ** 2)
+
+            # 8. if the distance between the point of intersection and the midpoint of each diagonal is 0, then the diagonals intersect at 90
+            if distance1 == 0 and distance2 == 0:
+                PROOFS.append(6)
+
+
+            # if one diagonal bicects the other
+
+            # if one diagonals line intersects the mid point of the other diagonal
+            # we already have all of tje required variables from the previous proof
+            if distance1 == 0:
+                if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
+                    PROOFS.append(7)
+            elif distance2 == 0:
+                if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
+                    PROOFS.append(7)
+
+
+            # if both diagonals bisect each other
+            if distance1 == 0 and distance2 == 0:
+                if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
+                    if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
+                        PROOFS.append(8)
+
+            # find if one diagonal bisects the vertex angles through which it passes.
+            # to do this, we need to find the vertex angles
+            vertex_angles = []
+            for i in range(len(shape.angles)):
+                try:
+                    vertex_angles.append(shape.angles[i] + shape.angles[i + 1])
+                except IndexError:
+                    vertex_angles.append(shape.angles[i] + shape.angles[0])
+
+            # if one diagonal bisects the vertex angles through which it passes
+            midpoint_AC = ((shape.points[0][0] + shape.points[2][0]) / 2, (shape.points[0][1] + shape.points[2][1]) / 2)
+            midpoint_BD = ((shape.points[1][0] + shape.points[3][0]) / 2, (shape.points[1][1] + shape.points[3][1]) / 2)
+
+            if angles.does_diagonal_bisect(midpoint_AC, diagonal1) or angles.does_diagonal_bisect(midpoint_BD, diagonal2):
                 PROOFS.append(9)
 
+            # Both diagonals bisect the vertex angles through which they pass
+            if angles.does_diagonal_bisect(midpoint_AC, diagonal1) and angles.does_diagonal_bisect(midpoint_BD, diagonal2):
+                PROOFS.append(10)
 
+            # Diagonals are equal in length
+            if shape.sides[0] == shape.sides[2] and shape.sides[1] == shape.sides[3]:
+                PROOFS.append(11)
 
-        # Both diagonals bisect the vertex angles through which they pass
-        if shape.angles[0] == shape.angles[2] and shape.angles[1] == shape.angles[3]:
-            if shape.angles[0] == vertex_angles[0] and shape.angles[1] == vertex_angles[1]:
-                if shape.angles[2] == vertex_angles[2] and shape.angles[3] == vertex_angles[3]:
-                    PROOFS.append(10)
-
-
-
-        # Diagonals are equal in length
-        if shape.sides[0] == shape.sides[2] and shape.sides[1] == shape.sides[3]:
-            PROOFS.append(11)
-
-        out = rules.get_result(PROOFS)
-        if out is not None:
-            return out
-        print("No shape found")
-        return util.null
+            out = rules.get_result(PROOFS)
+            if out is not None:
+                return out
+            print("No shape found")
+            return util.null
+        else:
+            print("No rules found")
+            return util.null
 
 
 class ShapeSorter(classes.BaseObject):
@@ -185,7 +231,7 @@ def get_random_point(current_points: list[tuple[float, float]]) -> tuple[float, 
     else:
         return point
 
-def get_shape_from_points(points: list, *args, **kwargs) -> Shape:
+def get_shape_from_points(points: list, rules: classes.Rules = None, *args, **kwargs) -> Shape:
     """
     Returns a shape from a list of points.
 
@@ -201,14 +247,14 @@ def get_shape_from_points(points: list, *args, **kwargs) -> Shape:
             p = get_random_point(points)
 
             points.append(p)
-    return Shape(points, args, kwargs)
+    return Shape(points, rules, args, kwargs)
 
 if util.is_main_thread(__name__):
     constants = classes.Constants({"CARTESIAN_PLANE_SIZE": 1000, "CARTESIAN_PLANE_GAP": 50})
     rules = classes.Rules({
         (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11): "Square",
         (1, 2, 3, 5, 6, 7, 8, 9, 10): "Rhombus",
-        (1, 2, 4, 7, 8, 11): "Rectangle",
+        (1, 2, 4, 7, 8, 9, 10, 11): "Rectangle",
         (1, 2, 7, 8): "Parallelogram",
         (5, 6, 7, 9): "Kite",
         (1): "Trapezium"

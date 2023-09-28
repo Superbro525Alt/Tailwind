@@ -29,3 +29,14 @@ def get_angle_from_lines(line1: tuple[tuple[float, float], tuple[float, float]],
 
     return abs(math.degrees(math.atan2(line2[1][1] - line2[0][1], line2[1][0] - line2[0][0]) - math.atan2(
         line1[1][1] - line1[0][1], line1[1][0] - line1[0][0])) % 360 - 360)
+
+def does_diagonal_bisect(midpoint, diagonal) -> bool:
+    """
+    Returns whether a diagonal bisects a midpoint.
+    :param midpoint:
+    :param diagonal:
+    :return:
+    """
+    x1, y1 = diagonal[0]
+    x2, y2 = diagonal[1]
+    return math.isclose(midpoint[0], (x1 + x2) / 2) and math.isclose(midpoint[1], (y1 + y2) / 2)
