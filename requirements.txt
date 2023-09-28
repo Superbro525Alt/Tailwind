@@ -1,9 +1,8 @@
-customtkinter~=5.1.2
-matplotlib~=3.7.1
-Pillow~=9.5.0
-pygame~=2.5.1
-screeninfo~=0.8.1
-numpy~=1.24.2
-Flask~=2.3.3
-tailwindall~=0.1.0
-quantumrandom~=1.9.0
+customtkinter
+matplotlib
+Pillow
+pygame
+screeninfo
+numpy
+Flask
+quantumrandom
