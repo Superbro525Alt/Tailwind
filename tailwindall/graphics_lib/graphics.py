@@ -170,6 +170,39 @@ class CartesianPlane(PygameWindowStandalone):
 
         self.offset = list(self.rect.center)
 
+        self.gap = gap
+
+    def _main_loop(self):
+        while self.main_loop_running:
+            self._screen.fill(pygame.Color(self._background_color))
+            events = pygame.event.get()
+            for event in events:
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            self._timer += self._clock.tick(60) / 1000
+
+            if self._onTick is not None:
+                self._onTick(self)
+
+
+            self._scenes[self._current_scene].render(self._screen)
+
+            pygame.draw.circle(self._screen, pygame.Color("green"), self.get_mouse_position_on_plane(), 5)
+
+            pygame.display.update()
+            pygame.display.flip()
+
+
+
+    def get_mouse_position_on_plane(self):
+        mouse_pos = pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]
+        # snap to the grid
+        mouse_pos = (round(mouse_pos[0] / self.gap) * self.gap, round(mouse_pos[1] / self.gap) * self.gap)
+
+        return mouse_pos
+
     def add_object(self, obj: Union[objects.GameObject, objects.Rectangle, objects.Line, objects.Polygon]):
         if not type(obj) == objects.Polygon:
             obj.position = (obj.position[0] + self._resolution.width / 2, obj.position[1] + self._resolution.height / 2)
@@ -190,6 +223,9 @@ class CartesianPlane(PygameWindowStandalone):
         #obj._calculate_sprite(self._screen)
 
         self.get_scene().add_object(obj, priority=0)
+
+    def get_point_select(self):
+        pass
 
 if __name__ == '__main__':
     import tailwindall.maths_lib.shapes as shapes
