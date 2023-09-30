@@ -1,4 +1,4 @@
 /.idea
-/tailwindall/__pycache__
-/tailwindall/.pytest_cache
+**/__pycache__
+**/.pytest_cache
 /dist
