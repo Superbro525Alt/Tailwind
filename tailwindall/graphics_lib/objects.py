@@ -8,7 +8,7 @@ sys.path.append(parent_dir)
 
 import tailwindall.classes_lib.classes as classes
 import tailwindall.maths_lib.shapes as shapes
-import events
+import tailwindall.graphics_lib.events as events
 
 class Sprite(classes.BaseObject):
     def __init__(self, image, position, size, sprite=None):
