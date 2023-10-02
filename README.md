@@ -38,6 +38,12 @@ pip install tailwindall
 > - [ ] Improve networking library
 > - [ ] Add embedded pygame/turtle windows for graphics
 >   - [x] Add multiple windows rendering at once
+> - [x] Add shape identification
+> - [x] Add angle calculation
+> - [x] Add scenes for graphics
+> - [x] Add gameobjects
+> - [x] Finished shape identification
+> - [ ] Add more documentation
 
 > [!WARNING]
 > Math/Web module is not finished yet

@@ -38,7 +38,7 @@ class Rectangle(Sprite):
         return None
 
 class Polygon(Sprite):
-    def __init__(self, shape: Union[list[tuple[int, int]], shapes.Shape], color, position, show_points=False, points_color=None, points_radius=5, show_angles=False, show_side_lengths=False, gap=50):
+    def __init__(self, shape: Union[list[tuple[int, int]], shapes.Shape], color, position, show_points=False, points_color=None, points_radius=5, show_angles=False, show_side_lengths=False, show_name=False, gap=50):
         self.show_points = show_points
         self.points_color = points_color
         if type(shape) == list:
@@ -53,6 +53,8 @@ class Polygon(Sprite):
         self.points_radius = points_radius
         self.show_angles = show_angles
         self.show_side_lengths = show_side_lengths
+        self.show_name = show_name
+
         super().__init__(None, position, None, None)
 
     def render(self, screen):
@@ -76,8 +78,28 @@ class Polygon(Sprite):
                         screen.blit(text, ((self.shape.points[i][0] + self.shape.points[i + 1][0]) / 2, (self.shape.points[i][1] + self.shape.points[i + 1][1]) / 2))
                     else:
                         screen.blit(text, ((self.shape.points[i][0] + self.shape.points[0][0]) / 2, (self.shape.points[i][1] + self.shape.points[0][1]) / 2))
+
+            if self.show_name:
+                text = pygame.font.Font("./fonts/FreeSansBold.ttf", 20).render(f"{self.shape.name}", True, (0, 0, 0))
+                center_of_shape = (sum([i[0] for i in self.shape.points]) / len(self.shape.points), sum([i[1] for i in self.shape.points]) / len(self.shape.points))
+                center_of_shape = (center_of_shape[0] - text.get_width() / 2, center_of_shape[1] - text.get_height() / 2)
+                height_of_shape = max([i[1] for i in self.shape.points]) - min([i[1] for i in self.shape.points])
+                center_of_shape = (center_of_shape[0], center_of_shape[1] - height_of_shape / 1.5)
+                screen.blit(text, (center_of_shape[0], center_of_shape[1]))
         return None
 
+class Point(Sprite):
+    def __init__(self, color, position, radius):
+        self.color = color
+        self.radius = radius
+        super().__init__(None, position, None, None)
+
+    def _calculate_sprite(self, screen):
+        super().__init__(None, self.position, self.size, pygame.draw.circle(screen, self.color, self.position, self.radius))
+
+    def render(self, screen):
+        super().__init__(None, self.position, self.size, pygame.draw.circle(screen, self.color, self.position, self.radius))
+        return super().render(screen)
 
 class Line(Sprite):
     def __init__(self, start_pos, end_pos, color, width):

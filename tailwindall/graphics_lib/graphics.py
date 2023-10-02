@@ -1,4 +1,5 @@
 import platform
+import random
 import threading
 from collections import namedtuple
 from typing import overload, Union, Final
@@ -19,7 +20,6 @@ sys.path.append(parent_dir)
 import tailwindall.classes_lib.classes as classes
 import tailwindall.graphics_lib.objects as objects
 from tailwindall.graphics_lib.scenes import *
-
 
 
 class PygameWindow:
@@ -137,7 +137,6 @@ class PygameWindowStandalone(classes.BaseObject):
             if self._onTick is not None:
                 self._onTick(self)
 
-
             self._scenes[self._current_scene].render(self._screen)
 
             pygame.display.update()
@@ -146,14 +145,16 @@ class PygameWindowStandalone(classes.BaseObject):
     def get_scene(self):
         return self._scenes[self._current_scene]
 
+
 class Size(classes.BaseObject):
     def __init__(self, width, height):
         self.width, self.height = width, height
 
-class CartesianPlane(PygameWindowStandalone):
-    def __init__(self, name, resolution: util.resolution, background_color: util.string, line_color: util.string, center_color: util.string, gap: int = 50):
-        super().__init__(name, [Scene([])], resolution, background_color)
 
+class CartesianPlane(PygameWindowStandalone):
+    def __init__(self, name, resolution: util.resolution, background_color: util.string, line_color: util.string,
+                 center_color: util.string, gap: int = 50):
+        super().__init__(name, [Scene([])], resolution, background_color)
 
         for i in range(0, resolution.width, gap):
             self.get_scene().add_object(objects.Line((i, 0), (i, resolution.height), line_color, 1))
@@ -164,32 +165,114 @@ class CartesianPlane(PygameWindowStandalone):
             else:
                 self.get_scene().add_object(objects.Line((0, i), (resolution.width, i), center_color, 1))
 
-        self.get_scene().add_object(objects.Line((resolution.width / 2, 0), (resolution.width / 2, resolution.height), center_color, 1))
+        self.get_scene().add_object(
+            objects.Line((resolution.width / 2, 0), (resolution.width / 2, resolution.height), center_color, 1))
 
         self.rect = self._screen.get_rect()
 
         self.offset = list(self.rect.center)
 
+        self.gap = gap
+
+        self.user_input_data = {"selected_point": (0, 0)}
+        self.events = []
+
+    def main_loop(self, ontick=None):
+        self._main_loop(ontick)
+
+    def _main_loop(self, ontick=None):
+        while self.main_loop_running:
+            self._screen.fill(pygame.Color(self._background_color))
+            self.events = pygame.event.get()
+            for event in self.events:
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            self._timer += self._clock.tick(60) / 1000
+
+            if self._onTick is not None:
+                self._onTick(self)
+            if ontick is not None:
+                ontick(self)
+
+            self._scenes[self._current_scene].render(self._screen)
+
+            pygame.draw.circle(self._screen, pygame.Color("green"), self.get_mouse_position_on_plane(), 5)
+
+            pygame.display.update()
+            pygame.display.flip()
+
+    def get_mouse_position_on_plane(self):
+        mouse_pos = pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]
+        # snap to the grid
+        mouse_pos = (round(mouse_pos[0] / self.gap) * self.gap, round(mouse_pos[1] / self.gap) * self.gap)
+        # invert the diagonals
+        self.user_input_data["selected_point"] = (mouse_pos[0] - self.offset[0], self.offset[1] - mouse_pos[1])
+
+        return mouse_pos
+
     def add_object(self, obj: Union[objects.GameObject, objects.Rectangle, objects.Line, objects.Polygon]):
-        if not type(obj) == objects.Polygon:
+        if not type(obj) == objects.Polygon and not type(obj) == objects.Point:
             obj.position = (obj.position[0] + self._resolution.width / 2, obj.position[1] + self._resolution.height / 2)
             obj.position = (obj.position[0] - obj.size[0] / 2, obj.position[1] - obj.size[1] / 2)
-        else:
+        if type(obj) == objects.Polygon:
             points = namedtuple("points", ["zero", "one", "two", "three"])
             old_points = points(obj.points[0], obj.points[1], obj.points[2], obj.points[3])
             for i in range(len(obj.points)):
-                #obj.points[i] = (obj.points[i][0] + self._resolution.width / 2, obj.points[i][1] + self._resolution.height / 2)
+                # obj.points[i] = (obj.points[i][0] + self._resolution.width / 2, obj.points[i][1] + self._resolution.height / 2)
                 # convert list of catesian points to pygame points
                 obj.points[i] = (round(obj.points[i][0] + self.offset[0]), round(self.offset[1] - obj.points[i][1]))
 
-                # the code above does not work
-
-
-            print([f"Old {old_points.index(i)}: {i}" for i in old_points])
-            print([f"New {obj.points.index(i)}: {i}" for i in obj.points])
-        #obj._calculate_sprite(self._screen)
+        if type(obj) == objects.Point:
+            obj.position = (round(obj.position[0] + self.offset[0]), round(self.offset[1] - obj.position[1]))
 
         self.get_scene().add_object(obj, priority=0)
+
+    def is_clicking(self, right=False):
+        if right:
+            return pygame.mouse.get_pressed()[2]
+        else:
+            return pygame.mouse.get_pressed()[0]
+
+    def clear_points(self):
+        for i in self.get_scene().objects:
+            if type(i) == objects.Point:
+                self.get_scene().objects.remove(i)
+                self.get_scene().render(self._screen)
+        for i in self.get_scene().objects:
+            if type(i) == objects.Point:
+                self.get_scene().objects.remove(i)
+                self.get_scene().render(self._screen)
+        for i in self.get_scene().objects:
+            if type(i) == objects.Point:
+                self.get_scene().objects.remove(i)
+                self.get_scene().render(self._screen)
+
+    def clear_polygons(self):
+        for i in self.get_scene().objects:
+            if type(i) == objects.Polygon:
+                self.get_scene().objects.remove(i)
+                self.get_scene().render(self._screen)
+        for i in self.get_scene().objects:
+            if type(i) == objects.Polygon:
+                self.get_scene().objects.remove(i)
+                self.get_scene().render(self._screen)
+        for i in self.get_scene().objects:
+            if type(i) == objects.Polygon:
+                self.get_scene().objects.remove(i)
+                self.get_scene().render(self._screen)
+
+
+class Colors:
+    @classmethod
+    def random(cls):
+        return cls.random_rgb()
+
+    @classmethod
+    def random_rgb(cls):
+        return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+
 
 if __name__ == '__main__':
     import tailwindall.maths_lib.shapes as shapes
@@ -203,11 +286,31 @@ if __name__ == '__main__':
         (1): "Trapezium"
     })
 
-    win = CartesianPlane("Test", util.resolution(500, 500), "white", "black", "red")
+    win = CartesianPlane("Math CAT Investigation", util.resolution(1000, 500), "white", "black", "red")
 
-    win.add_object(objects.Polygon(shapes.get_shape_from_points(points=[(0, 0), (0, 100), (200, 100), (200, 0)], rules=rules, clockwise=False), "blue", (0, 0), show_points=True, points_color="red", points_radius=5, show_angles=True, show_side_lengths=True, gap=50))
+    points_selected = []
 
-    win.add_object(objects.Polygon(shapes.get_shape_from_points(points=[(-100, 0), (-100, -100), (-200, -100), (-200, 0)], rules=rules, clockwise=False), "purple", (0, 0), show_points=True, points_color="red", points_radius=5, show_angles=True, show_side_lengths=True, gap=50))
 
-    win.main_loop()
+    def get_point_select(window):
+        for event in window.events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    print(window.user_input_data["selected_point"])
+                    window.add_object(objects.Point("red", window.user_input_data["selected_point"], 5))
+                    points_selected.append(window.user_input_data["selected_point"])
 
+                    if len(points_selected) == 4:
+                        window.add_object(objects.Polygon(
+                            shapes.get_shape_from_points(points=points_selected, rules=rules, clockwise=False),
+                            Colors.random_rgb(), (0, 0), show_points=True, points_color="red", points_radius=5,
+                            show_angles=True, show_side_lengths=True, show_name=True, gap=50))
+                        points_selected.clear()
+                        window.clear_points()
+
+                elif event.button == 2:
+                    points_selected.clear()
+                    window.clear_polygons()
+                    window.clear_points()
+
+
+    win.main_loop(ontick=get_point_select)
