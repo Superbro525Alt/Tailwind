@@ -138,11 +138,14 @@ class ImageScale:
 
 
 def exec_list(functions, final=None):
-    for func in functions:
-        func()
+    try:
+        for func in functions:
+            func()
 
-    if final is not None:
-        final()
+        if final is not None:
+            final()
+    except tkinter.TclError:
+        pass
 
 class Style:
     def __init__(self, classes, tags, ids):

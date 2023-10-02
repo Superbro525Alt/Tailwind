@@ -6,3 +6,4 @@ screeninfo
 numpy
 Flask
 quantumrandom
+pyglet

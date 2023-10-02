@@ -23,7 +23,9 @@ class Shape(classes.BaseObject):
 
 
 
-        self.name = ShapeName.find(self, rules)
+        self.name, self.proofs = ShapeName.find(self, rules)
+
+        self.rules = rules
 
     def calculate(self) -> None:
         s = ShapeSorter.sort(self, self.kwargs.get("clockwise", True))
@@ -37,33 +39,16 @@ class Shape(classes.BaseObject):
     def __str__(self) -> str:
         return super().__str__()
 
+    def data(self):
+        #print(self.proofs, self.name)
+        return f"""{self.rules.get_text(self.proofs)}""", f"Shape - {self.name} - Proofs:"
+
 
 class ShapeName(classes.BaseObject):
     @classmethod
-    def find(cls, shape: Shape, rules: classes.Rules = None) -> str:
+    def find(cls, shape: Shape, rules: classes.Rules = None) -> tuple[str, list[int]]:
         points = shape.points
         if rules is not None:
-            print(len(points))
-            # if len(points) == 4:
-            #     # quadrilateral
-            #     if shape.angles.count(90) == 4:
-            #         if shape.sides.count(shape.sides[0]) == 4:
-            #             return "Square"
-            #         else:
-            #             if shape.sides.count(shape.sides[0]) == 2 and shape.sides.count(shape.sides[1]) == 2:
-            #                 return "Rectangle"
-            #
-            #     elif shape.angles.count(90) == 2:
-            #         if shape.sides.count(shape.sides[0]) == 2 and shape.sides.count(shape.sides[1]) == 2:
-            #             return "Parallelogram"
-            #         else:
-            #             return "Trapezium"
-            #
-            #     elif shape.angles.count(90) == 0:
-            #         return "Kite"
-            #
-            #     else:
-            #         return "Quadrilateral"
 
             PROOFS: list[int] = []
 
@@ -188,12 +173,13 @@ class ShapeName(classes.BaseObject):
 
             out = rules.get_result(PROOFS)
             if out is not None:
-                return out
+                print(out)
+                return out, PROOFS
             print("No shape found")
-            return util.null
+            return util.null, []
         else:
-            print("No rules found")
-            return util.null
+            #print("No rules found")
+            return util.null, []
 
 
 class ShapeSorter(classes.BaseObject):
@@ -235,7 +221,6 @@ def get_random_point(current_points: list[tuple[float, float]]) -> tuple[float, 
     :return: A random point.
     """
     point = random.randint(1, 4), random.randint(1, 4)
-    print(point)
     if point in current_points:
         return get_random_point(current_points)
     else:
@@ -284,7 +269,6 @@ if util.is_main_thread(__name__):
         global shape
         shape = get_shape_from_points(points=[], clockwise=False)
         sleep(5)
-        print(shape)
 
     while True:
         for event in pygame.event.get():

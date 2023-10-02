@@ -154,6 +154,8 @@ class Window:
 
         self.destroyed = True
 
+        self._window.destroy()
+
     def add_on_exit_function(self, func):
         self._on_exit_functions.append(func)
 

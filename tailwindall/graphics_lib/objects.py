@@ -10,6 +10,8 @@ import tailwindall.classes_lib.classes as classes
 import tailwindall.maths_lib.shapes as shapes
 import tailwindall.graphics_lib.events as events
 
+pygame.font.init()
+
 class Sprite(classes.BaseObject):
     def __init__(self, image, position, size, sprite=None):
         self.image = image
@@ -89,9 +91,10 @@ class Polygon(Sprite):
         return None
 
 class Point(Sprite):
-    def __init__(self, color, position, radius):
+    def __init__(self, color, position, radius, pos_on_plane=None):
         self.color = color
         self.radius = radius
+        self.pos_on_plane = pos_on_plane
         super().__init__(None, position, None, None)
 
     def _calculate_sprite(self, screen):
@@ -99,6 +102,11 @@ class Point(Sprite):
 
     def render(self, screen):
         super().__init__(None, self.position, self.size, pygame.draw.circle(screen, self.color, self.position, self.radius))
+        if self.pos_on_plane is not None:
+            text = pygame.font.Font("./fonts/FreeSansBold.ttf", 20).render(f"{self.pos_on_plane}", True, (0, 0, 0))
+            pos = (self.position[0] - text.get_width() / 2, self.position[1] - text.get_height() / 2)
+            pos = (pos[0], pos[1] - text.get_height() / 1.5)
+            screen.blit(text, pos)
         return super().render(screen)
 
 class Line(Sprite):
