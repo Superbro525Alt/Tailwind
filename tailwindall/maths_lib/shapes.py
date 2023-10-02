@@ -97,60 +97,70 @@ class ShapeName(classes.BaseObject):
             elif shape.sides.count(shape.sides[0]) == 4:
                 PROOFS.append(5)
 
+            try:
+                # if diagonals intersect on another at 90
+                # 1. get the 2 points of each diagonal
+                diagonal1 = [shape.points[0], shape.points[2]]
+                diagonal2 = [shape.points[1], shape.points[3]]
 
-            # if diagonals intersect on another at 90
-            # 1. get the 2 points of each diagonal
-            diagonal1 = [shape.points[0], shape.points[2]]
-            diagonal2 = [shape.points[1], shape.points[3]]
+                # 2. get the midpoint of each diagonal
+                midpoint1 = ((diagonal1[0][0] + diagonal1[1][0]) / 2, (diagonal1[0][1] + diagonal1[1][1]) / 2)
+                midpoint2 = ((diagonal2[0][0] + diagonal2[1][0]) / 2, (diagonal2[0][1] + diagonal2[1][1]) / 2)
 
-            # 2. get the midpoint of each diagonal
-            midpoint1 = ((diagonal1[0][0] + diagonal1[1][0]) / 2, (diagonal1[0][1] + diagonal1[1][1]) / 2)
-            midpoint2 = ((diagonal2[0][0] + diagonal2[1][0]) / 2, (diagonal2[0][1] + diagonal2[1][1]) / 2)
+    # 3. get the gradient of each diagonal
+                gradient1 = (diagonal1[1][1] - diagonal1[0][1]) / (diagonal1[1][0] - diagonal1[0][0])
+                gradient2 = (diagonal2[1][1] - diagonal2[0][1]) / (diagonal2[1][0] - diagonal2[0][0])
 
-# 3. get the gradient of each diagonal
-            gradient1 = (diagonal1[1][1] - diagonal1[0][1]) / (diagonal1[1][0] - diagonal1[0][0])
-            gradient2 = (diagonal2[1][1] - diagonal2[0][1]) / (diagonal2[1][0] - diagonal2[0][0])
+                # 4. get the gradient of the line perpendicular to each diagonal
+                gradient1_perpendicular = -1 / gradient1
+                gradient2_perpendicular = -1 / gradient2
 
-            # 4. get the gradient of the line perpendicular to each diagonal
-            gradient1_perpendicular = -1 / gradient1
-            gradient2_perpendicular = -1 / gradient2
+                # 6. get the point of intersection of the 2 lines (no util function for this)
+                # 6.1. get the x value of the point of intersection
+                x = (midpoint2[1] - midpoint1[1] + gradient1_perpendicular * midpoint1[0] - gradient2_perpendicular * midpoint2[0]) / (gradient1_perpendicular - gradient2_perpendicular)
 
-            # 6. get the point of intersection of the 2 lines (no util function for this)
-            # 6.1. get the x value of the point of intersection
-            x = (midpoint2[1] - midpoint1[1] + gradient1_perpendicular * midpoint1[0] - gradient2_perpendicular * midpoint2[0]) / (gradient1_perpendicular - gradient2_perpendicular)
+                # 6.2. get the y value of the point of intersection
+                y = gradient1_perpendicular * (x - midpoint1[0]) + midpoint1[1]
 
-            # 6.2. get the y value of the point of intersection
-            y = gradient1_perpendicular * (x - midpoint1[0]) + midpoint1[1]
+                # 6.3. get the point of intersection
+                point_of_intersection = (x, y)
 
-            # 6.3. get the point of intersection
-            point_of_intersection = (x, y)
+                # 7. get the distance between the point of intersection and the midpoint of each diagonal
+                distance1 = math.sqrt((midpoint1[0] - point_of_intersection[0]) ** 2 + (midpoint1[1] - point_of_intersection[1]) ** 2)
+                distance2 = math.sqrt((midpoint2[0] - point_of_intersection[0]) ** 2 + (midpoint2[1] - point_of_intersection[1]) ** 2)
 
-            # 7. get the distance between the point of intersection and the midpoint of each diagonal
-            distance1 = math.sqrt((midpoint1[0] - point_of_intersection[0]) ** 2 + (midpoint1[1] - point_of_intersection[1]) ** 2)
-            distance2 = math.sqrt((midpoint2[0] - point_of_intersection[0]) ** 2 + (midpoint2[1] - point_of_intersection[1]) ** 2)
+                # the above code is also true for rectangles, so we need to check if the diagonals are equal in length
+                # if shape.sides[0] == shape.sides[2] and shape.sides[1] == shape.sides[3]:
+                #     if distance1 == 0 and distance2 == 0:
+                #         if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
+                #             if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
+                #                 PROOFS.append(6)
 
-            # 8. if the distance between the point of intersection and the midpoint of each diagonal is 0, then the diagonals intersect at 90
-            if distance1 == 0 and distance2 == 0:
-                PROOFS.append(6)
-
-
-            # if one diagonal bicects the other
-
-            # if one diagonals line intersects the mid point of the other diagonal
-            # we already have all of tje required variables from the previous proof
-            if distance1 == 0:
-                if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
-                    PROOFS.append(7)
-            elif distance2 == 0:
-                if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
-                    PROOFS.append(7)
+                # if diagonals intersect at 90
+                if angles.get_angle_from_lines(diagonal1, diagonal2) == 90:
+                    PROOFS.append(6)
 
 
-            # if both diagonals bisect each other
-            if distance1 == 0 and distance2 == 0:
-                if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
+                # if one diagonal bicects the other
+
+                # if one diagonals line intersects the mid point of the other diagonal
+                # we already have all of tje required variables from the previous proof
+                if distance1 == 0:
                     if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
-                        PROOFS.append(8)
+                        PROOFS.append(7)
+                elif distance2 == 0:
+                    if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
+                        PROOFS.append(7)
+
+
+                # if both diagonals bisect each other
+                if distance1 == 0 and distance2 == 0:
+                    if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
+                        if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
+                            PROOFS.append(8)
+
+            except ZeroDivisionError:
+                pass
 
             # find if one diagonal bisects the vertex angles through which it passes.
             # to do this, we need to find the vertex angles
@@ -267,7 +277,6 @@ if util.is_main_thread(__name__):
 
     pygame.display.set_caption("Maths CAT Investigation")
 
-    global shape
     #shape = get_shape_from_points(points=[], clockwise=False)
     shape = get_shape_from_points(points=[(2, 2), (2, 4), (5, 2), (5, 4)], clockwise=False)
 
