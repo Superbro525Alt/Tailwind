@@ -1,3 +1,6 @@
+from typing import overload
+
+
 class BaseObject:
     """
     The base object for all objects in the library.
@@ -112,8 +115,9 @@ class Rules(BaseObject):
     :return: A rules object.
     """
 
-    def __init__(self, rules: dict, *args, **kwargs) -> None:
+    def __init__(self, rules: dict, id_to_text: dict, *args, **kwargs) -> None:
         self.rules = rules
+        self.id_to_text = id_to_text
 
     def get_result(self, ids: list[int]) -> any:
         """
@@ -123,7 +127,6 @@ class Rules(BaseObject):
         :return: The result.
         """
 
-        print(ids)
         if tuple(ids) in self.rules:
             return self.rules[tuple(ids)]
         return None
@@ -146,3 +149,35 @@ class Rules(BaseObject):
         :return: None
         """
         del self.rules[ids]
+
+
+    def get_text(self, _id: int | list[int]) -> str | list[str]:
+        """
+        Gets the text from the id.
+
+        :param _id: The id.
+        :return: The text.
+        """
+
+        if type(_id) == list:
+            return "\n".join([self.id_to_text[id] for id in _id]) if len(_id) > 0 else "No proofs"
+        return self.id_to_text[_id]
+
+    def add_text(self, _id: int, text: str) -> None:
+        """
+        Adds a text to the rules.
+
+        :param _id: The id.
+        :param text: The text.
+        :return: None
+        """
+        self.id_to_text[_id] = text
+
+    def remove_text(self, _id: int) -> None:
+        """
+        Removes a text from the rules.
+
+        :param _id: The id.
+        :return: None
+        """
+        del self.id_to_text[_id]

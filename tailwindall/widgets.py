@@ -17,9 +17,9 @@ import tailwindall.util as util
 
 
 class Button():
-    def __init__(self, window, command, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
+    def __init__(self, window, text, command, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
-            self._ctk = customtkinter.CTkButton(master=window(), command=command, **kwargs)
+            self._ctk = customtkinter.CTkButton(master=window(), text=text, command=command, **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
 
             self.window = window
