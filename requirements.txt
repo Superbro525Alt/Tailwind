@@ -9,3 +9,4 @@ quantumrandom
 pyglet
 opencv-python
 av
+nerdfonts

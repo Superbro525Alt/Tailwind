@@ -154,6 +154,7 @@ class PygameWindowStandalone(classes.BaseObject):
         return self._scenes[self._current_scene]
 
     def show_popup(self, title, message, header, message_font=None, title_font=None):
+        t = threading.Thread(target=lambda: popup.MessageBox("Loading Proofs...", "Loading Proofs..."), daemon=True).start()
         popup.InfoPopup(title, message, header, message_font, title_font).display()
 
 
@@ -283,8 +284,8 @@ if __name__ == '__main__':
         (1, 2, 3, 5, 6, 7, 8, 9, 10): "Rhombus",
         (1, 2, 4, 7, 8, 9, 10, 11): "Rectangle",
         (1, 2, 7, 8): "Parallelogram",
-        (5, 6, 7, 9): "Kite",
-        (1): "Trapezium"
+        (5, 9, 10): "Kite",
+        (9, 10): "Trapezium"
     }, {
         1: "One pair of parallel sides",
         2: "Two pairs of parallel sides",
@@ -318,7 +319,10 @@ if __name__ == '__main__':
                             Colors.random_rgb(), (0, 0), show_points=True, points_color="red", points_radius=5,
                             show_angles=True, show_side_lengths=True, show_name=True, gap=50))
 
-                        threading.Thread(target=lambda: window.show_popup(f"Proofs - {shape.name if shape.name is not None else 'None'}", shape.data()[0], shape.data()[1]), daemon=True).start()
+                        t = threading.Thread(target=lambda: window.show_popup(f"Proofs - {shape.name if shape.name is not None else 'None'}", shape.data()[0], shape.data()[1]))
+                        t.setDaemon(True)
+
+                        t.start()
 
                         points_selected.clear()
                         window.clear_objects(objects.Point)

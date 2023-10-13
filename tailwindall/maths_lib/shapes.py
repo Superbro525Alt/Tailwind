@@ -54,33 +54,33 @@ class ShapeName(classes.BaseObject):
 
             # if parallel sides
             if shape.points[0][0] == shape.points[1][0] and shape.points[2][0] == shape.points[3][0]:
-                PROOFS.append(1)
+                PROOFS.append({"id": 1, "data": "AB, CD"})
             elif shape.points[0][1] == shape.points[1][1] and shape.points[2][1] == shape.points[3][1]:
-                PROOFS.append(1)
+                PROOFS.append({"id": 1, "data": "BA, CD"})
 
             # if 2 pairs of parallel sides
             if shape.points[0][0] == shape.points[1][0] and shape.points[2][0] == shape.points[3][0]:
                 if shape.points[0][1] == shape.points[3][1] and shape.points[1][1] == shape.points[2][1]:
-                    PROOFS.append(2)
+                    PROOFS.append({"id": 2, "data": "AB, CD and AD, BC"})
             elif shape.points[0][1] == shape.points[1][1] and shape.points[2][1] == shape.points[3][1]:
                 if shape.points[0][0] == shape.points[3][0] and shape.points[1][0] == shape.points[2][0]:
-                    PROOFS.append(2)
+                    PROOFS.append({"id": 2, "data": "BA, CD and DA, CB"})
 
 
 
             # if all sides are equal
             if shape.sides.count(shape.sides[0]) == 4:
-                PROOFS.append(3)
+                PROOFS.append({"id": 3, "data": f"AB, BC, CD, DA = {shape.sides[0]}"})
 
             # if all angles 90
             if shape.angles.count(90) == 4:
-                PROOFS.append(4)
+                PROOFS.append({"id": 4, "data": "ABC, BCD, CDA, DAB = 90"})
 
             # if 2 of adjacent equal sides
             if shape.sides[0] == shape.sides[1] and shape.sides[2] == shape.sides[3]:
-                PROOFS.append(5)
+                PROOFS.append({"id": 5, "data": "AB = BC and CD = DA"})
             elif shape.sides.count(shape.sides[0]) == 4:
-                PROOFS.append(5)
+                PROOFS.append({"id": 5, "data": "AB = BC and CD = DA"})
 
             try:
                 # if diagonals intersect on another at 90
@@ -123,7 +123,7 @@ class ShapeName(classes.BaseObject):
 
                 # if diagonals intersect at 90
                 if angles.get_angle_from_lines(diagonal1, diagonal2) == 90:
-                    PROOFS.append(6)
+                    PROOFS.append({"id": 6, "data": "AC, BD"})
 
 
                 # if one diagonal bicects the other
@@ -132,17 +132,17 @@ class ShapeName(classes.BaseObject):
                 # we already have all of tje required variables from the previous proof
                 if distance1 == 0:
                     if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
-                        PROOFS.append(7)
+                        PROOFS.append({"id": 7, "data": "AC, BD"})
                 elif distance2 == 0:
                     if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
-                        PROOFS.append(7)
+                        PROOFS.append({"id": 7, "data": "AC, BD"})
 
 
                 # if both diagonals bisect each other
                 if distance1 == 0 and distance2 == 0:
                     if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
                         if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
-                            PROOFS.append(8)
+                            PROOFS.append({"id": 8, "data": "AC, BD"})
 
             except ZeroDivisionError:
                 pass
@@ -161,22 +161,21 @@ class ShapeName(classes.BaseObject):
             midpoint_BD = ((shape.points[1][0] + shape.points[3][0]) / 2, (shape.points[1][1] + shape.points[3][1]) / 2)
 
             if angles.does_diagonal_bisect(midpoint_AC, diagonal1) or angles.does_diagonal_bisect(midpoint_BD, diagonal2):
-                PROOFS.append(9)
+                PROOFS.append({"id": 9, "data": "AC, BD"})
 
             # Both diagonals bisect the vertex angles through which they pass
             if angles.does_diagonal_bisect(midpoint_AC, diagonal1) and angles.does_diagonal_bisect(midpoint_BD, diagonal2):
-                PROOFS.append(10)
+                PROOFS.append({"id": 10, "data": "AC, BD"})
 
             # Diagonals are equal in length
             if shape.sides[0] == shape.sides[2] and shape.sides[1] == shape.sides[3]:
-                PROOFS.append(11)
+                PROOFS.append({"id": 11, "data": "AC = BD"})
 
             out = rules.get_result(PROOFS)
             if out is not None:
-                print(out)
                 return out, PROOFS
             print("No shape found")
-            return util.null, []
+            return util.null, PROOFS
         else:
             #print("No rules found")
             return util.null, []

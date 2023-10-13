@@ -14,6 +14,7 @@ class BaseObject:
 
     :return: A base object used for inheritance
     """
+
     def __str__(self) -> str:
         return f"{self.__class__.__name__}({', '.join([f'{key}={value}' for key, value in self.__dict__.items()])})"
 
@@ -52,14 +53,15 @@ class BaseObject:
     def __enter__(self) -> object:
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb)  -> None:
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         pass
 
-    def __del__(self)  -> None:
+    def __del__(self) -> None:
         pass
 
     def __init__(self, *args, **kwargs) -> None:
         pass
+
 
 class Constants(BaseObject):
     """
@@ -78,9 +80,9 @@ class Constants(BaseObject):
 
     :return: A constants object.
     """
+
     def __init__(self, initial: dict, *args, **kwargs) -> None:
         self.constants = initial
-
 
     def get_value(self, key: str) -> any:
         """
@@ -101,6 +103,7 @@ class Constants(BaseObject):
         """
         self.constants[key] = value
 
+
 class Rules(BaseObject):
     """
     A rules object.
@@ -119,7 +122,7 @@ class Rules(BaseObject):
         self.rules = rules
         self.id_to_text = id_to_text
 
-    def get_result(self, ids: list[int]) -> any:
+    def get_result(self, ids: list[dict[str: list[int], str: list[str]]]) -> any:
         """
         Gets the result from the rules.
 
@@ -127,8 +130,20 @@ class Rules(BaseObject):
         :return: The result.
         """
 
-        if tuple(ids) in self.rules:
-            return self.rules[tuple(ids)]
+        # if tuple(ids['ids']) in self.rules:
+        #     return self.rules[tuple(ids['ids'])]
+
+        print(ids)
+
+        _r = []
+
+        for rule in ids:
+            _r.append(rule['id'])
+
+        print(tuple(_r))
+        if tuple(_r) in self.rules:
+            return self.rules[tuple(_r)]
+
         return None
 
     def add_rule(self, ids: list[int], result: any) -> None:
@@ -150,7 +165,6 @@ class Rules(BaseObject):
         """
         del self.rules[ids]
 
-
     def get_text(self, _id: int | list[int]) -> str | list[str]:
         """
         Gets the text from the id.
@@ -160,7 +174,13 @@ class Rules(BaseObject):
         """
 
         if type(_id) == list:
-            return "\n".join([self.id_to_text[id] for id in _id]) if len(_id) > 0 else "No proofs"
+            #return "\n".join([self.id_to_text[id['id']] + " => " + id['data'] for id in _id]) if len(_id) > 0 else "No proofs"
+            return TextTools.align_lists_of_strings([self.id_to_text[id['id']] for id in _id], [id['data'] for id in _id]) if len(_id) > 0 else "No proofs"
+
+
+
+
+
         return self.id_to_text[_id]
 
     def add_text(self, _id: int, text: str) -> None:
@@ -181,3 +201,31 @@ class Rules(BaseObject):
         :return: None
         """
         del self.id_to_text[_id]
+
+class TextTools:
+    @classmethod
+    def align_lists_of_strings(cls, s1: list[str], s2: list[str]):
+        # take in ["s ", "a"] and [" a", "b"] and output "s  a\n a b"
+
+        # get the longest string
+        longest = max([len(s) for s in s1 + s2])
+
+        # add spaces to the end of each string
+
+        s1 = [s + " " * (longest - len(s)) for s in s1]
+
+        s2 = [s + " " * (longest - len(s)) for s in s2]
+
+        # add "  " to the end of each string
+        s1 = [s + "  " for s in s1]
+        s2 = ["  " + s for s in s2]
+
+        # strip all of the spaces off the end of each completed string
+
+        strings_final = "\n".join([f"{s1[i]}{s2[i]}" for i in range(len(s1))])
+
+        print(strings_final)
+
+
+        return strings_final
+
