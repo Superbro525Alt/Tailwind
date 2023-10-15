@@ -154,7 +154,6 @@ class PygameWindowStandalone(classes.BaseObject):
         return self._scenes[self._current_scene]
 
     def show_popup(self, title, message, header, message_font=None, title_font=None):
-        t = threading.Thread(target=lambda: popup.MessageBox("Loading Proofs...", "Loading Proofs..."), daemon=True).start()
         popup.InfoPopup(title, message, header, message_font, title_font).display()
 
 
@@ -179,6 +178,10 @@ class CartesianPlane(PygameWindowStandalone):
 
         self.get_scene().add_object(
             objects.Line((resolution.width / 2, 0), (resolution.width / 2, resolution.height), center_color, 1))
+
+        self.line_color = line_color
+        self.center_color = center_color
+        self.resolution = resolution
 
         self.rect = self._screen.get_rect()
 
@@ -222,13 +225,17 @@ class CartesianPlane(PygameWindowStandalone):
             pygame.display.flip()
 
     def zoom(self, amount: int):
-        self.gap += amount
+        #self.gap += amount
+
+        #self.redraw_plane()
+        pass
 
 
     def get_mouse_position_on_plane(self):
         mouse_pos = pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]
         # snap to the grid
-        mouse_pos = (round(mouse_pos[0] / self.gap) * self.gap, round(mouse_pos[1] / self.gap) * self.gap)
+        gap = self.gap if self.gap != 0 else 50
+        mouse_pos = (round(mouse_pos[0] / gap) * gap, round(mouse_pos[1] / gap) * gap)
         # invert the diagonals
         self.user_input_data["selected_point"] = (mouse_pos[0] - self.offset[0], self.offset[1] - mouse_pos[1])
 
@@ -267,7 +274,26 @@ class CartesianPlane(PygameWindowStandalone):
                     self.get_scene().render(self._screen)
 
     def screen_to_plane(self, pos: tuple[int, int]):
-        return (pos[0] / self.gap, pos[1] / self.gap)
+        gap = self.gap if self.gap != 0 else 50
+        return (pos[0] / gap, pos[1] / gap)
+
+    def redraw_plane(self):
+        print("Redrawing plane...")
+        self.clear_objects(objects.Line)
+        print(self.gap)
+        gap = self.gap if self.gap != 0 else 50
+        print(gap)
+        for i in range(0, self.resolution.width, gap):
+            self.get_scene().add_object(objects.Line((i, 0), (i, self.resolution.height), self.line_color, 1))
+
+        for i in range(0, self.resolution.height, gap):
+            if not i == self.resolution.height / 2:
+                self.get_scene().add_object(objects.Line((0, i), (self.resolution.width, i), self.line_color, 1))
+            else:
+                self.get_scene().add_object(objects.Line((0, i), (self.resolution.width, i), self.center_color, 1))
+
+        self.get_scene().add_object(
+            objects.Line((self.resolution.width / 2, 0), (self.resolution.width / 2, self.resolution.height), self.center_color, 1))
 
 
 class Colors:
@@ -330,12 +356,14 @@ if __name__ == '__main__':
 
                         points_selected.clear()
                         window.clear_objects(objects.Point)
-
-
                 elif event.button == 2:
                     points_selected.clear()
                     window.clear_objects(objects.Polygon)
                     window.clear_objects(objects.Point)
+                if event.button == 4:
+                    window.zoom(50)
+                elif event.button == 5:
+                    window.zoom(-50)
 
 
 
