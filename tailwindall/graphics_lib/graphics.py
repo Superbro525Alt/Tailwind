@@ -6,7 +6,6 @@ import tkinter as tk
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 
-
 import platform
 import logging
 
@@ -22,7 +21,6 @@ from _distutils_hack import override
 
 import tailwindall.util as util
 import pygame
-
 
 import tailwindall.classes_lib.classes as classes
 import tailwindall.graphics_lib.objects as objects
@@ -215,8 +213,10 @@ class CartesianPlane(PygameWindowStandalone):
 
             pygame.draw.circle(self._screen, pygame.Color("green"), self.get_mouse_position_on_plane(), 5)
             # add text showing to corresponding cartesian plane point
-            text = pygame.font.Font("./fonts/FreeSansBold.ttf", 20).render(f"{self.screen_to_plane(self.user_input_data['selected_point'])}", True, (0, 0, 0))
-            pos = (self.get_mouse_position_on_plane()[0] - text.get_width() / 2, self.get_mouse_position_on_plane()[1] - text.get_height() / 2)
+            text = pygame.font.Font("./fonts/FreeSansBold.ttf", 20).render(
+                f"{self.screen_to_plane(self.user_input_data['selected_point'])}", True, (0, 0, 0))
+            pos = (self.get_mouse_position_on_plane()[0] - text.get_width() / 2,
+                   self.get_mouse_position_on_plane()[1] - text.get_height() / 2)
             # move pos a bit up dynamically
             pos = (pos[0], pos[1] - text.get_height() / 1.5)
 
@@ -225,11 +225,10 @@ class CartesianPlane(PygameWindowStandalone):
             pygame.display.flip()
 
     def zoom(self, amount: int):
-        #self.gap += amount
+        # self.gap += amount
 
-        #self.redraw_plane()
+        # self.redraw_plane()
         pass
-
 
     def get_mouse_position_on_plane(self):
         mouse_pos = pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]
@@ -241,7 +240,8 @@ class CartesianPlane(PygameWindowStandalone):
 
         return mouse_pos
 
-    def add_object(self, obj: Union[objects.GameObject, objects.Rectangle, objects.Line, objects.Polygon, objects.Point]):
+    def add_object(self,
+                   obj: Union[objects.GameObject, objects.Rectangle, objects.Line, objects.Polygon, objects.Point]):
         if not type(obj) == objects.Polygon and not type(obj) == objects.Point:
             obj.position = (obj.position[0] + self._resolution.width / 2, obj.position[1] + self._resolution.height / 2)
             obj.position = (obj.position[0] - obj.size[0] / 2, obj.position[1] - obj.size[1] / 2)
@@ -266,6 +266,7 @@ class CartesianPlane(PygameWindowStandalone):
 
     def clear_objects(self, t, rep=20):
         threading.Thread(target=lambda: self._clear_objects(t, rep), daemon=True).start()
+
     def _clear_objects(self, t, rep=20):
         for j in range(rep):
             for i in self.get_scene().objects:
@@ -293,7 +294,8 @@ class CartesianPlane(PygameWindowStandalone):
                 self.get_scene().add_object(objects.Line((0, i), (self.resolution.width, i), self.center_color, 1))
 
         self.get_scene().add_object(
-            objects.Line((self.resolution.width / 2, 0), (self.resolution.width / 2, self.resolution.height), self.center_color, 1))
+            objects.Line((self.resolution.width / 2, 0), (self.resolution.width / 2, self.resolution.height),
+                         self.center_color, 1))
 
 
 class Colors:
@@ -339,7 +341,8 @@ if __name__ == '__main__':
         for event in window.events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    window.add_object(objects.Point("red", window.user_input_data["selected_point"], 5, window.screen_to_plane(window.user_input_data["selected_point"])))
+                    window.add_object(objects.Point("red", window.user_input_data["selected_point"], 5,
+                                                    window.screen_to_plane(window.user_input_data["selected_point"])))
                     points_selected.append(window.user_input_data["selected_point"])
 
                     if len(points_selected) == 4:
@@ -349,7 +352,9 @@ if __name__ == '__main__':
                             Colors.random_rgb(), (0, 0), show_points=True, points_color="red", points_radius=5,
                             show_angles=True, show_side_lengths=True, show_name=True, gap=50))
 
-                        t = threading.Thread(target=lambda: window.show_popup(f"Proofs - {shape.name if shape.name is not None else 'None'}", shape.data()[0], shape.data()[1]))
+                        t = threading.Thread(target=lambda: window.show_popup(
+                            f"Proofs - {shape.name if shape.name is not None else 'None'}", shape.data()[0],
+                            shape.data()[1]))
                         t.setDaemon(True)
 
                         t.start()
@@ -364,7 +369,6 @@ if __name__ == '__main__':
                     window.zoom(50)
                 elif event.button == 5:
                     window.zoom(-50)
-
 
 
     win.main_loop(ontick=get_point_select)
