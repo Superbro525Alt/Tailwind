@@ -32,15 +32,22 @@ class InfoPopup:
             threading.Thread(target=self._run_windows, daemon=True).start()
     def _run_windows(self):
         try:
-            win = window.Window(None, self.title, util.WindowProperties(True, util.resolution(2560, 1080), util.resolution(600, 500)))
             def kill_window(_window):
                 _window.quit()
-                del _window
+
+            win = window.Window(None, self.title, util.WindowProperties(True, util.resolution(2560, 1080), util.resolution(1000, 500)))
 
             win.add_widget(widgets.Label(win, self.header, font=self.title_font), util.PlaceData(0.5, 0.2, anchor=util.CenterAnchor.get_anchor()))
-            win.add_widget(widgets.Label(win, self.message, font=self.message_font), util.PlaceData(0.5, 0.5, anchor=util.CenterAnchor.get_anchor()))
+            l = widgets.Label(win, self.message, font=self.message_font)
+
+            win.add_widget(l, util.PlaceData(0.5, 0.5, anchor=util.CenterAnchor.get_anchor()))
+
             win.add_widget(widgets.Button(win, "Ok", lambda: kill_window(win)), util.PlaceData(0.5, 0.9, anchor=util.CenterAnchor.get_anchor()))
             win.main_loop()
         except Exception as e:
+            raise e
             messagebox.showerror("Error", f"An error occurred while displaying the popup:\n {e}")
             print(e)
+
+def MessageBox(title, content):
+    messagebox.showinfo(title, content)

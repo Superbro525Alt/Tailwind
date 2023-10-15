@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tailwindall"
-version = "0.2.7"
+version = "0.3"
 description = "An all in one library for python"
 authors = ["Paul Hodges <paul.hodges@student.education.wa.edu.au>"]
 license = "MIT"
@@ -17,6 +17,7 @@ twine = "^3.4.2"
 Flask = "^2.0.2"
 numpy = "^1.21.2"
 pyglet= "^1.5.21"
+nerdfonts = "^1.0.0"
 
 [build-system]
 requires = ["poetry-core"]

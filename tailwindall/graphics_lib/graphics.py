@@ -179,6 +179,10 @@ class CartesianPlane(PygameWindowStandalone):
         self.get_scene().add_object(
             objects.Line((resolution.width / 2, 0), (resolution.width / 2, resolution.height), center_color, 1))
 
+        self.line_color = line_color
+        self.center_color = center_color
+        self.resolution = resolution
+
         self.rect = self._screen.get_rect()
 
         self.offset = list(self.rect.center)
@@ -220,10 +224,18 @@ class CartesianPlane(PygameWindowStandalone):
             pygame.display.update()
             pygame.display.flip()
 
+    def zoom(self, amount: int):
+        #self.gap += amount
+
+        #self.redraw_plane()
+        pass
+
+
     def get_mouse_position_on_plane(self):
         mouse_pos = pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]
         # snap to the grid
-        mouse_pos = (round(mouse_pos[0] / self.gap) * self.gap, round(mouse_pos[1] / self.gap) * self.gap)
+        gap = self.gap if self.gap != 0 else 50
+        mouse_pos = (round(mouse_pos[0] / gap) * gap, round(mouse_pos[1] / gap) * gap)
         # invert the diagonals
         self.user_input_data["selected_point"] = (mouse_pos[0] - self.offset[0], self.offset[1] - mouse_pos[1])
 
@@ -262,7 +274,26 @@ class CartesianPlane(PygameWindowStandalone):
                     self.get_scene().render(self._screen)
 
     def screen_to_plane(self, pos: tuple[int, int]):
-        return (pos[0] / self.gap, pos[1] / self.gap)
+        gap = self.gap if self.gap != 0 else 50
+        return (pos[0] / gap, pos[1] / gap)
+
+    def redraw_plane(self):
+        print("Redrawing plane...")
+        self.clear_objects(objects.Line)
+        print(self.gap)
+        gap = self.gap if self.gap != 0 else 50
+        print(gap)
+        for i in range(0, self.resolution.width, gap):
+            self.get_scene().add_object(objects.Line((i, 0), (i, self.resolution.height), self.line_color, 1))
+
+        for i in range(0, self.resolution.height, gap):
+            if not i == self.resolution.height / 2:
+                self.get_scene().add_object(objects.Line((0, i), (self.resolution.width, i), self.line_color, 1))
+            else:
+                self.get_scene().add_object(objects.Line((0, i), (self.resolution.width, i), self.center_color, 1))
+
+        self.get_scene().add_object(
+            objects.Line((self.resolution.width / 2, 0), (self.resolution.width / 2, self.resolution.height), self.center_color, 1))
 
 
 class Colors:
@@ -281,10 +312,10 @@ if __name__ == '__main__':
     rules = classes.Rules({
         (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11): "Square",
         (1, 2, 3, 5, 6, 7, 8, 9, 10): "Rhombus",
-        (1, 2, 4, 7, 8, 9, 10, 11): "Rectangle",
+        (1, 2, 4, 7, 8, 11): "Rectangle",
         (1, 2, 7, 8): "Parallelogram",
         (5, 6, 7, 9): "Kite",
-        (1): "Trapezium"
+        (1, 11): "Trapezium",
     }, {
         1: "One pair of parallel sides",
         2: "Two pairs of parallel sides",
@@ -318,16 +349,22 @@ if __name__ == '__main__':
                             Colors.random_rgb(), (0, 0), show_points=True, points_color="red", points_radius=5,
                             show_angles=True, show_side_lengths=True, show_name=True, gap=50))
 
-                        threading.Thread(target=lambda: window.show_popup(f"Proofs - {shape.name if shape.name is not None else 'None'}", shape.data()[0], shape.data()[1]), daemon=True).start()
+                        t = threading.Thread(target=lambda: window.show_popup(f"Proofs - {shape.name if shape.name is not None else 'None'}", shape.data()[0], shape.data()[1]))
+                        t.setDaemon(True)
+
+                        t.start()
 
                         points_selected.clear()
                         window.clear_objects(objects.Point)
-
-
                 elif event.button == 2:
                     points_selected.clear()
                     window.clear_objects(objects.Polygon)
                     window.clear_objects(objects.Point)
+                if event.button == 4:
+                    window.zoom(50)
+                elif event.button == 5:
+                    window.zoom(-50)
+
 
 
     win.main_loop(ontick=get_point_select)
