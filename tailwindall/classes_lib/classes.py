@@ -140,7 +140,6 @@ class Rules(BaseObject):
         for rule in ids:
             _r.append(rule['id'])
 
-        print(tuple(_r))
         if tuple(_r) in self.rules:
             return self.rules[tuple(_r)]
 

@@ -11,6 +11,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import tailwindall.util as util
 import tailwindall.classes_lib.classes as classes
 import tailwindall.maths_lib.angles as angles
+import tailwindall.maths_lib.lines as lines
 
 
 class Shape(classes.BaseObject):
@@ -50,21 +51,28 @@ class ShapeName(classes.BaseObject):
         points = shape.points
         if rules is not None:
 
-            PROOFS: list[int] = []
+            PROOFS: list[dict[str: int, str: str] | None] = []
 
             # if parallel sides
-            if shape.points[0][0] == shape.points[1][0] and shape.points[2][0] == shape.points[3][0]:
+
+            print(shape.angles)
+            if shape.angles[0] == shape.angles[2] and shape.angles[1] == shape.angles[3]:
                 PROOFS.append({"id": 1, "data": "AB, CD"})
-            elif shape.points[0][1] == shape.points[1][1] and shape.points[2][1] == shape.points[3][1]:
+            elif shape.angles[0] == shape.angles[1] and shape.angles[2] == shape.angles[3]:
                 PROOFS.append({"id": 1, "data": "BA, CD"})
+            elif shape.angles[0] == shape.angles[3] and shape.angles[1] == shape.angles[2]:
+                PROOFS.append({"id": 1, "data": "DA, BC"})
+            elif shape.angles[0] == shape.angles[1] and shape.angles[2] == shape.angles[3]:
+                PROOFS.append({"id": 1, "data": "AB, CD"})
+
+
 
             # if 2 pairs of parallel sides
-            if shape.points[0][0] == shape.points[1][0] and shape.points[2][0] == shape.points[3][0]:
-                if shape.points[0][1] == shape.points[3][1] and shape.points[1][1] == shape.points[2][1]:
-                    PROOFS.append({"id": 2, "data": "AB, CD and AD, BC"})
-            elif shape.points[0][1] == shape.points[1][1] and shape.points[2][1] == shape.points[3][1]:
-                if shape.points[0][0] == shape.points[3][0] and shape.points[1][0] == shape.points[2][0]:
-                    PROOFS.append({"id": 2, "data": "BA, CD and DA, CB"})
+            if shape.angles[0] == shape.angles[2] and shape.angles[1] == shape.angles[3]:
+                PROOFS.append({"id": 2, "data": "AB, BC, CD, DA"})
+            elif shape.angles[0] == shape.angles[1] and shape.angles[2] == shape.angles[3]:
+                PROOFS.append({"id": 2, "data": "AB, BC, CD, DA"})
+
 
 
 
@@ -79,6 +87,8 @@ class ShapeName(classes.BaseObject):
             # if 2 of adjacent equal sides
             if shape.sides[0] == shape.sides[1] and shape.sides[2] == shape.sides[3]:
                 PROOFS.append({"id": 5, "data": "AB = BC and CD = DA"})
+            elif shape.sides[0] == shape.sides[3] and shape.sides[1] == shape.sides[2]:
+                PROOFS.append({"id": 5, "data": "AB = DA and BC = CD"})
             elif shape.sides.count(shape.sides[0]) == 4:
                 PROOFS.append({"id": 5, "data": "AB = BC and CD = DA"})
 
@@ -92,84 +102,78 @@ class ShapeName(classes.BaseObject):
                 midpoint1 = ((diagonal1[0][0] + diagonal1[1][0]) / 2, (diagonal1[0][1] + diagonal1[1][1]) / 2)
                 midpoint2 = ((diagonal2[0][0] + diagonal2[1][0]) / 2, (diagonal2[0][1] + diagonal2[1][1]) / 2)
 
-    # 3. get the gradient of each diagonal
-                gradient1 = (diagonal1[1][1] - diagonal1[0][1]) / (diagonal1[1][0] - diagonal1[0][0])
-                gradient2 = (diagonal2[1][1] - diagonal2[0][1]) / (diagonal2[1][0] - diagonal2[0][0])
 
-                # 4. get the gradient of the line perpendicular to each diagonal
-                gradient1_perpendicular = -1 / gradient1
-                gradient2_perpendicular = -1 / gradient2
 
-                # 6. get the point of intersection of the 2 lines (no util function for this)
-                # 6.1. get the x value of the point of intersection
-                x = (midpoint2[1] - midpoint1[1] + gradient1_perpendicular * midpoint1[0] - gradient2_perpendicular * midpoint2[0]) / (gradient1_perpendicular - gradient2_perpendicular)
-
-                # 6.2. get the y value of the point of intersection
-                y = gradient1_perpendicular * (x - midpoint1[0]) + midpoint1[1]
-
-                # 6.3. get the point of intersection
-                point_of_intersection = (x, y)
-
-                # 7. get the distance between the point of intersection and the midpoint of each diagonal
-                distance1 = math.sqrt((midpoint1[0] - point_of_intersection[0]) ** 2 + (midpoint1[1] - point_of_intersection[1]) ** 2)
-                distance2 = math.sqrt((midpoint2[0] - point_of_intersection[0]) ** 2 + (midpoint2[1] - point_of_intersection[1]) ** 2)
-
-                # the above code is also true for rectangles, so we need to check if the diagonals are equal in length
-                # if shape.sides[0] == shape.sides[2] and shape.sides[1] == shape.sides[3]:
-                #     if distance1 == 0 and distance2 == 0:
-                #         if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
-                #             if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
-                #                 PROOFS.append(6)
-
-                # if diagonals intersect at 90
-                if angles.get_angle_from_lines(diagonal1, diagonal2) == 90:
+                # if diagonals are perpendicular
+                if angles.get_angle_from_lines((shape.points[0], shape.points[2]), (shape.points[1], shape.points[3])) == 90:
+                    PROOFS.append({"id": 6, "data": "AC, BD"})
+                elif angles.get_angle_from_lines((shape.points[1], shape.points[3]), (shape.points[0], shape.points[2])) == 90:
                     PROOFS.append({"id": 6, "data": "AC, BD"})
 
 
+
                 # if one diagonal bicects the other
+                intersection_point = lines.line_intersection(diagonal1, diagonal2)
+
+                if intersection_point == midpoint1 or intersection_point == midpoint2:
+                    PROOFS.append({"id": 7, "data": "AC, BD"})
+
+                if intersection_point == midpoint1 and intersection_point == midpoint2:
+                    PROOFS.append({"id": 8, "data": "AC, BD"})
 
                 # if one diagonals line intersects the mid point of the other diagonal
                 # we already have all of tje required variables from the previous proof
-                if distance1 == 0:
-                    if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
-                        PROOFS.append({"id": 7, "data": "AC, BD"})
-                elif distance2 == 0:
-                    if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
-                        PROOFS.append({"id": 7, "data": "AC, BD"})
-
-
-                # if both diagonals bisect each other
-                if distance1 == 0 and distance2 == 0:
-                    if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
-                        if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
-                            PROOFS.append({"id": 8, "data": "AC, BD"})
+                # if distance1 == 0:
+                #     if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
+                #         PROOFS.append({"id": 7, "data": "AC, BD"})
+                # elif distance2 == 0:
+                #     if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
+                #         PROOFS.append({"id": 7, "data": "AC, BD"})
+                #
+                #
+                # # if both diagonals bisect each other
+                # if distance1 == 0 and distance2 == 0:
+                #     if midpoint1[0] == point_of_intersection[0] and midpoint1[1] == point_of_intersection[1]:
+                #         if midpoint2[0] == point_of_intersection[0] and midpoint2[1] == point_of_intersection[1]:
+                #             PROOFS.append({"id": 8, "data": "AC, BD"})
 
             except ZeroDivisionError:
                 pass
 
-            # find if one diagonal bisects the vertex angles through which it passes.
-            # to do this, we need to find the vertex angles
-            vertex_angles = []
-            for i in range(len(shape.angles)):
-                try:
-                    vertex_angles.append(shape.angles[i] + shape.angles[i + 1])
-                except IndexError:
-                    vertex_angles.append(shape.angles[i] + shape.angles[0])
-
-            # if one diagonal bisects the vertex angles through which it passes
-            midpoint_AC = ((shape.points[0][0] + shape.points[2][0]) / 2, (shape.points[0][1] + shape.points[2][1]) / 2)
-            midpoint_BD = ((shape.points[1][0] + shape.points[3][0]) / 2, (shape.points[1][1] + shape.points[3][1]) / 2)
-
-            if angles.does_diagonal_bisect(midpoint_AC, diagonal1) or angles.does_diagonal_bisect(midpoint_BD, diagonal2):
+            print(angles.get_angle_from_lines((shape.points[1], shape.points[3]), (shape.points[1], shape.points[2])), angles.get_angle_from_lines((shape.points[1], shape.points[3]), (shape.points[1], shape.points[0])))
+            if angles.get_angle_from_lines((shape.points[0], shape.points[2]), (shape.points[0], shape.points[3])) == angles.get_angle_from_lines((shape.points[0], shape.points[1]), (shape.points[0], shape.points[2])):
+                PROOFS.append({"id": 9, "data": "AC, BD"})
+            elif angles.get_angle_from_lines((shape.points[1], shape.points[2]), (shape.points[1], shape.points[3])) == angles.get_angle_from_lines((shape.points[1], shape.points[3]), (shape.points[1], shape.points[0])):
                 PROOFS.append({"id": 9, "data": "AC, BD"})
 
-            # Both diagonals bisect the vertex angles through which they pass
-            if angles.does_diagonal_bisect(midpoint_AC, diagonal1) and angles.does_diagonal_bisect(midpoint_BD, diagonal2):
+            if angles.get_angle_from_lines((shape.points[0], shape.points[2]), (shape.points[0], shape.points[3])) == angles.get_angle_from_lines((shape.points[0], shape.points[1]), (shape.points[0], shape.points[2])) and angles.get_angle_from_lines((shape.points[1], shape.points[2]), (shape.points[1], shape.points[3])) == angles.get_angle_from_lines((shape.points[1], shape.points[3]), (shape.points[1], shape.points[0])):
                 PROOFS.append({"id": 10, "data": "AC, BD"})
 
-            # Diagonals are equal in length
-            if shape.sides[0] == shape.sides[2] and shape.sides[1] == shape.sides[3]:
+            if lines.length((shape.points[0], shape.points[2])) == lines.length((shape.points[1], shape.points[3])):
                 PROOFS.append({"id": 11, "data": "AC = BD"})
+            # find if one diagonal bisects the vertex angles through which it passes.
+            # # to do this, we need to find the vertex angles
+            # vertex_angles = []
+            # for i in range(len(shape.angles)):
+            #     try:
+            #         vertex_angles.append(shape.angles[i] + shape.angles[i + 1])
+            #     except IndexError:
+            #         vertex_angles.append(shape.angles[i] + shape.angles[0])
+            #
+            # # if one diagonal bisects the vertex angles through which it passes
+            # midpoint_AC = ((shape.points[0][0] + shape.points[2][0]) / 2, (shape.points[0][1] + shape.points[2][1]) / 2)
+            # midpoint_BD = ((shape.points[1][0] + shape.points[3][0]) / 2, (shape.points[1][1] + shape.points[3][1]) / 2)
+            #
+            # if angles.does_diagonal_bisect(midpoint_AC, diagonal1) or angles.does_diagonal_bisect(midpoint_BD, diagonal2):
+            #     PROOFS.append({"id": 9, "data": "AC, BD"})
+            #
+            # # Both diagonals bisect the vertex angles through which they pass
+            # if angles.does_diagonal_bisect(midpoint_AC, diagonal1) and angles.does_diagonal_bisect(midpoint_BD, diagonal2):
+            #     PROOFS.append({"id": 10, "data": "AC, BD"})
+            #
+            # # Diagonals are equal in length
+            # if shape.sides[0] == shape.sides[2] and shape.sides[1] == shape.sides[3]:
+            #     PROOFS.append({"id": 11, "data": "AC = BD"})
 
             out = rules.get_result(PROOFS)
             if out is not None:

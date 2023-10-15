@@ -221,6 +221,10 @@ class CartesianPlane(PygameWindowStandalone):
             pygame.display.update()
             pygame.display.flip()
 
+    def zoom(self, amount: int):
+        self.gap += amount
+
+
     def get_mouse_position_on_plane(self):
         mouse_pos = pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]
         # snap to the grid
@@ -282,10 +286,10 @@ if __name__ == '__main__':
     rules = classes.Rules({
         (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11): "Square",
         (1, 2, 3, 5, 6, 7, 8, 9, 10): "Rhombus",
-        (1, 2, 4, 7, 8, 9, 10, 11): "Rectangle",
+        (1, 2, 4, 7, 8, 11): "Rectangle",
         (1, 2, 7, 8): "Parallelogram",
-        (5, 9, 10): "Kite",
-        (9, 10): "Trapezium"
+        (5, 6, 7, 9): "Kite",
+        (1, 11): "Trapezium",
     }, {
         1: "One pair of parallel sides",
         2: "Two pairs of parallel sides",
@@ -332,6 +336,7 @@ if __name__ == '__main__':
                     points_selected.clear()
                     window.clear_objects(objects.Polygon)
                     window.clear_objects(objects.Point)
+
 
 
     win.main_loop(ontick=get_point_select)
