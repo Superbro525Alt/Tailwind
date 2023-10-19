@@ -12,7 +12,7 @@ import tailwindall.util as util
 import tailwindall.classes_lib.classes as classes
 import tailwindall.maths_lib.angles as angles
 import tailwindall.maths_lib.lines as lines
-
+import tailwindall.popup as popup
 
 class Shape(classes.BaseObject):
     def __init__(self, points: list, rules: classes.Rules = None, *args, **kwargs):
@@ -114,6 +114,8 @@ class ShapeName(classes.BaseObject):
 
                 # if one diagonal bicects the other
                 intersection_point = lines.line_intersection(diagonal1, diagonal2)
+                if intersection_point[0] == 'lines do not intersect':
+                    raise ZeroDivisionError
 
                 if intersection_point == midpoint1 or intersection_point == midpoint2:
                     PROOFS.append({"id": 7, "data": "AC, BD"})
@@ -138,7 +140,7 @@ class ShapeName(classes.BaseObject):
                 #             PROOFS.append({"id": 8, "data": "AC, BD"})
 
             except ZeroDivisionError:
-                pass
+                popup.ErrorBox("Error", "Its a line...")
 
             print(angles.get_angle_from_lines((shape.points[1], shape.points[3]), (shape.points[1], shape.points[2])), angles.get_angle_from_lines((shape.points[1], shape.points[3]), (shape.points[1], shape.points[0])))
             if angles.get_angle_from_lines((shape.points[0], shape.points[2]), (shape.points[0], shape.points[3])) == angles.get_angle_from_lines((shape.points[0], shape.points[1]), (shape.points[0], shape.points[2])):

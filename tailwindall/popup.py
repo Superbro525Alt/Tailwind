@@ -45,9 +45,11 @@ class InfoPopup:
             win.add_widget(widgets.Button(win, "Ok", lambda: kill_window(win)), util.PlaceData(0.5, 0.9, anchor=util.CenterAnchor.get_anchor()))
             win.main_loop()
         except Exception as e:
-            raise e
             messagebox.showerror("Error", f"An error occurred while displaying the popup:\n {e}")
             print(e)
 
 def MessageBox(title, content):
     messagebox.showinfo(title, content)
+
+def ErrorBox(title, content):
+    messagebox.showerror(title, content)
