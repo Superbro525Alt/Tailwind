@@ -2,6 +2,7 @@ import sys
 import os
 
 import tkinter as tk
+from time import sleep
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
@@ -9,15 +10,14 @@ sys.path.append(parent_dir)
 import platform
 import logging
 
+logging.basicConfig(level=logging.DEBUG)
+
 if platform.system() != "Windows":
     logging.warning("This module is only properly supported on windows. Proceed with caution.")
 
 import random
 import threading
 from collections import namedtuple
-from typing import overload, Union, Final
-
-from _distutils_hack import override
 
 import tailwindall.util as util
 import pygame
@@ -27,6 +27,7 @@ import tailwindall.graphics_lib.objects as objects
 from tailwindall.graphics_lib.scenes import *
 import tailwindall.popup as popup
 
+VERSION = "0.0.1"
 
 class PygameWindow:
     def __init__(self, window, name, onTick, init, resolution: util.resolution, background_color: util.string):
@@ -307,7 +308,58 @@ class Colors:
     def random_rgb(cls):
         return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
+class Tests:
+    @classmethod
+    def all(cls):
+        try:
+            cls.color_test()
+            cls.cartesian_plane_test()
+            cls.window_standalone_test()
 
+            logging.info("All tests passed.")
+            return True
+        except Exception as e:
+            logging.error(f"Test failed: {e}")
+            return False
+
+    @classmethod
+    def color_test(cls):
+        logging.info("Testing colors...")
+        for i in range(10):
+            logging.info(Colors.random_rgb())
+        logging.info("Colors test passed.")
+
+    @classmethod
+    def cartesian_plane_test(cls):
+        logging.info("Testing cartesian plane...")
+        win = CartesianPlane("Test", util.resolution(1000, 1000), "white", "black", "red")
+        def stop():
+            sleep(5)
+            win.main_loop_running = False
+
+        threading.Thread(target=stop, daemon=True).start()
+
+        win.main_loop()
+
+        logging.info("Cartesian plane test passed.")
+
+    @classmethod
+    def window_standalone_test(cls):
+        logging.info("Testing window standalone...")
+        win = PygameWindowStandalone("Test", [Scene([])], util.resolution(1000, 1000), "white")
+        def stop():
+            sleep(5)
+            win.main_loop_running = False
+
+        threading.Thread(target=stop, daemon=True).start()
+
+        win.main_loop()
+
+        logging.info("Window standalone test passed.")
+
+
+
+print(f"Loaded tailwindall.graphics_lib.graphics v{VERSION}")
 if __name__ == '__main__':
     import tailwindall.maths_lib.shapes as shapes
 
