@@ -27,6 +27,8 @@ import tailwindall.graphics_lib.objects as objects
 from tailwindall.graphics_lib.scenes import *
 import tailwindall.popup as popup
 
+import tailwindall.maths_lib.physics as physics
+
 VERSION = "0.0.1"
 
 class PygameWindow:
@@ -298,6 +300,159 @@ class CartesianPlane(PygameWindowStandalone):
             objects.Line((self.resolution.width / 2, 0), (self.resolution.width / 2, self.resolution.height),
                          self.center_color, 1))
 
+class PlatformerWindow(PygameWindowStandalone):
+    def __init__(self, name, resolution: util.resolution, background_color: util.string):
+        super().__init__(name, [Scene([])], resolution, background_color)
+
+        self._engine = physics.PhysicsEngine2D([])
+
+
+        self._gravity = 0.5
+
+        self._objects = []
+
+        self._player = None
+
+        self._player_speed = 5
+
+        self._player_jumping = False
+
+        self._player_jump_power = 10
+
+        self.resolution = resolution
+
+        self.set_player(objects.Rectangle("red", (0, 0), (50, 50)))
+
+
+    def add_object(self, obj: Union[objects.GameObject, objects.Rectangle, objects.Line, objects.Polygon]):
+        self._objects.append(obj)
+
+        self._engine.add_object(obj)
+
+        self.get_scene().add_object(obj, priority=0)
+
+    def set_player(self, player: objects.Rectangle):
+        self._player = player
+
+        self.add_object(player)
+
+    def set_player_speed(self, speed: int):
+        self._player_speed = speed
+
+    def set_player_jump_power(self, power: int):
+        self._player_jump_power = power
+
+    def set_gravity(self, gravity: int):
+        self._gravity = gravity
+
+    def main_loop(self):
+        self._main_loop()
+
+    def _main_loop(self):
+        while self.main_loop_running:
+            self._screen.fill(pygame.Color(self._background_color))
+            self.events = pygame.event.get()
+            for event in self.events:
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        self.jump_player(self._player_jump_power)
+
+                    if event.key == pygame.K_LEFT:
+                        self._player_speed = -5
+
+                    if event.key == pygame.K_RIGHT:
+                        self._player_speed = 5
+
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_LEFT:
+                        self._player_speed = 0
+
+                    if event.key == pygame.K_RIGHT:
+                        self._player_speed = 0
+
+
+            self._timer += self._clock.tick(60) / 1000
+
+            if self._onTick is not None:
+                self._onTick(self)
+
+            self._scenes[self._current_scene].render(self._screen)
+
+            pygame.display.update()
+            pygame.display.flip()
+
+            if self._player is not None:
+                self._player.position = (self._player.position[0] + self._player_speed, self._player.position[1])
+
+                if self._player_jumping:
+                    self._player.position = (self._player.position[0], self._player.position[1] - self._player_jump_power)
+
+                    self._player_jump_power -= self._gravity
+
+                    if self._player_jump_power <= 0:
+                        self._player_jumping = False
+                        self._player_jump_power = 10
+
+                if self._player.position[1] >= self.resolution.height - self._player.size[1]:
+                    self._player.position = (self._player.position[0], self.resolution.height - self._player.size[1])
+
+                    self._player_jumping = False
+                    self._player_jump_power = 10
+
+                if self._player.position[0] <= 0:
+                    self._player.position = (0, self._player.position[1])
+
+                if self._player.position[0] >= self.resolution.width - self._player.size[0]:
+                    self._player.position = (self.resolution.width - self._player.size[0], self._player.position[1])
+
+            self._engine.update()
+
+    def is_clicking(self, right=False):
+        if right:
+            return pygame.mouse.get_pressed()[2]
+        else:
+            return pygame.mouse.get_pressed()[0]
+
+    def is_key_pressed(self, key: str):
+        return pygame.key.get_pressed()[getattr(pygame, f"K_{key.upper()}")]
+
+    def is_key_pressed_once(self, key: str):
+        return self.is_key_pressed(key) and self._timer % 1 == 0
+
+    def is_key_pressed_once_and_held(self, key: str):
+        return self.is_key_pressed(key) and self._timer % 1 == 0 and self._timer % 10 == 0
+
+    def is_key_pressed_and_held(self, key: str):
+        return self.is_key_pressed(key) and self._timer % 10 == 0
+
+    def move_player(self, x: int, y: int):
+        self._player.position = (self._player.position[0] + x, self._player.position[1] + y)
+
+    def jump_player(self, power: int):
+        self._player_jumping = True
+        # jump
+        threading.Thread(target=self._jump_player, args=(power,), daemon=True).start()
+
+    def _jump_player(self, power: int):
+
+        self._player.falling = False
+        for i in range(power):
+            self._player.position = (self._player.position[0], self._player.position[1] + 1)
+
+        self._player.falling = True
+
+        self._player_jumping = False
+
+    def set_player_jumping(self, jumping: bool):
+        self._player_jumping = jumping
+
+    def jump_player_once(self, power: int):
+        if self.is_key_pressed_once("space"):
+            self.jump_player(power)
 
 class Colors:
     @classmethod

@@ -7,7 +7,11 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(parent_dir)))
 sys.path.append(parent_dir)
 
 import tailwindall.graphics_lib.graphics as graphics
+import tailwindall.util as util
 
-print("Hello World!")
-# graphics.Tests().all()
+win = graphics.PlatformerWindow("Test", util.resolution(800, 600), "white")
+
+win.main_loop()
+
+
 

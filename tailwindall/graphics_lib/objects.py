@@ -19,6 +19,8 @@ class Sprite(classes.BaseObject):
         self.size = size
         self.sprite = sprite
 
+        self.falling = True
+
     def render(self, screen):
         if self.sprite is None:
             if isinstance(self.image, str):
