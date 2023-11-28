@@ -12,6 +12,3 @@ import tailwindall.util as util
 win = graphics.PlatformerWindow("Test", util.resolution(800, 600), "white")
 
 win.main_loop()
-
-
-

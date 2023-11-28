@@ -317,11 +317,11 @@ class PlatformerWindow(PygameWindowStandalone):
 
         self._player_jumping = False
 
-        self._player_jump_power = 10
+        self._player_jump_power = 100
 
         self.resolution = resolution
 
-        self.set_player(objects.Rectangle("red", (0, 0), (50, 50)))
+        self.set_player(objects.Rectangle("red", (0, 0), (50, 50), setup=True))
 
 
     def add_object(self, obj: Union[objects.GameObject, objects.Rectangle, objects.Line, objects.Polygon]):
@@ -358,22 +358,19 @@ class PlatformerWindow(PygameWindowStandalone):
                     sys.exit()
 
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
+                    if event.key == pygame.K_w:
+                        self._player.falling = False
+
                         self.jump_player(self._player_jump_power)
 
-                    if event.key == pygame.K_LEFT:
-                        self._player_speed = -5
-
-                    if event.key == pygame.K_RIGHT:
+                    if event.key == pygame.K_d:
                         self._player_speed = 5
 
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_LEFT:
-                        self._player_speed = 0
+                    if event.key == pygame.K_a:
+                        self._player_speed = -5
 
-                    if event.key == pygame.K_RIGHT:
-                        self._player_speed = 0
-
+            if not self.is_key_pressed("d") and not self.is_key_pressed("a"):
+                self._player_speed = 0
 
             self._timer += self._clock.tick(60) / 1000
 
@@ -388,20 +385,10 @@ class PlatformerWindow(PygameWindowStandalone):
             if self._player is not None:
                 self._player.position = (self._player.position[0] + self._player_speed, self._player.position[1])
 
-                if self._player_jumping:
-                    self._player.position = (self._player.position[0], self._player.position[1] - self._player_jump_power)
-
-                    self._player_jump_power -= self._gravity
-
-                    if self._player_jump_power <= 0:
-                        self._player_jumping = False
-                        self._player_jump_power = 10
-
                 if self._player.position[1] >= self.resolution.height - self._player.size[1]:
                     self._player.position = (self._player.position[0], self.resolution.height - self._player.size[1])
 
-                    self._player_jumping = False
-                    self._player_jump_power = 10
+                    self._player_jump_power = 25
 
                 if self._player.position[0] <= 0:
                     self._player.position = (0, self._player.position[1])
@@ -418,7 +405,7 @@ class PlatformerWindow(PygameWindowStandalone):
             return pygame.mouse.get_pressed()[0]
 
     def is_key_pressed(self, key: str):
-        return pygame.key.get_pressed()[getattr(pygame, f"K_{key.upper()}")]
+        return pygame.key.get_pressed()[getattr(pygame, f"K_{key.lower()}")]
 
     def is_key_pressed_once(self, key: str):
         return self.is_key_pressed(key) and self._timer % 1 == 0
@@ -433,18 +420,24 @@ class PlatformerWindow(PygameWindowStandalone):
         self._player.position = (self._player.position[0] + x, self._player.position[1] + y)
 
     def jump_player(self, power: int):
-        self._player_jumping = True
-        # jump
-        threading.Thread(target=self._jump_player, args=(power,), daemon=True).start()
+        if not self._player.falling:
+            self._player_jumping = True
+            self._player.falling = False
+            self._player.jumping = True
+
+            # jump
+            threading.Thread(target=self._jump_player, args=(power,), daemon=True).start()
 
     def _jump_player(self, power: int):
-
+        self._player_jumping = True
         self._player.falling = False
+        self._player.jumping = True
         for i in range(power):
-            self._player.position = (self._player.position[0], self._player.position[1] + 1)
+            self._player.position = (self._player.position[0], self._player.position[1] - 5)
+            sleep(0.01)
 
         self._player.falling = True
-
+        self._player.jumping = False
         self._player_jumping = False
 
     def set_player_jumping(self, jumping: bool):

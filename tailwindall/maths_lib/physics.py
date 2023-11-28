@@ -25,16 +25,15 @@ class PhysicsEngine2D:
             self.objects.append(other)
 
     def update(self):
-        print(self.objects)
         for obj in self.objects:
-            if obj.falling:
-                print("Falling")
-                obj.position[1] -= self.gravity
+            print(obj.jumping)
+            if obj.falling and not obj.jumping:
+                obj.position = [obj.position[0], obj.position[1] + self.gravity]
                 # if object in another object:
                 for obj2 in self.objects:
                     if obj2 != obj:
                         if obj2.position[0] <= obj.position[0] <= obj2.position[0] + obj2.size[0] and obj2.position[1] <= obj.position[1] <= obj2.position[1] + obj2.size[1]:
-                            obj.position[1] += self.gravity
+                            obj.position = [obj.position[0], obj2.position[1] - obj.size[1]]
                             obj.falling = False
                             break
                         else:
