@@ -1,10 +1,9 @@
 Reference
 ===========================
 
-An overview of all of the functions in the tailwind library. Installation can be found :doc:`here </installation>`.
+An overview of all of the functions in the tailwind library. Installation can be found :doc:`here </installation/index>`.
 
 .. toctree::
-   :maxdepth: 1
 
-   graphics
-   math
+   graphics/index
+   math/index
