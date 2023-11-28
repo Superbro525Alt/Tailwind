@@ -24,7 +24,6 @@ class Sprite(classes.BaseObject):
             self.falling = True
             self.jumping = False
 
-        print("__init__ called on sprite")
 
     def render(self, screen):
         if self.sprite is None:

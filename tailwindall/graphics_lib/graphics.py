@@ -304,7 +304,11 @@ class PlatformerWindow(PygameWindowStandalone):
     def __init__(self, name, resolution: util.resolution, background_color: util.string):
         super().__init__(name, [Scene([])], resolution, background_color)
 
-        self._engine = physics.PhysicsEngine2D([])
+        self.bounds = physics.Bounds(
+            [[0, 0], [resolution.width, resolution.height]]
+        )
+
+        self._engine = physics.PhysicsEngine2D([], self.bounds)
 
 
         self._gravity = 0.5
@@ -324,10 +328,14 @@ class PlatformerWindow(PygameWindowStandalone):
         self.set_player(objects.Rectangle("red", (0, 0), (50, 50), setup=True))
 
 
-    def add_object(self, obj: Union[objects.GameObject, objects.Rectangle, objects.Line, objects.Polygon]):
+
+    def add_object(self, obj: Union[objects.GameObject, objects.Rectangle, objects.Line, objects.Polygon], gravity=True):
         self._objects.append(obj)
 
-        self._engine.add_object(obj)
+        if gravity:
+            self._engine.add_object(obj)
+        else:
+            self._engine.add_object(obj, False)
 
         self.get_scene().add_object(obj, priority=0)
 
@@ -388,6 +396,8 @@ class PlatformerWindow(PygameWindowStandalone):
                 if self._player.position[1] >= self.resolution.height - self._player.size[1]:
                     self._player.position = (self._player.position[0], self.resolution.height - self._player.size[1])
 
+                    self._player.falling = False
+
                     self._player_jump_power = 25
 
                 if self._player.position[0] <= 0:
@@ -421,14 +431,14 @@ class PlatformerWindow(PygameWindowStandalone):
 
     def jump_player(self, power: int):
         if not self._player.falling:
-            self._player_jumping = True
             self._player.falling = False
-            self._player.jumping = True
 
             # jump
             threading.Thread(target=self._jump_player, args=(power,), daemon=True).start()
 
     def _jump_player(self, power: int):
+        if self._player.falling or self._player.jumping:
+            return
         self._player_jumping = True
         self._player.falling = False
         self._player.jumping = True
@@ -437,8 +447,9 @@ class PlatformerWindow(PygameWindowStandalone):
             sleep(0.01)
 
         self._player.falling = True
+        while self._player.falling:
+            print("Falling...")
         self._player.jumping = False
-        self._player_jumping = False
 
     def set_player_jumping(self, jumping: bool):
         self._player_jumping = jumping
@@ -454,7 +465,7 @@ class Colors:
 
     @classmethod
     def random_rgb(cls):
-        return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        return random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
 
 class Tests:
     @classmethod
