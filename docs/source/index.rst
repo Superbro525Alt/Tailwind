@@ -1,10 +1,8 @@
-Welcome to Lumache's documentation!
+Tailwind Documentation
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+**Tailwind** is an all in one python libary for doing anything from physics simulations to networking to shape identification and web design.
+
 
 Check out the :doc:`usage` section for further information, including
 how to :ref:`installation` the project.
@@ -18,5 +16,5 @@ Contents
 
 .. toctree::
 
+   installation
    usage
-   api

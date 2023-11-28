@@ -1,9 +1,8 @@
-Template for the Read the Docs tutorial
+Tailwind Docs
 =======================================
 
-This GitHub template includes fictional Python library
-with some basic Sphinx docs.
+Tailwind is an all in one python libary for doing anything from physics simulations to networking to shape identification and web design.
 
-Read the tutorial here:
+Read the rest of the docs here:
 
-https://docs.readthedocs.io/en/stable/tutorial/
+https://tailwind.readthedocs.io/en/latest/
