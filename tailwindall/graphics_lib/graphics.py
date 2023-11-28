@@ -2,6 +2,7 @@ import sys
 import os
 
 import tkinter as tk
+from time import sleep
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
@@ -9,15 +10,14 @@ sys.path.append(parent_dir)
 import platform
 import logging
 
+logging.basicConfig(level=logging.DEBUG)
+
 if platform.system() != "Windows":
     logging.warning("This module is only properly supported on windows. Proceed with caution.")
 
 import random
 import threading
 from collections import namedtuple
-from typing import overload, Union, Final
-
-from _distutils_hack import override
 
 import tailwindall.util as util
 import pygame
@@ -27,6 +27,9 @@ import tailwindall.graphics_lib.objects as objects
 from tailwindall.graphics_lib.scenes import *
 import tailwindall.popup as popup
 
+import tailwindall.maths_lib.physics as physics
+
+VERSION = "0.0.1"
 
 class PygameWindow:
     def __init__(self, window, name, onTick, init, resolution: util.resolution, background_color: util.string):
@@ -297,6 +300,163 @@ class CartesianPlane(PygameWindowStandalone):
             objects.Line((self.resolution.width / 2, 0), (self.resolution.width / 2, self.resolution.height),
                          self.center_color, 1))
 
+class PlatformerWindow(PygameWindowStandalone):
+    def __init__(self, name, resolution: util.resolution, background_color: util.string):
+        super().__init__(name, [Scene([])], resolution, background_color)
+
+        self.bounds = physics.Bounds(
+            [[0, 0], [resolution.width, resolution.height]]
+        )
+
+        self._engine = physics.PhysicsEngine2D([], self.bounds)
+
+
+        self._gravity = 0.5
+
+        self._objects = []
+
+        self._player = None
+
+        self._player_speed = 5
+
+        self._player_jumping = False
+
+        self._player_jump_power = 100
+
+        self.resolution = resolution
+
+        self.set_player(objects.Rectangle("red", (0, 0), (50, 50), setup=True))
+
+
+
+    def add_object(self, obj: Union[objects.GameObject, objects.Rectangle, objects.Line, objects.Polygon], gravity=True):
+        self._objects.append(obj)
+
+        if gravity:
+            self._engine.add_object(obj)
+        else:
+            self._engine.add_object(obj, False)
+
+        self.get_scene().add_object(obj, priority=0)
+
+    def set_player(self, player: objects.Rectangle):
+        self._player = player
+
+        self.add_object(player)
+
+    def set_player_speed(self, speed: int):
+        self._player_speed = speed
+
+    def set_player_jump_power(self, power: int):
+        self._player_jump_power = power
+
+    def set_gravity(self, gravity: int):
+        self._gravity = gravity
+
+    def main_loop(self):
+        self._main_loop()
+
+    def _main_loop(self):
+        while self.main_loop_running:
+            self._screen.fill(pygame.Color(self._background_color))
+            self.events = pygame.event.get()
+            for event in self.events:
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_w:
+                        self._player.falling = False
+
+                        self.jump_player(self._player_jump_power)
+
+                    if event.key == pygame.K_d:
+                        self._player_speed = 5
+
+                    if event.key == pygame.K_a:
+                        self._player_speed = -5
+
+            if not self.is_key_pressed("d") and not self.is_key_pressed("a"):
+                self._player_speed = 0
+
+            self._timer += self._clock.tick(60) / 1000
+
+            if self._onTick is not None:
+                self._onTick(self)
+
+            self._scenes[self._current_scene].render(self._screen)
+
+            pygame.display.update()
+            pygame.display.flip()
+
+            if self._player is not None:
+                self._player.position = (self._player.position[0] + self._player_speed, self._player.position[1])
+
+                if self._player.position[1] >= self.resolution.height - self._player.size[1]:
+                    self._player.position = (self._player.position[0], self.resolution.height - self._player.size[1])
+
+                    self._player.falling = False
+
+                    self._player_jump_power = 25
+
+                if self._player.position[0] <= 0:
+                    self._player.position = (0, self._player.position[1])
+
+                if self._player.position[0] >= self.resolution.width - self._player.size[0]:
+                    self._player.position = (self.resolution.width - self._player.size[0], self._player.position[1])
+
+            self._engine.update()
+
+    def is_clicking(self, right=False):
+        if right:
+            return pygame.mouse.get_pressed()[2]
+        else:
+            return pygame.mouse.get_pressed()[0]
+
+    def is_key_pressed(self, key: str):
+        return pygame.key.get_pressed()[getattr(pygame, f"K_{key.lower()}")]
+
+    def is_key_pressed_once(self, key: str):
+        return self.is_key_pressed(key) and self._timer % 1 == 0
+
+    def is_key_pressed_once_and_held(self, key: str):
+        return self.is_key_pressed(key) and self._timer % 1 == 0 and self._timer % 10 == 0
+
+    def is_key_pressed_and_held(self, key: str):
+        return self.is_key_pressed(key) and self._timer % 10 == 0
+
+    def move_player(self, x: int, y: int):
+        self._player.position = (self._player.position[0] + x, self._player.position[1] + y)
+
+    def jump_player(self, power: int):
+        if not self._player.falling:
+            self._player.falling = False
+
+            # jump
+            threading.Thread(target=self._jump_player, args=(power,), daemon=True).start()
+
+    def _jump_player(self, power: int):
+        if self._player.falling or self._player.jumping:
+            return
+        self._player_jumping = True
+        self._player.falling = False
+        self._player.jumping = True
+        for i in range(power):
+            self._player.position = (self._player.position[0], self._player.position[1] - 5)
+            sleep(0.01)
+
+        self._player.falling = True
+        while self._player.falling:
+            print("Falling...")
+        self._player.jumping = False
+
+    def set_player_jumping(self, jumping: bool):
+        self._player_jumping = jumping
+
+    def jump_player_once(self, power: int):
+        if self.is_key_pressed_once("space"):
+            self.jump_player(power)
 
 class Colors:
     @classmethod
@@ -305,9 +465,60 @@ class Colors:
 
     @classmethod
     def random_rgb(cls):
-        return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        return random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
+
+class Tests:
+    @classmethod
+    def all(cls):
+        try:
+            cls.color_test()
+            cls.cartesian_plane_test()
+            cls.window_standalone_test()
+
+            logging.info("All tests passed.")
+            return True
+        except Exception as e:
+            logging.error(f"Test failed: {e}")
+            return False
+
+    @classmethod
+    def color_test(cls):
+        logging.info("Testing colors...")
+        for i in range(10):
+            logging.info(Colors.random_rgb())
+        logging.info("Colors test passed.")
+
+    @classmethod
+    def cartesian_plane_test(cls):
+        logging.info("Testing cartesian plane...")
+        win = CartesianPlane("Test", util.resolution(1000, 1000), "white", "black", "red")
+        def stop():
+            sleep(5)
+            win.main_loop_running = False
+
+        threading.Thread(target=stop, daemon=True).start()
+
+        win.main_loop()
+
+        logging.info("Cartesian plane test passed.")
+
+    @classmethod
+    def window_standalone_test(cls):
+        logging.info("Testing window standalone...")
+        win = PygameWindowStandalone("Test", [Scene([])], util.resolution(1000, 1000), "white")
+        def stop():
+            sleep(5)
+            win.main_loop_running = False
+
+        threading.Thread(target=stop, daemon=True).start()
+
+        win.main_loop()
+
+        logging.info("Window standalone test passed.")
 
 
+
+print(f"Loaded tailwindall.graphics_lib.graphics v{VERSION}")
 if __name__ == '__main__':
     import tailwindall.maths_lib.shapes as shapes
 
