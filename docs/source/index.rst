@@ -17,4 +17,4 @@ Contents
 .. toctree::
 
    installation
-   usage
+   reference
