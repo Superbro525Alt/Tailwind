@@ -1,0 +1,36 @@
+---
+title: Welcome to Tailwind
+description: An all in one module for python
+template: splash
+hero:
+  tagline: An all in one module for python
+  image:
+    file: ../../assets/Tailwind-Logo.svg
+  actions:
+    - text: Installation
+      link: /guides/installation/
+      icon: right-arrow
+      variant: primary
+    - text: Read the Tailwind docs
+      link: /reference/overview
+      icon: external
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Next steps
+
+<CardGrid stagger>
+	<Card title="Source Code" icon="pencil">
+		Source code for the documentation and the module is here: [Tailwind](https://github.com/Superbro525Alt/Tailwind.git)
+	</Card>
+	<Card title="Updates" icon="add-document">
+		The module is still in development, so expect more features to be added soon.
+	</Card>
+	<Card title="Installation" icon="setting">
+		See the [Installation Guide](/guides/installation/) for more information.
+	</Card>
+	<Card title="Read the docs" icon="open-book">
+		Learn more in [The Tailwind Docs](/reference/overview).
+	</Card>
+</CardGrid>

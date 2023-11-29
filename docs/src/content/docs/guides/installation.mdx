@@ -1,0 +1,68 @@
+---
+title: Installation
+description: Installation of Tailwind
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+This guide will teach you how to install tailwind for use in your project in 2 different ways:
+- Using pip
+- From source
+
+## Using pip
+
+To install using pip you need a few things:
+
+1. Python 3.11 or higher
+2. pip 21.3 or higher
+3. A virtual environment (optional)
+4. A terminal
+
+<Card title="Tip" icon="information">
+    You may need to run your terminal as an administrator or use `sudo` to install packages globally.
+</Card>
+
+To install run the following command in you terminal:
+
+```bash
+pip install tailwind
+```
+
+That will install the package under the alias `tailwindall` which is the full version of Tailwind.
+
+To test that it installed correctly run the following command in a python shell:
+
+```python
+import tailwindall
+```
+
+## From Source
+
+To install from source you will need a few things:
+
+1. Python 3.11 or higher
+2. Pip (for installing dependencies)
+3. A virtual environment (optional)
+4. A terminal
+5. git
+
+<Card title="Tip" icon="information">
+    You may need to run your terminal as an administrator or use `sudo` to install packages globally.
+</Card>
+
+To install run the following commands in your terminal:
+
+```bash
+git clone https://github.com/Superbro525Alt/Tailwind.git
+cd Tailwind
+pip install -r requirements.txt
+poetry install
+```
+
+That will install the package under the alias `tailwindall` which is the full version of Tailwind.
+
+To test that it installed correctly run the following command in a python shell:
+
+```python
+import tailwindall
+```
