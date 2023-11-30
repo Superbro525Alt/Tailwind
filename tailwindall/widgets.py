@@ -275,9 +275,9 @@ class Checkbox():
             self.window.reinstate_widget(self)
 
 class FileSelect:
-    def __init__(self, window, label, title, initial_dir, filetypes, text, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
+    def __init__(self, window, label, title, initial_dir, filetypes, button_text, style: util.Style = util.Style.empty(), properties={}, binds={}, **kwargs):
         try:
-            self._ctk = customtkinter.CTkButton(master=window(), text=text, command=lambda: self._getInput(title, initial_dir, filetypes), **kwargs)
+            self._ctk = customtkinter.CTkButton(master=window(), text=button_text, command=lambda: self._getInput(title, initial_dir, filetypes), **kwargs)
             self._widget = widget.Widget(style, properties, binds, self._ctk)
 
             self.path = None
