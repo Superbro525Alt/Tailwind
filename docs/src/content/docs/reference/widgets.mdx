@@ -1,0 +1,686 @@
+---
+title: Widgets
+description: Widget API Reference
+---
+
+The `widgets` library allows you to create widgets that can be used in the [Window Class](/reference/window).
+
+## Usage
+
+To import the `widgets` library into your script, you must add the following to the top of your script:
+
+```python
+import tailwindall.widgets as widgets
+```
+
+### Global
+
+Global `methods` and `variables` in each widget.
+
+**To get the underlying backend class use `widget._ctk`**
+
+#### Hide
+
+To hide a widget, use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+win = window.Window(None, "Window Title", util.WindowProperties()) # Create a window
+
+def onclick(): # Onclick function for button
+    pass
+
+button = widgets.Button(win, "Button Text", onclick) # Create a button
+
+button.hide() # Hide the button
+
+win.add_widget(button, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the button in the window
+
+win.main_loop() # Start the window main loop
+
+```
+
+#### Show
+
+To show a widget, use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+win = window.Window(None, "Window Title", util.WindowProperties()) # Create a window
+
+def onclick(): # Onclick function for button
+    pass
+
+button = widgets.Button(win, "Button Text", onclick) # Create a button
+
+button.hide() # Hide the button
+
+win.add_widget(button, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the button in the window
+
+button.show() # Show the button
+
+win.main_loop() # Start the window main loop
+
+```
+
+
+
+### Button
+
+The `Button` widget is a simple button that can be used to trigger events.
+
+To create a button use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+win = window.Window(None, "Window Title", util.WindowProperties()) # Create a window
+
+def onclick(): # Onclick function for button
+    pass
+
+button = widgets.Button(win, "Button Text", onclick) # Create a button
+
+win.add_widget(button, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the button in the window
+
+win.main_loop() # Start the window main loop
+```
+
+#### Arguments
+
+| Name         | Type             | Description                                     | Default    | See Also                                |
+|--------------|------------------|-------------------------------------------------|------------|-----------------------------------------|
+| `window`     | `window.Window`  | The window to place the button in               | No Default | [Window Class](/reference/window)       |
+| `text`       | `str`            | The text to display on the button               | No Default |                                         |
+| `onclick`    | `function`       | The function to call when the button is clicked | No Default |                                         |
+| `style`      | `styles.Styles`  | The style of the button                         | `None`     | [Styles](/reference/styles)             |
+| `properties` | `dict[str, any]` | The properties of the button                    | `None`     | [Button Properties](#button-properties) |
+| `binds`      | `dict[str, any]` | The binds of the button                         | `None`     | [Button Binds](#button-binds)           |
+
+#### Button Properties
+Any `tkinter` properties can be used in the `properties` argument. The widget will automatically `.config()` each of the properties.
+
+#### Button Binds
+Any `tkinter` binds can be used in the `binds` argument. The widget will automatically `.bind()` each of the binds.
+
+#### Other Methods
+
+There are no other methods for the `Button` widget.
+
+### Dropdown
+
+The `Dropdown` widget is a simple dropdown that can be used to select an option.
+
+To create a dropdown use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+win = window.Window(None, "Window Title", util.WindowProperties()) # Create a window
+
+dropdown = widgets.Dropdown(win, ["Option 1", "Option 2"]) # Create a dropdown
+
+win.add_widget(dropdown, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the dropdown in the window
+
+win.main_loop() # Start the window main loop
+```
+
+#### Arguments
+
+| Name         | Type             | Description                                     | Default    | See Also                                    |
+|--------------|------------------|-------------------------------------------------|------------|---------------------------------------------|
+| `window`     | `window.Window`  | The window to place the dropdown in             | No Default | [Window Class](/reference/window)           |
+| `options`    | `list[str]`      | The options to display in the dropdown          | No Default |                                             |
+| `style`      | `styles.Styles`  | The style of the dropdown                       | `None`     | [Styles](/reference/styles)                 |
+| `properties` | `dict[str, any]` | The properties of the dropdown                  | `None`     | [Dropdown Properties](#dropdown-properties) |
+| `binds`      | `dict[str, any]` | The binds of the dropdown                       | `None`     | [Dropdown Binds](#dropdown-binds)           |
+
+#### Dropdown Properties
+Any `tkinter` properties can be used in the `properties` argument. The widget will automatically `.config()` each of the properties.
+
+#### Dropdown Binds
+Any `tkinter` binds can be used in the `binds` argument. The widget will automatically `.bind()` each of the binds.
+
+#### Other Methods
+
+##### Get Value
+
+To get the value of the dropdown, use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+def ontick(window): # Ontick function for the window
+    print(dropdown.get_value()) # Print the value of the dropdown
+
+win = window.Window(None, "Window Title", util.WindowProperties(), ontick) # Create a window
+
+dropdown = widgets.Dropdown(win, ["Option 1", "Option 2"]) # Create a dropdown
+
+win.add_widget(dropdown, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the dropdown in the window
+
+win.main_loop() # Start the window main loop
+```
+
+### Label
+
+The `Label` widget is a simple label that can be used to display text.
+
+To create a label use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+win = window.Window(None, "Window Title", util.WindowProperties()) # Create a window
+
+label = widgets.Label(win, "Label Text") # Create a label
+
+win.add_widget(label, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the label in the window
+
+win.main_loop() # Start the window main loop
+```
+
+#### Arguments
+
+| Name         | Type             | Description                                     | Default    | See Also                                  |
+|--------------|------------------|-------------------------------------------------|------------|-------------------------------------------|
+| `window`     | `window.Window`  | The window to place the label in                | No Default | [Window Class](/reference/window)         |
+| `text`       | `str`            | The text to display on the label                | No Default |                                           |
+| `style`      | `styles.Styles`  | The style of the label                          | `None`     | [Styles](/reference/styles)               |
+| `properties` | `dict[str, any]` | The properties of the label                     | `None`     | [Label Properties](#label-properties)     |
+| `binds`      | `dict[str, any]` | The binds of the label                          | `None`     | [Label Binds](#label-binds)               |
+
+#### Label Properties
+Any `tkinter` properties can be used in the `properties` argument. The widget will automatically `.config()` each of the properties.
+
+#### Label Binds
+Any `tkinter` binds can be used in the `binds` argument. The widget will automatically `.bind()` each of the binds.
+
+#### Other Methods
+
+##### Set Text
+
+To set the text of the label, use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+def ontick(window): # Ontick function for the window
+    label.set_text("New Label Text") # Set the text of the label
+
+win = window.Window(None, "Window Title", util.WindowProperties(), ontick) # Create a window
+
+label = widgets.Label(win, "Label Text") # Create a label
+
+win.add_widget(label, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the label in the window
+
+win.main_loop() # Start the window main loop
+```
+
+### Entry
+
+The `Entry` widget is a simple entry that can be used to get text input.
+
+To create an entry use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+win = window.Window(None, "Window Title", util.WindowProperties()) # Create a window
+
+entry = widgets.Entry(win, "Placeholder") # Create an entry
+
+win.add_widget(entry, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the entry in the window
+
+win.main_loop() # Start the window main loop
+```
+
+#### Arguments
+
+| Name         | Type             | Description                                     | Default    | See Also                                  |
+|--------------|------------------|-------------------------------------------------|------------|-------------------------------------------|
+| `window`     | `window.Window`  | The window to place the entry in                | No Default | [Window Class](/reference/window)         |
+| `text`       | `str`            | The placeholder text of the entry               | `None`     |                                           |
+| `style`      | `styles.Styles`  | The style of the entry                          | `None`     | [Styles](/reference/styles)               |
+| `properties` | `dict[str, any]` | The properties of the entry                     | `None`     | [Entry Properties](#entry-properties)     |
+| `binds`      | `dict[str, any]` | The binds of the entry                          | `None`     | [Entry Binds](#entry-binds)               |
+
+#### Entry Properties
+Any `tkinter` properties can be used in the `properties` argument. The widget will automatically `.config()` each of the properties.
+
+#### Entry Binds
+Any `tkinter` binds can be used in the `binds` argument. The widget will automatically `.bind()` each of the binds.
+
+#### Other Methods
+
+##### Get Value
+
+To get the value of the entry, use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+def ontick(window): # Ontick function for the window
+    print(entry.get_value()) # Print the value of the entry
+
+win = window.Window(None, "Window Title", util.WindowProperties(), ontick) # Create a window
+
+entry = widgets.Entry(win, "Placeholder") # Create an entry
+
+win.add_widget(entry, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the entry in the window
+
+win.main_loop() # Start the window main loop
+```
+
+### Frame
+
+The `Frame` widget is a simple frame that can be used to group widgets together.
+
+To create a frame use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+win = window.Window(None, "Window Title", util.WindowProperties()) # Create a window
+
+frame = widgets.Frame(win) # Create a frame
+
+win.add_widget(frame, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the frame in the window
+
+win.main_loop() # Start the window main loop
+```
+
+#### Arguments
+
+| Name         | Type             | Description                                     | Default    | See Also                                  |
+|--------------|------------------|-------------------------------------------------|------------|-------------------------------------------|
+| `window`     | `window.Window`  | The window to place the frame in                | No Default | [Window Class](/reference/window)         |
+| `style`      | `styles.Styles`  | The style of the frame                          | `None`     | [Styles](/reference/styles)               |
+| `properties` | `dict[str, any]` | The properties of the frame                     | `None`     | [Frame Properties](#frame-properties)     |
+| `binds`      | `dict[str, any]` | The binds of the frame                          | `None`     | [Frame Binds](#frame-binds)               |
+
+#### Frame Properties
+Any `tkinter` properties can be used in the `properties` argument. The widget will automatically `.config()` each of the properties.
+
+They can include other widgets using the current tkinter property for a frame.
+
+#### Frame Binds
+Any `tkinter` binds can be used in the `binds` argument. The widget will automatically `.bind()` each of the binds.
+
+### Canvas
+
+The `Canvas` widget is a simple canvas that can be used to draw shapes.
+
+To create a canvas use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+win = window.Window(None, "Window Title", util.WindowProperties()) # Create a window
+
+canvas = widgets.Canvas(win) # Create a canvas
+
+win.add_widget(canvas, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the canvas in the window
+
+win.main_loop() # Start the window main loop
+```
+
+#### Arguments
+
+| Name         | Type             | Description                                     | Default    | See Also                                  |
+|--------------|------------------|-------------------------------------------------|------------|-------------------------------------------|
+| `window`     | `window.Window`  | The window to place the canvas in               | No Default | [Window Class](/reference/window)         |
+| `style`      | `styles.Styles`  | The style of the canvas                         | `None`     | [Styles](/reference/styles)               |
+| `properties` | `dict[str, any]` | The properties of the canvas                    | `None`     | [Canvas Properties](#canvas-properties)   |
+| `binds`      | `dict[str, any]` | The binds of the canvas                         | `None`     | [Canvas Binds](#canvas-binds)             |
+
+#### Canvas Properties
+Any `tkinter` properties can be used in the `properties` argument. The widget will automatically `.config()` each of the properties.
+
+#### Canvas Binds
+Any `tkinter` binds can be used in the `binds` argument. The widget will automatically `.bind()` each of the binds.
+
+
+### Scrollbar
+
+The `Scrollbar` widget is a simple scrollbar that can be used to scroll through widgets.
+
+To create a scrollbar use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+def ontick(window): # Ontick function for the window
+    pass
+
+win = window.Window(None, "Window Title", util.WindowProperties(), ontick) # Create a window
+
+scrollbar = widgets.Scrollbar(win) # Create a scrollbar
+
+win.add_widget(scrollbar, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the scrollbar in the window
+
+win.main_loop() # Start the window main loop
+```
+
+#### Arguments
+
+| Name         | Type             | Description                                     | Default    | See Also                                      |
+|--------------|------------------|-------------------------------------------------|------------|-----------------------------------------------|
+| `window`     | `window.Window`  | The window to place the scrollbar in            | No Default | [Window Class](/reference/window)             |
+| `style`      | `styles.Styles`  | The style of the scrollbar                      | `None`     | [Styles](/reference/styles)                   |
+| `properties` | `dict[str, any]` | The properties of the scrollbar                 | `None`     | [Scrollbar Properties](#scrollbar-properties) |
+| `binds`      | `dict[str, any]` | The binds of the scrollbar                      | `None`     | [Scrollbar Binds](#scrollbar-binds)           |
+
+#### Scrollbar Properties
+Any `tkinter` properties can be used in the `properties` argument. The widget will automatically `.config()` each of the properties.
+
+#### Scrollbar Binds
+Any `tkinter` binds can be used in the `binds` argument. The widget will automatically `.bind()` each of the binds.
+
+### Scrollview
+
+The `Scrollview` widget is a simple scrollview that can be used to scroll through widgets.
+
+To create a scrollview use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+def ontick(window): # Ontick function for the window
+    pass
+
+win = window.Window(None, "Window Title", util.WindowProperties(), ontick) # Create a window
+
+scrollview = widgets.Scrollview(win) # Create a scrollview
+
+win.add_widget(scrollview, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the scrollview in the window
+
+win.main_loop() # Start the window main loop
+```
+
+#### Arguments
+
+| Name         | Type             | Description                                     | Default    | See Also                                        |
+|--------------|------------------|-------------------------------------------------|------------|-------------------------------------------------|
+| `window`     | `window.Window`  | The window to place the scrollview in           | No Default | [Window Class](/reference/window)               |
+| `style`      | `styles.Styles`  | The style of the scrollview                     | `None`     | [Styles](/reference/styles)                     |
+| `properties` | `dict[str, any]` | The properties of the scrollview                | `None`     | [Scrollview Properties](#scrollview-properties) |
+| `binds`      | `dict[str, any]` | The binds of the scrollview                     | `None`     | [Scrollview Binds](#scrollview-binds)           |
+
+#### Scrollview Properties
+Any `tkinter` properties can be used in the `properties` argument. The widget will automatically `.config()` each of the properties.
+
+#### Scrollview Binds
+Any `tkinter` binds can be used in the `binds` argument. The widget will automatically `.bind()` each of the binds.
+
+### Image
+
+The `Image` widget is a simple image that can be used to display images. It can be used with the [`graphing`](/reference/graphing) library.
+
+**No support for parsing direct image data yet.**
+
+To create an image use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+def ontick(window): # Ontick function for the window
+    pass
+
+win = window.Window(None, "Window Title", util.WindowProperties(), ontick) # Create a window
+
+image = widgets.Image(win, "image.png", options={"file": True}) # Create an image from a file
+image = widgets.Image(win, "image.png", options={"file": True, "scale": util.ImageScale(2, 2)}) # Create a scaled image from a file
+
+win.add_widget(image, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the image in the window
+
+win.main_loop() # Start the window main loop
+```
+
+#### Arguments
+
+| Name         | Type             | Description                                     | Default    | See Also                                  |
+|--------------|------------------|-------------------------------------------------|------------|-------------------------------------------|
+| `window`     | `window.Window`  | The window to place the image in                | No Default | [Window Class](/reference/window)         |
+| `image`      | `str`            | The image to display                            | No Default |                                           |
+| `style`      | `styles.Styles`  | The style of the image                          | `None`     | [Styles](/reference/styles)               |
+| `properties` | `dict[str, any]` | The properties of the image                     | `None`     | [Image Properties](#image-properties)     |
+| `binds`      | `dict[str, any]` | The binds of the image                          | `None`     | [Image Binds](#image-binds)               |
+| `options`    | `dict[str, any]` | The options of the image                        | `None`     | [Image Options](#image-options)           |
+
+#### Image Properties
+Any `tkinter` properties can be used in the `properties` argument. The widget will automatically `.config()` each of the properties.
+
+#### Image Binds
+Any `tkinter` binds can be used in the `binds` argument. The widget will automatically `.bind()` each of the binds.
+
+#### Image Options
+
+| Name    | Type              | Description                 | Default | See Also                                   |
+|---------|-------------------|-----------------------------|---------|--------------------------------------------|
+| `file`  | `bool`            | Whether the image is a file | `False` |                                            |
+| `scale` | `util.ImageScale` | The scale of the image      | `None`  | [Image Scale](/reference/util#image-scale) |
+
+### Checkbox
+
+The `Checkbox` widget is a simple checkbox that can be used to select an option.
+
+To create a checkbox use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+def ontick(window): # Ontick function for the window
+    pass
+
+win = window.Window(None, "Window Title", util.WindowProperties(), ontick) # Create a window
+
+checkbox = widgets.Checkbox(win, "Checkbox Text") # Create a checkbox
+
+win.add_widget(checkbox, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the checkbox in the window
+
+win.main_loop() # Start the window main loop
+```
+
+#### Arguments
+
+| Name         | Type             | Description                                     | Default    | See Also                                    |
+|--------------|------------------|-------------------------------------------------|------------|---------------------------------------------|
+| `window`     | `window.Window`  | The window to place the checkbox in             | No Default | [Window Class](/reference/window)           |
+| `text`       | `str`            | The text to display on the checkbox             | No Default |                                             |
+| `style`      | `styles.Styles`  | The style of the checkbox                       | `None`     | [Styles](/reference/styles)                 |
+| `properties` | `dict[str, any]` | The properties of the checkbox                  | `None`     | [Checkbox Properties](#checkbox-properties) |
+| `binds`      | `dict[str, any]` | The binds of the checkbox                       | `None`     | [Checkbox Binds](#checkbox-binds)           |
+
+#### Checkbox Properties
+Any `tkinter` properties can be used in the `properties` argument. The widget will automatically `.config()` each of the properties.
+
+#### Checkbox Binds
+Any `tkinter` binds can be used in the `binds` argument. The widget will automatically `.bind()` each of the binds.
+
+#### Other Methods
+
+##### Get Value
+**Will return `True` or `False`**
+
+To get the value of the checkbox, use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+def ontick(window): # Ontick function for the window
+    print(checkbox.get_value()) # Print the value of the checkbox
+
+win = window.Window(None, "Window Title", util.WindowProperties(), ontick) # Create a window
+
+checkbox = widgets.Checkbox(win, "Checkbox Text") # Create a checkbox
+
+win.add_widget(checkbox, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the checkbox in the window
+
+win.main_loop() # Start the window main loop
+```
+
+### File Select
+
+The `FileSelect` widget is a simple file select that can be used to select a file.
+
+To create a file select use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+def ontick(window): # Onclick function for the window
+    pass
+
+win = window.Window(None, "Window Title", util.WindowProperties()) # Create a window
+
+fileselect = widgets.FileSelect(win, widgets.Label(win, ""), "Dialog Title", "/", [["png", "*.png"], ["jpg", "*.jpg"]], "File Select") # Create a file select
+
+win.add_widget(fileselect, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the file select in the window
+
+win.main_loop() # Start the window main loop
+```
+
+#### Arguments
+
+| Name          | Type              | Description                                                    | Default    | See Also                                          |
+|---------------|-------------------|----------------------------------------------------------------|------------|---------------------------------------------------|
+| `window`      | `window.Window`   | The window to place the file select in                         | No Default | [Window Class](/reference/window)                 |
+| `label`       | `widgets.Label`   | The label to display the current file selected                 | No Default | [Label](#label)                                   |
+| `title`       | `str`             | The title of the file select dialog                            | No Default |                                                   |
+| `initial_dir`        | `str`             | The path to start the file select dialog in             | No Default |                                                   |
+| `types`       | `list[list[str]]` | The types of files to display in the file select dialog        | No Default |                                                   |
+| `button_text` | `str`             | The text to display on the file select button                  | No Default |                                                   |
+| `style`       | `styles.Styles`   | The style of the file select                                   | `None`     | [Styles](/reference/styles)                       |
+| `properties`  | `dict[str, any]`  | The properties of the file select                              | `None`     | [File Select Properties](#file-select-properties) |
+| `binds`       | `dict[str, any]`  | The binds of the file select                                   | `None`     | [File Select Binds](#file-select-binds)           |
+
+#### File Select Properties
+Any `tkinter` properties can be used in the `properties` argument. The widget will automatically `.config()` each of the properties.
+
+#### File Select Binds
+Any `tkinter` binds can be used in the `binds` argument. The widget will automatically `.bind()` each of the binds.
+
+#### Other Methods
+
+##### Get Value
+
+To get the last selected files path, use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+def ontick(window): # Onclick function for the window
+    print(fileselect.get_value()) # Print the value of the file select
+
+win = window.Window(None, "Window Title", util.WindowProperties()) # Create a window
+
+fileselect = widgets.FileSelect(win, widgets.Label(win, ""), "Dialog Title", "/", [["png", "*.png"], ["jpg", "*.jpg"]], "File Select") # Create a file select
+
+win.add_widget(fileselect, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the file select in the window
+
+win.main_loop() # Start the window main loop
+```
+
+### Folder Select
+
+The `FolderSelect` widget is a simple folder select that can be used to select a folder.
+
+To create a folder select use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+def ontick(window): # Onclick function for the window
+    pass
+
+win = window.Window(None, "Window Title", util.WindowProperties()) # Create a window
+
+folderselect = widgets.FolderSelect(win, widgets.Label(win, ""), "Dialog Title", "/", "Folder Select") # Create a folder select
+
+win.add_widget(folderselect, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the folder select in the window
+
+win.main_loop() # Start the window main loop
+```
+
+#### Arguments
+
+| Name          | Type             | Description                                      | Default    | See Also                                              |
+|---------------|------------------|--------------------------------------------------|------------|-------------------------------------------------------|
+| `window`      | `window.Window`  | The window to place the folder select in         | No Default | [Window Class](/reference/window)                     |
+| `label`       | `widgets.Label`  | The label to display the current folder selected | No Default | [Label](#label)                                       |
+| `title`       | `str`            | The title of the folder select dialog            | No Default |                                                       |
+| `initial_dir` | `str`            | The path to start the folder select dialog in    | No Default |                                                       |
+| `button_text` | `str`            | The text to display on the folder select button  | No Default |                                                       |
+| `style`       | `styles.Styles`  | The style of the folder select                   | `None`     | [Styles](/reference/styles)                           |
+| `properties`  | `dict[str, any]` | The properties of the folder select              | `None`     | [Folder Select Properties](#folder-select-properties) |
+| `binds`       | `dict[str, any]` | The binds of the folder select                   | `None`     | [Folder Select Binds](#folder-select-binds)           |
+
+#### Folder Select Properties
+Any `tkinter` properties can be used in the `properties` argument. The widget will automatically `.config()` each of the properties.
+
+#### Folder Select Binds
+Any `tkinter` binds can be used in the `binds` argument. The widget will automatically `.bind()` each of the binds.
+
+#### Other Methods
+
+##### Get Value
+
+To get the last selected folders path, use the following code:
+
+```python
+import tailwindall.widgets as widgets
+import tailwindall.window as window
+import tailwindall.util as util
+
+def ontick(window): # Onclick function for the window
+    print(folderselect.get_value()) # Print the value of the folder select
+
+win = window.Window(None, "Window Title", util.WindowProperties()) # Create a window
+
+folderselect = widgets.FolderSelect(win, widgets.Label(win, ""), "Dialog Title", "/", "Folder Select") # Create a folder select
+
+win.add_widget(folderselect, util.PlaceData(0, 0, util.CenterAnchor.get_anchor())) # Place the folder select in the window
+
+win.main_loop() # Start the window main loop
+```
