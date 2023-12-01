@@ -30,6 +30,7 @@ class InfoPopup:
             threading.Thread(target=self._run_windows, daemon=True).start()
         elif platform.system() == "Windows":
             threading.Thread(target=self._run_windows, daemon=True).start()
+
     def _run_windows(self):
         try:
             def kill_window(_window):
@@ -48,8 +49,11 @@ class InfoPopup:
             messagebox.showerror("Error", f"An error occurred while displaying the popup:\n {e}")
             print(e)
 
-def MessageBox(title, content):
+def InfoBox(title, content):
     messagebox.showinfo(title, content)
+
+def WarningBox(title, content):
+    messagebox.showwarning(title, content)
 
 def ErrorBox(title, content):
     messagebox.showerror(title, content)

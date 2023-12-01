@@ -1,0 +1,95 @@
+---
+title: Popup
+description: Popup API Reference
+---
+
+The `popup` library can be used to open a popup window, it can be an error, warning or info.
+
+To import use the following code:
+
+```python
+from tailwindall.popup import *
+```
+
+**or**
+
+```python
+import tailwindall.popup as popup
+```
+
+## Usage
+
+### Info
+
+You can create an info box in 2 different ways
+
+#### Fancy
+
+To create a fancy message box use the following code:
+
+```python
+from tailwindall.popup import InfoPopup
+
+InfoPopup("Title of the Popup (at the title bar of the window)", "Popup content", "Popup header (in the window)").display()
+```
+
+##### Arguments
+
+| Argument       | Type              | Description                    | Default                      | See Also |
+|----------------|-------------------|--------------------------------|------------------------------|----------|
+| `title`        | `str`             | The title of the popup window  | `""`                         |          |
+| `message`      | `str`             | The text of the popup window   | `""`                         |          |
+| `header`       | `str`             | The header of the popup window | `""`                         |          |
+| `message_font` | `tuple[str, int]` | `(font_name, font_size)`       | `("FiraCode Nerd Font", 15)` |          |
+| `header_font`  | `tuple[str, int]` | `(font_name, font_size)`       | `("FiraCode Nerd Font", 20)` |          |
+
+#### Simple
+
+To create a simple message box use the following code:
+
+```python
+from tailwindall.popup import InfoBox
+
+InfoBox("Title of the Popup (at the title bar of the window)", "Popup content")
+```
+
+##### Arguments
+
+| Argument       | Type              | Description                    | Default                      | See Also |
+|----------------|-------------------|--------------------------------|------------------------------|----------|
+| `title`        | `str`             | The title of the popup window  | `""`                         |          |
+| `message`      | `str`             | The text of the popup window   | `""`                         |          |
+
+### Warning
+
+You can create a warning box using the following code:
+
+```python
+from tailwindall.popup import WarningBox
+
+WarningBox("Title of the Popup (at the title bar of the window)", "Popup content")
+```
+
+#### Arguments
+
+| Argument       | Type              | Description                    | Default                      | See Also |
+|----------------|-------------------|--------------------------------|------------------------------|----------|
+| `title`        | `str`             | The title of the popup window  | `""`                         |          |
+| `message`      | `str`             | The text of the popup window   | `""`                         |          |
+
+### Error
+
+You can create an error box using the following code:
+
+```python
+from tailwindall.popup import ErrorBox
+
+ErrorBox("Title of the Popup (at the title bar of the window)", "Popup content")
+```
+
+#### Arguments
+
+| Argument       | Type              | Description                    | Default                      | See Also |
+|----------------|-------------------|--------------------------------|------------------------------|----------|
+| `title`        | `str`             | The title of the popup window  | `""`                         |          |
+| `message`      | `str`             | The text of the popup window   | `""`                         |          |
