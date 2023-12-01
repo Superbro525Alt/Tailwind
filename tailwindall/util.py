@@ -119,6 +119,12 @@ class SouthAnchor:
     @staticmethod
     def get_anchor():
         return tkinter.S
+
+class SouthWestAnchor:
+    @staticmethod
+    def get_anchor():
+        return tkinter.SW
+    
 class WestAnchor:
     @staticmethod
     def get_anchor():
@@ -165,6 +171,7 @@ class Resizable:
     @classmethod
     def empty(cls):
         return cls()
+
 class WindowProperties:
     def __init__(self, dynamic_scaling=None, dev_resolution=None,  size=None, resizable=Resizable.empty(), appearance_mode=None, default_color_theme=None, css_file=None, secondary_window=False, secondary_window_framework=None, secondary_window_onTick=None, secondary_window_init=None):
         self.size = size
@@ -279,3 +286,4 @@ def selectFolder(title, initial_dir):
 
 def FileType(name, extention) -> tuple[str, str]:
         return (name, extention)
+

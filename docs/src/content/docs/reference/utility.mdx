@@ -3,3 +3,534 @@ title: Utility
 description: Utility API Reference
 ---
 
+The `utility` module provides a set of utility functions that are used throughout the library for more readable code.
+
+To import all utility functions:
+
+```python
+import tailwindall.util as util
+```
+
+## Usage
+
+### Constants
+
+| Name     | Description      | Type   | Value  |
+|----------|------------------|--------|--------|
+| `string` | A string type    | `str`  | `str`  |
+| `NULL`   | NULL Type        | `None` | `None` |
+| `null`   | Alias for `NULL` | `None` | `None` |
+
+### Types
+
+Types is a class that provides multiple `classmethods` for comparing types.
+
+#### Are list items the same
+
+To check if the items in two list are the same type:
+
+```python
+import tailwindall.util as util
+
+util.Types.are_list_items_same([1, 2, 3], [4, 5, 6]) # [False, False, False]
+
+util.Types.are_list_items_same([1, 2, 3], [1, 2, 4]) # [True, True, False]
+
+util.Types.are_list_items_same([1, 2, 3], [4, 5, 6, 7]) # ValueError: Lists are not the same length: This -> 3 & Other -> 4
+```
+
+##### Arguments
+
+| Name    | Description                | Type   | Default | See Also |
+|---------|----------------------------|--------|---------|----------|
+| `this`  | The first list to compare  | `list` | No Default | |
+| `other` | The second list to compare | `list` | No Default | |
+
+##### Return Types
+
+| Type         | Description                                                                  | Example Values                                                      |
+|--------------|------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| `list`       | A list of booleans that represent if the items in the list are the same type | `[True, True, False]`                                               |
+| `ValueError` | If the lists are not the same length                                         | `ValueError: Lists are not the same length: This -> 3 & Other -> 4` |
+
+#### Are classes same
+
+To check if two classes have the same `__dict__`:
+
+```python
+import tailwindall.util as util
+
+class A:
+    def __init__(self):
+        self.a = 1
+        self.b = 2
+
+class B:
+    def __init__(self):
+        self.a = 1
+        self.b = 2
+
+class C:
+    def __init__(self):
+        self.a = 1
+        self.b = 2
+        self.c = 3
+
+util.Types.is_class_same(A(), B()) # {'a': True, 'b': True}
+util.Types.is_class_same(A(), C()) # {'a': True, 'b': True, 'c': None}
+```
+
+##### Arguments
+
+| Name    | Description                 | Type    | Default    | See Also |
+|---------|-----------------------------|---------|------------|----------|
+| `this`  | The first class to compare  | `class` | No Default |          |
+| `other` | The second class to compare | `class` | No Default |          |
+
+##### Return Types
+
+| Type   | Description                                                                                                                                                      | Example Values                      |
+|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|
+| `dict` | A dictionary of booleans that represent if the items in the class are equal, if item in return dict is None, it means the classes did not both have the variable | `{'a': True, 'b': True, 'c': None}` |
+
+#### Is same type
+
+To check if two variables are the same type:
+
+```python
+import tailwindall.util as util
+
+util.Types.is_type(1, 2) # True
+
+util.Types.is_type(1, '1') # False
+```
+
+##### Arguments
+
+| Name    | Description                  | Type   | Default    | See Also |
+|---------|------------------------------|--------|------------|----------|
+| `this`  | The first variable to check  | `any`  | No Default |          |
+| `other` | The second variable to check | `any`  | No Default |          |
+
+##### Return Types
+
+| Type    | Description                                                                 | Example Values |
+|---------|-----------------------------------------------------------------------------|----------------|
+| `bool`  | A boolean that represents if the two variables are the same type or not     | `True`         |
+
+#### Is Instance
+
+Returns if the variable is an instance of the class:
+
+```python
+import tailwindall.util as util
+
+util.Types.is_instance(1, int) # True
+
+util.Types.is_instance(1, str) # False
+```
+
+##### Arguments
+
+| Name    | Description                  | Type    | Default    | See Also |
+|---------|------------------------------|---------|------------|----------|
+| `this`  | The variable to check        | `any`   | No Default |          |
+| `other` | The class to check against   | `class` | No Default |          |
+
+##### Return Types
+
+| Type    | Description                                                                  | Example Values |
+|---------|------------------------------------------------------------------------------|----------------|
+| `bool`  | A boolean that represents if the variable is an instance of the class or not | `True`         |
+
+#### Widget Type
+
+Returns the type of the widget:
+
+```python
+import tailwindall.util as util
+import tailwindall.widgets as widgets
+
+util.Types.widget_type(widgets.Button(
+    # arguments here
+)._ctk) # 'Button'
+```
+
+##### Arguments
+
+| Name    | Description                   | Type                              | Default    | See Also |
+|---------|-------------------------------|-----------------------------------|------------|----------|
+| `this`  | The widget to get the type of | Any widget from `widgets` `._ctk` | No Default |          |
+
+##### Return Types
+
+| Type    | Description                                                                  | Example Values |
+|---------|------------------------------------------------------------------------------|----------------|
+| `str`   | A string that represents the type of the widget or `'unknown'` if not known  | `'Button'`     |
+
+
+### Read File
+
+Reads a file and returns the contents:
+
+```python
+import tailwindall.util as util
+
+util.read_file('file.txt') # 'contents of file.txt'
+
+util.read_file('non-existent-file.txt') # FileNotFoundError: File Not Found: non-existent-file.txt
+```
+
+##### Arguments
+
+| Name      | Description                       | Type   | Default    | See Also                                  |
+|-----------|-----------------------------------|--------|------------|-------------------------------------------|
+| `file`    | The file to read                  | `str`  | No Default |                                           |
+| `options` | The options to read the file with | `dict` | `{}`       | [File Open Options](#file-import-options) |
+
+###### File Import Options
+
+| Name    | Description                                  | Type   | Default | See Also |
+|---------|----------------------------------------------|--------|---------|----------|
+| `strip` | If the file should be stripped of whitespace | `bool` | `False` |          |
+| `lines` | If the file should be read line by line      | `bool` | `False` |          |
+
+##### Return Types
+
+| Type                | Description                                                                | Example Values                                             |
+|---------------------|----------------------------------------------------------------------------|------------------------------------------------------------|
+| `str`               | A string that represents the contents of the file or `''` if file is empty | `'Button'`                                                 |
+| `FileNotFoundError` | If the file does not exist                                                 | `FileNotFoundError: File Not Found: non-existent-file.txt` |
+
+### Pass
+
+A function that does nothing:
+
+```python
+import tailwindall.util as util
+
+util._pass() # None
+```
+
+##### Arguments
+
+| Name | Description | Type | Default | See Also |
+|------|-------------|------|---------|----------|
+| None |             |      |         |          |
+
+##### Return Types
+
+| Type | Description | Example Values |
+|------|-------------|----------------|
+| None |             |                |
+
+### Anchors
+
+A class that provides multiple `classmethods` for anchoring widgets.
+
+To get the anchor value to be passed into the `window.Window.add_widget` method:
+
+```python
+import tailwindall.util as util
+
+util.CenterAnchor.get_anchor() # Get Center Anchor
+```
+
+#### Center Anchor
+
+```python
+import tailwindall.util as util
+
+util.CenterAnchor.get_anchor() # Get Center Anchor
+```
+
+#### North Anchor
+
+```python
+import tailwindall.util as util
+
+util.NorthAnchor.get_anchor() # Get North Anchor
+```
+
+#### South Anchor
+
+```python
+import tailwindall.util as util
+
+util.SouthAnchor.get_anchor() # Get South Anchor
+```
+
+#### East Anchor
+
+```python
+import tailwindall.util as util
+
+util.EastAnchor.get_anchor() # Get East Anchor
+```
+
+#### West Anchor
+
+```python
+import tailwindall.util as util
+
+util.WestAnchor.get_anchor() # Get West Anchor
+```
+
+#### North East Anchor
+
+```python
+import tailwindall.util as util
+
+util.NorthEastAnchor.get_anchor() # Get North East Anchor
+```
+
+#### North West Anchor
+
+```python
+import tailwindall.util as util
+
+util.NorthWestAnchor.get_anchor() # Get North West Anchor
+```
+
+#### South East Anchor
+
+```python
+import tailwindall.util as util
+
+util.SouthEastAnchor.get_anchor() # Get South East Anchor
+```
+
+#### South West Anchor
+
+```python
+import tailwindall.util as util
+
+util.SouthWestAnchor.get_anchor() # Get South West Anchor
+```
+
+### Image Scale
+
+This is a class containing the x and y scaling factors for images.
+
+To create an instance of the class:
+
+```python
+from tailwindall.util import ImageScale
+
+ImageScale(1, 1) # ImageScale(x, y)
+```
+
+#### Arguments
+
+| Name | Description        | Type  | Default    | See Also |
+|------|--------------------|-------|------------|----------|
+| `x`  | The x scale factor | `int` | No Default |          |
+| `y`  | The y scale factor | `int` | No Default |          |
+
+### Execute list
+
+Executes a list of functions and finishes by executing the `final` function if provided.
+
+```python
+import tailwindall.util as util
+
+util.exec_list([lambda: print('Hello'), lambda: print('World')], final=lambda: print('!')) # Hello\nWorld\n!
+```
+
+##### Arguments
+
+| Name        | Description                      | Type             | Default    | See Also |
+|-------------|----------------------------------|------------------|------------|----------|
+| `functions` | The list of functions to execute | `list[function]` | No Default |          |
+| `final`     | The final function to execute    | `function`       | `None`     |          |
+
+### Style
+
+**An extension of the `styles.Styles` class**
+
+A class that allows for manual entry of styles.
+
+To create an instance of the class:
+
+```python
+from tailwindall.util import Style
+
+style = Style({}, {}, {}) # Style(classes, tags, ids)
+```
+
+#### Arguments
+
+| Name      | Description | Type             | Default    | See Also |
+|-----------|-------------|------------------|------------|----------|
+| `classes` |             | `dict[str, str]` | No Default |          |
+| `tags`    |             | `dict[str, str]` | No Default |          |
+| `ids`     |             | `dict[str, str]` | No Default |          |
+
+#### Class Methods
+
+##### Empty
+
+Returns an empty style:
+
+```python
+from tailwindall.util import Style
+
+Style.empty() # Style({}, {}, {})
+```
+
+### Resizable
+
+A class that holds weather something is resizable or not **(in the x or y axis)**.
+
+To create an instance of the class:
+
+```python
+from tailwindall.util import Resizable
+
+Resizable(True, True) # Resizable(x, y)
+```
+
+#### Arguments
+
+**In the `x` or `y` arguments, `None` also means that the widget is not resizable in that axis**
+
+| Name | Description                                   | Type   | Default    | See Also |
+|------|-----------------------------------------------|--------|------------|----------|
+| `x`  | Whether the widget is resizable in the x axis | `bool` | `None`     |          |
+| `y`  | Whether the widget is resizable in the y axis | `bool` | `None`     |          |
+
+#### Class Methods
+
+##### Empty
+
+Returns an empty resizable:
+
+```python
+from tailwindall.util import Resizable
+
+Resizable.empty() # Resizable(None, None)
+```
+
+### Window Properties
+
+A class that holds the properties of a window.
+
+To create an instance of the class:
+
+```python
+from tailwindall.util import WindowProperties, resolution
+
+WindowProperties(dynamic_scaling=True, dev_resolution=resolution(1920, 1080))
+```
+
+#### Arguments
+
+| Name                  | Description                                                                                         | Type              | Default | See Also                  |
+|-----------------------|-----------------------------------------------------------------------------------------------------|-------------------|---------|---------------------------|
+| `dynamic_scaling`     | Whether the window should scale dynamically based on the resolution                                 | `bool`            | `None`  |                           |
+| `dev_resolution`      | The resolution used when developing (used to scale the widgets to) when `dynamic_scaling` is `True` | `util.resolution` | `None`  | [Resolution](#resolution) |
+| `size`                | The size of the window                                                                              | `util.resolution` | `None`  | [Resolution](#resolution) |
+| `resizable`           | Whether the window is resizable                                                                     | `util.Resizable`  | `None`  | [Resizable](#resizable)   |
+| `appearance_mode`     | The appearance mode of the window                                                                   | `str`             | `None`  |                           |
+| `default_color_theme` | The default color theme of the window                                                               | `str`             | `None`  |                           |
+| `css_file`            | The css file to use for the window                                                                  | `str`             | `None`  |                           |
+
+#### Class Methods
+
+##### Empty
+
+Returns an empty window properties:
+
+```python
+from tailwindall.util import WindowProperties
+
+WindowProperties.empty() # WindowProperties(None, None, None, None, None, None, None)
+```
+
+### Place Data
+
+A class that holds the data for placing widgets.
+
+To create an instance of the class:
+
+```python
+from tailwindall.util import PlaceData, CenterAnchor
+
+PlaceData(0, 0, CenterAnchor.get_anchor())
+```
+
+#### Arguments
+
+| Name     | Description                                    | Type               | Default    | See Also |
+|----------|------------------------------------------------|--------------------|------------|----------|
+| `x`      | The x position of the placement                | `float`            | No Default |          |
+| `y`      | The y position of the placement                | `float`            | No Default |          |
+| `anchor` | The center point of the placement (`0.5, 0.5`) | Anchor from `util` | No Default |          |
+
+### Is Main Thread
+
+Returns if the current thread is the main thread:
+
+`otherfile.py`
+```python
+import tailwindall.util as util
+
+print(util.is_main_thread(__name__)) # False, because it is imported
+```
+
+`main.py`
+```python
+import tailwindall.util as util
+import otherfile
+
+print(util.is_main_thread(__name__)) # True, because it is directly ran
+```
+
+### Run Tests
+
+Runs the tests for **any** library or file:
+
+`file`
+
+```python
+import tailwindall.util as util
+
+tests = [lambda: print('Hello'), lambda: print('World')]
+
+util.run_tests(tests)
+```
+
+`output`
+
+```bash
+Testing...
+Tests: 0. Passed: 0. Running Test 1...
+Hello
+Result: None
+Tests: 1. Passed: 1. Running Test 2...
+World
+Result: None
+===============================
+Tests: 2. Passed: 2.
+===============================
+All tests passed!
+```
+
+### Resolution
+
+A class that holds the resolution of a window.
+
+To create an instance of the class:
+
+```python
+from tailwindall.util import resolution
+
+resolution(1920, 1080) # resolution(width, height)
+```
+
+#### Arguments
+
+| Name     | Description | Type  | Default    | See Also |
+|----------|-------------|-------|------------|----------|
+| `width`  | The width   | `int` | No Default |          |
+| `height` | The height  | `int` | No Default |          |

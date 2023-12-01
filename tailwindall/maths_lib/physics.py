@@ -74,6 +74,7 @@ class PhysicsEngine2D(BaseObject):
 
     def update(self):
         for obj in self.objects:
+            print(obj)
             if obj.falling:
                 if obj.use_gravity:
                     obj.position = [obj.position[0], obj.position[1] + self.gravity]
