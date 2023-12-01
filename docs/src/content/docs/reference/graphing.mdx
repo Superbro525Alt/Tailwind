@@ -1,0 +1,241 @@
+---
+title: Graphing
+description: Graphing API Reference
+---
+
+A module for making and displaying graphs on the screen, created for use with the [Window API](/reference/window).
+
+## Usage
+
+Currently supported graph types:
+- Line Graphs
+- Bar Graphs
+- Scatter Plots
+- Pie Charts
+- Histograms
+- Box Plot
+- Area Graph
+
+### Graph Options
+
+The `GraphOptions` class is used to specify the options for a graph. To create a `GraphOptions` object, use the following code:
+
+```python
+from tailwindall.graphing import GraphOptions
+from tailwindall.util import ImageScale
+
+opts = GraphOptions("X Label", "Y Label", "Title", ImageScale(1, 1))
+```
+
+#### Arguments
+
+| Argument    | Type           | Description                        | Default    | See Also                      |
+| ----------- | -------------- | ---------------------------------- | ---------- | ----------------------------- |
+| `x_label`   | `str`          | The label for the x axis           | No Default |                               |
+| `y_label`   | `str`          | The label for the y axis           | No Default |                               |
+| `title`     | `str`          | The title of the graph             | No Default |                               |
+| `image`     | `ImageScale`   | The size of the graph              | No Default | [ImageScale](/reference/util) |
+
+### Line Graphs
+
+To create a line graph, use the following code:
+
+```python
+from tailwindall.graphing import LineGraph, GraphOptions
+from tailwindall.window import Window
+from tailwindall.util import ImageScale, WindowProperties, PlaceData, CenterAnchor
+
+win = Window(None, "Line Graph", WindowProperties())
+
+opts = GraphOptions("X Label", "Y Label", "Title", ImageScale(1, 1))
+
+linegraph = LineGraph([], [], opts, win)
+
+win.add_widget(linegraph.display(), PlaceData(0, 0, CenterAnchor.get_anchor()))
+
+win.main_loop()
+```
+
+#### Arguments
+
+| Argument  | Type           | Description                        | Default    | See Also                       |
+|-----------|----------------|------------------------------------|------------|--------------------------------|
+| `x_data`  | `List[float]`  | The x data to be graphed           | No Default |                                |
+| `y_data`  | `List[float]`  | The y data to be graphed           | No Default |                                |
+| `options` | `GraphOptions` | The options for the graph          | No Default | [GraphOptions](#graph-options) |
+| `window`  | `Window`       | The window to display the graph on | No Default | [Window](/reference/window)    |
+
+### Bar Graphs
+
+To create a bar graph, use the following code:
+
+```python
+from tailwindall.graphing import BarGraph, GraphOptions
+from tailwindall.window import Window
+from tailwindall.util import ImageScale, WindowProperties, PlaceData, CenterAnchor
+
+win = Window(None, "Bar Graph", WindowProperties())
+
+opts = GraphOptions("X Label", "Y Label", "Title", ImageScale(1, 1))
+
+bargraph = BarGraph([], [], opts, win)
+
+win.add_widget(bargraph.display(), PlaceData(0, 0, CenterAnchor.get_anchor()))
+
+win.main_loop()
+```
+
+#### Arguments
+
+| Argument  | Type           | Description                        | Default    | See Also                       |
+|-----------|----------------|------------------------------------|------------|--------------------------------|
+| `x_data`  | `List[float]`  | The x data to be graphed           | No Default |                                |
+| `y_data`  | `List[float]`  | The y data to be graphed           | No Default |                                |
+| `options` | `GraphOptions` | The options for the graph          | No Default | [GraphOptions](#graph-options) |
+| `window`  | `Window`       | The window to display the graph on | No Default | [Window](/reference/window)    |
+
+### Scatter Plots
+
+To create a scatter plot, use the following code:
+
+```python
+from tailwindall.graphing import ScatterPlot, GraphOptions
+from tailwindall.window import Window
+from tailwindall.util import ImageScale, WindowProperties, PlaceData, CenterAnchor
+
+win = Window(None, "Scatter Plot", WindowProperties())
+
+opts = GraphOptions("X Label", "Y Label", "Title", ImageScale(1, 1))
+
+scatterplot = ScatterPlot([], [], opts, win)
+
+win.add_widget(scatterplot.display(), PlaceData(0, 0, CenterAnchor.get_anchor()))
+
+win.main_loop()
+```
+
+#### Arguments
+
+| Argument  | Type           | Description                        | Default    | See Also                       |
+|-----------|----------------|------------------------------------|------------|--------------------------------|
+| `x_data`  | `List[float]`  | The x data to be graphed           | No Default |                                |
+| `y_data`  | `List[float]`  | The y data to be graphed           | No Default |                                |
+| `options` | `GraphOptions` | The options for the graph          | No Default | [GraphOptions](#graph-options) |
+| `window`  | `Window`       | The window to display the graph on | No Default | [Window](/reference/window)    |
+
+### Pie Charts
+
+To create a pie chart, use the following code:
+
+```python
+from tailwindall.graphing import PieGraph, GraphOptions
+from tailwindall.window import Window
+from tailwindall.util import ImageScale, WindowProperties, PlaceData, CenterAnchor
+
+win = Window(None, "Pie Chart", WindowProperties())
+
+opts = GraphOptions("X Label", "Y Label", "Title", ImageScale(1, 1))
+
+piechart = PieGraph([], [], opts, win)
+
+win.add_widget(piechart.display(), PlaceData(0, 0, CenterAnchor.get_anchor()))
+
+win.main_loop()
+```
+
+#### Arguments
+
+| Argument  | Type           | Description                        | Default    | See Also                       |
+|-----------|----------------|------------------------------------|------------|--------------------------------|
+| `x_data`  | `List[float]`  | The x data to be graphed           | No Default |                                |
+| `y_data`  | `List[float]`  | The y data to be graphed           | No Default |                                |
+| `options` | `GraphOptions` | The options for the graph          | No Default | [GraphOptions](#graph-options) |
+| `window`  | `Window`       | The window to display the graph on | No Default | [Window](/reference/window)    |
+
+
+### Histograms
+
+To create a histogram, use the following code:
+
+```python
+from tailwindall.graphing import HistogramGraph, GraphOptions
+from tailwindall.window import Window
+from tailwindall.util import ImageScale, WindowProperties, PlaceData, CenterAnchor
+
+win = Window(None, "Histogram", WindowProperties())
+
+opts = GraphOptions("X Label", "Y Label", "Title", ImageScale(1, 1))
+
+histogram = HistogramGraph([], [], opts, win)
+
+win.add_widget(histogram.display(), PlaceData(0, 0, CenterAnchor.get_anchor()))
+
+win.main_loop()
+```
+
+#### Arguments
+
+| Argument  | Type           | Description                        | Default    | See Also                       |
+|-----------|----------------|------------------------------------|------------|--------------------------------|
+| `x_data`  | `List[float]`  | The x data to be graphed           | No Default |                                |
+| `y_data`  | `List[float]`  | The y data to be graphed           | No Default |                                |
+| `options` | `GraphOptions` | The options for the graph          | No Default | [GraphOptions](#graph-options) |
+| `window`  | `Window`       | The window to display the graph on | No Default | [Window](/reference/window)    |
+
+### Box Plots
+
+To create a box plot, use the following code:
+
+```python
+from tailwindall.graphing import BoxPlotGraph, GraphOptions
+from tailwindall.window import Window
+from tailwindall.util import ImageScale, WindowProperties, PlaceData, CenterAnchor
+
+win = Window(None, "Box Plot", WindowProperties())
+
+opts = GraphOptions("X Label", "Y Label", "Title", ImageScale(1, 1))
+
+boxplot = BoxPlotGraph([], [], opts, win)
+
+win.add_widget(boxplot.display(), PlaceData(0, 0, CenterAnchor.get_anchor()))
+
+win.main_loop()
+```
+
+#### Arguments
+
+| Argument  | Type           | Description                        | Default    | See Also                       |
+|-----------|----------------|------------------------------------|------------|--------------------------------|
+| `x_data`  | `List[float]`  | The x data to be graphed           | No Default |                                |
+| `y_data`  | `List[float]`  | The y data to be graphed           | No Default |                                |
+| `options` | `GraphOptions` | The options for the graph          | No Default | [GraphOptions](#graph-options) |
+| `window`  | `Window`       | The window to display the graph on | No Default | [Window](/reference/window)    |
+
+### Area Graphs
+
+To create an area graph, use the following code:
+
+```python
+from tailwindall.graphing import AreaGraph, GraphOptions
+from tailwindall.window import Window
+from tailwindall.util import ImageScale, WindowProperties, PlaceData, CenterAnchor
+
+win = Window(None, "Area Graph", WindowProperties())
+
+opts = GraphOptions("X Label", "Y Label", "Title", ImageScale(1, 1))
+
+areagraph = AreaGraph([], [], opts, win)
+
+win.add_widget(areagraph.display(), PlaceData(0, 0, CenterAnchor.get_anchor()))
+
+win.main_loop()
+```
+
+#### Arguments
+
+| Argument  | Type           | Description                        | Default    | See Also                       |
+|-----------|----------------|------------------------------------|------------|--------------------------------|
+| `x_data`  | `List[float]`  | The x data to be graphed           | No Default |                                |
+| `y_data`  | `List[float]`  | The y data to be graphed           | No Default |                                |
+| `options` | `GraphOptions` | The options for the graph          | No Default | [GraphOptions](#graph-options) |
+| `window`  | `Window`       | The window to display the graph on | No Default | [Window](/reference/window)    |

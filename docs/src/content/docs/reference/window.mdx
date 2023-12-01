@@ -1,13 +1,18 @@
 ---
 title: Window
 description: Window API Reference
+
+sidebar:
+    badge:
+        text: New
+        variant: tip
 ---
 
-The window library allows the creation, destruction and editing of a window.
+The `window` library allows the creation, destruction and editing of a window.
 
 ## Usage
 
-To import the window library into your script, use the following code:
+To import the `window` library into your script, use the following code:
 
 ```python
 import tailwindall.window as window
@@ -26,13 +31,13 @@ win = window.Window(None, "My Window", util.WindowProperties())
 
 #### Arguments
 
-| Name       | Type                    | Description                               | Default    | See Also                                                  |
-|------------|-------------------------|-------------------------------------------|------------|-----------------------------------------------------------|
-| style      | `styles.Style`          | The style of the window                   | No Default | [Styles](/reference/styles)                               |
-| title      | `str`                   | The title of the window                   | No Default |                                                           |
-| properties | `util.WindowProperties` | The properties of the window              | No Default | [Window Properties](/reference/utility#window-properties) |
-| onTick     | `function`              | The function to call every tick           | `None`     |                                                           |
-| debug      | `bool`                  | Whether or not to print debug information | `False`    |                                                           |
+| Name       | Type                           | Description                               | Default    | See Also                                                  |
+|------------|--------------------------------|-------------------------------------------|------------|-----------------------------------------------------------|
+| style      | `styles.Style`                 | The style of the window                   | No Default | [Styles](/reference/styles)                               |
+| title      | `str`                          | The title of the window                   | No Default |                                                           |
+| properties | `util.WindowProperties`        | The properties of the window              | No Default | [Window Properties](/reference/utility#window-properties) |
+| onTick     | `function(win: window.Window)` | The function to call every tick           | `None`     |                                                           |
+| debug      | `bool`                         | Whether or not to print debug information | `False`    |                                                           |
 
 ### Destroying a Window
 

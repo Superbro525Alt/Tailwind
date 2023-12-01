@@ -13,6 +13,6 @@ from tailwindall.graphics_lib import objects
 
 win = graphics.PlatformerWindow("Test", util.resolution(800, 600), "white")
 
-win.add_object(objects.Rectangle("blue", (50, 50), (50, 50)), False)
+win.add_object(objects.Rectangle("blue", (50, 50), (50, 50), setup=True), True)
 
 win.main_loop()

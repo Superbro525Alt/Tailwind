@@ -1,0 +1,41 @@
+---
+title: Styles
+description: Styles API Reference
+---
+
+A class that represents a style, which is a collection of properties that determine the appearance and properties of a layer or map.
+
+It can split css into tags, ids and classes.
+
+## Usage
+
+To create a style object use the following code:
+
+```python
+import tailwindall.styles as styles
+
+style = styles.Styles.parse("css_string") # parse a string of css
+style = styles.Styles.parse("css_file_path", file=True) # parse a file of css
+```
+
+### Arguments
+
+| Argument | Type   | Description                                      | Default | See Also |
+|----------|--------|--------------------------------------------------|---------|----------|
+| `style`  | `str`  | The css string or file path to parse             | `None`  |          |
+| `file`   | `bool` | Whether the style argument is a file path or not | `False` |          |
+
+#### CSS Parsing
+
+This is the accepted css format:
+
+```css
+/* tag */
+label {property:value;}
+
+/* id */
+#id {property:value;}
+
+/* class */
+.class {property:value;}
+```
