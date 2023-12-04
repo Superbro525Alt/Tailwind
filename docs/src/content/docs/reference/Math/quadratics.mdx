@@ -1,0 +1,46 @@
+---
+title: Quadratics
+description: Quadratics API Reference
+---
+
+A library that allows the creation and solving of quadratic equations.
+
+## Usage
+
+To import the `quadratics` library into your program, add the following line to the top of your script.
+
+```python
+import tailwindall.maths_lib.quadratics as quadratics
+```
+
+### Creating a parabola
+
+To create a parabola, use the `Parabola` class. This function takes 3 arguments, `a`, `b` and `c`. These are the coefficients of the quadratic equation.
+
+```python
+import tailwindall.maths_lib.quadratics as quadratics
+
+parabola = quadratics.Parabola(1, 2, 3)
+```
+
+#### Creating a random parabola
+
+To create a random parabola, use the `Parabola.random()` function. This function takes 1 argument, `always_solvable`. This is a boolean value that determines whether the parabola should always be solvable. If this is set to `True`, the parabola will always be solvable. If this is set to `False`, the parabola will only be solvable 50% of the time.
+
+```python
+import tailwindall.maths_lib.quadratics as quadratics
+
+parabola = quadratics.Parabola.random()
+```
+
+### Solving a parabola
+
+To solve a parabola, use the `Parabola.solve()` function. This returns a `ParabolaData` object. This object has 4 attributes, `x_intercepts`, `y_intercept`, `vertex` and `eq`. The `x_intercepts` attribute is a list of the x intercepts of the parabola. The `y_intercept` attribute is the y intercept of the parabola. The `vertex` attribute is the vertex of the parabola. The `eq` attribute is the equation of the parabola.
+
+```python
+import tailwindall.maths_lib.quadratics as quadratics
+
+parabola = quadratics.Parabola(1, 2, 3)
+
+parabola.solve()
+```

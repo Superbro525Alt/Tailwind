@@ -1,0 +1,54 @@
+---
+title: Angles
+description: Angles API Reference
+---
+
+This module provides a set of functions for working with angles.
+
+## Usage
+
+To import this module, use the following code:
+
+```python
+import tailwindall.maths_lib.angles as angles
+```
+
+### Get angle from lines
+
+This function returns the angle between two lines.
+
+```python
+import tailwindall.maths_lib.angles as angles
+
+line1 = ((0, 0), (1, 1))
+
+line2 = ((0, 0), (1, 0))
+
+angles.get_angle_from_lines(line1, line2)
+```
+
+Line 1 is the line that the angle is measured from, and line 2 is the line that the angle is measured to.
+
+The arguments are of type `tuple[tuple[int, int], tuple[int, int]]`, where the first tuple is the start point of the line, and the second tuple is the end point of the line.
+
+The function returns the angle in degrees as a `float`.
+
+### Does diagonal bisect
+
+This function returns whether a diagonal bisects a rectangle.
+
+```python
+import tailwindall.maths_lib.angles as angles
+
+midpoint = (0, 0)
+
+diagonal = [(0, 0), (1, 1)]
+
+angles.does_diagonal_bisect(midpoint, diagonal)
+```
+
+The midpoint is the point that the diagonal bisects, and the diagonal is the diagonal that is being tested.
+
+The arguments are of type `tuple[int, int]` for the midpoint, and `tuple[tuple[int, int], tuple[int, int]]` for the diagonal.
+
+The function returns a `bool` indicating whether the diagonal bisects the rectangle.
